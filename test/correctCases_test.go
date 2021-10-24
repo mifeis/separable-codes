@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 
 	"gonum.org/v1/gonum/stat/combin"
@@ -48,5 +49,5 @@ func TestRead(t *testing.T) {
 		totalCases *= len(list) * getCase(i+1, n, k)
 	}
 
-	fmt.Println("Total cases for a code of 16 words: ", totalCases)
+	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", totalCases)
 }

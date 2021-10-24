@@ -2,6 +2,8 @@ package combinations
 
 import (
 	"fmt"
+	"sort"
+	"sync"
 )
 
 const WORDS = 8
@@ -18,46 +20,62 @@ func Init() [WORDS]int {
 }
 
 func List(c [WORDS]int) int {
-	var exit chan bool
-	var totalCases int
-	groups := make(chan [GROUP]int, 1000)
+	groups := make(chan [GROUP]int)
+	exit := make(chan bool)
+	cases := make(chan int, 100)
+	var total int
+	wg := sync.WaitGroup{}
 	//	var groups chan [GROUP]int
 
-	go getGroup(c, groups, exit)
+	go GetGroups(c, groups, exit)
 
 	for {
 		select {
-		case <-exit:
-			return totalCases
 		case g := <-groups:
-			fmt.Println(g)
-			totalCases++
+			wg.Add(1)
+			go getComb(c, g, cases, &wg)
+		case <-exit:
+			wg.Wait()
+			for i := 0; i < len(cases); {
+				num := <-cases
+				total += num
+			}
+			return total
 		}
 	}
-	/*		for i := 0; i < GROUP; i++ {
-				for j := i; j < WORDS; j++ {
-					slice2[j] = j + 1
-
-				}
-			}
-	*/
-	//	return totalCases
 }
 
-func getGroup(c [WORDS]int, groups chan [GROUP]int, exit chan bool) {
+func GetGroups(c [WORDS]int, groups chan [GROUP]int, exit chan bool) {
 	var slice [GROUP]int
 	for i := 0; i < WORDS; i++ {
-		//i := 0
 		slice[0] = c[i]
-		for j := i + 1; j < WORDS-1; j++ {
-			//j := i + 1
+		for j := i + 1; j < WORDS; j++ {
 			slice[1] = c[j]
-			for k := j + 1; k < WORDS-2; k++ {
-				//k := j + 1
+			for k := j + 1; k < WORDS; k++ {
 				slice[2] = c[k]
+				fmt.Println("...Sending slice...", slice)
 				groups <- slice
 			}
 		}
 	}
 	exit <- true
+}
+
+func getComb(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
+	//	id := rand.Intn(100)
+	slice := []int{g[0], g[1], g[2]}
+	sort.Ints(slice)
+
+	/*	for i := slice[0]; i < WORDS; i++ {
+			//		slice[0] = c[i]
+			for j := i + 1; j < WORDS; j++ {
+				//			slice[1] = c[j]
+				for k := j + 1; k < WORDS; k++ {
+					//				slice[2] = c[k]
+					cases <- 1
+				}
+			}
+		}
+	*/
+	wg.Done()
 }

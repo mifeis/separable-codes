@@ -12,5 +12,4 @@ func main() {
 	c := combinations.Init()
 	totalCases := combinations.List(c)
 	fmt.Println("Combinations found:", totalCases)
-
 }
