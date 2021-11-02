@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"testing"
 
@@ -45,9 +44,9 @@ func TestRead(t *testing.T) {
 	 */
 
 	list := combin.Combinations(n, k)
-	log.Println(list)
+	//	log.Println(list)
 	for i := 0; i < CASES; i++ {
-		totalCases *= len(list) //* getCase(i+1, n, k)
+		totalCases *= len(list) * getCase(i+1, n, k)
 	}
 
 	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", totalCases)

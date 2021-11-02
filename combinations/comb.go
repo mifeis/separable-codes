@@ -8,8 +8,6 @@ import (
 const WORDS = 8
 const GROUP = 3
 
-var combs [][GROUP]int
-
 func Init() [WORDS]int {
 	var c [WORDS]int
 
@@ -26,7 +24,6 @@ func List(c [WORDS]int) int {
 	cases := make(chan int, 100)
 	var total int
 	wg := sync.WaitGroup{}
-	//	var groups chan [GROUP]int
 
 	go GetGroups(c, groups, exit)
 
@@ -34,7 +31,7 @@ func List(c [WORDS]int) int {
 		select {
 		case g := <-groups:
 			wg.Add(1)
-			go getComb(c, g, cases, &wg)
+			go getCombs(c, g, cases, &wg)
 		case <-exit:
 			wg.Wait()
 			for i := 0; i < len(cases); {
@@ -62,10 +59,27 @@ func GetGroups(c [WORDS]int, groups chan [GROUP]int, exit chan bool) {
 	exit <- true
 }
 
-func getComb(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
+func checkIn(slice [GROUP]int, combs [][GROUP]int) bool {
+	var coinc int
+
+	for _, w := range combs {
+		coinc = 0
+		for l, x := range w {
+			if x == slice[l] {
+				coinc++
+			}
+		}
+		if coinc == GROUP {
+			return true
+		}
+	}
+	return false
+}
+
+func search(c [WORDS]int, g [GROUP]int, slices chan [GROUP]int, combs [][GROUP]int) {
 	var colInOriginal bool
-	var passed bool
-	slice := [GROUP]int{g[0], g[1], g[2]}
+	var counted bool
+	slice := [GROUP]int{}
 
 	//	{1,2,3} -> {4,5,6},{4,5,7},{4,5,8},{4,6,7},{4,6,8},{4,7,8},{5,6,7},{5,6,8},{5,7,8},{6,7,8}
 	//	{4,6,7} -> {1,2,3},{1,2,5},{1,2,8},{1,3,5},{1,3,8},{1,5,8},{2,3,5},{2,3,8},{2,5,8},{3,5,8}
@@ -80,10 +94,11 @@ func getComb(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
 				k++
 				break //ó j=WORDS
 			} else {
-				//comprobamos que no este ya la columna en el primer grupo. Por ejemplo: {2,3,7}
+				//comprobamos que no este ya la columna en el mismo grupo. Por ejemplo: {2,3,7}
 				for _, v := range g {
 					if c[j] == v {
 						colInOriginal = true
+						break
 					}
 				}
 				if !colInOriginal {
@@ -91,16 +106,15 @@ func getComb(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
 						//comprobamos q no este ya contado el caso
 						if !checkIn(slice, combs) {
 							if k == WORDS-1 {
-								passed = true
+								counted = true
 							} else {
-								passed = false
+								counted = false
 							}
 							slice[i] = c[j]
-							combs = append(combs, slice)
-							cases <- 1
+							slices <- slice
 							//una vex encontrado un caso buscar los dmas
 						} else {
-							passed = true
+							counted = true
 						}
 					} else {
 						slice[i] = c[j]
@@ -108,32 +122,34 @@ func getComb(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
 				}
 			}
 		}
-		if passed {
-			passed = false
+		if counted {
+			counted = false
 			k = 0
-			for o := GROUP; o <= i; o-- {
+			limit := GROUP - i
+			for o := GROUP; o > limit; o-- {
+				slice[i] = 0
 				i--
-				k--
 			}
 		}
 	}
 
-	wg.Done()
 }
 
-func checkIn(slice [GROUP]int, combs [][GROUP]int) bool {
-	var groupDone int
+func getCombs(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
+	var combs [][GROUP]int
+	slices := make(chan [GROUP]int)
+	stop := make(chan bool)
 
-	for _, w := range combs {
-		groupDone = 0
-		for l, x := range w {
-			if x == slice[l] {
-				groupDone++
-			}
-		}
-		if groupDone == GROUP {
-			return true
+	go search(c, g, slices, combs)
+	for {
+		select {
+		case comb := <-slices:
+			combs = append(combs, comb)
+			cases <- 1
+			go search(c, g, slices, combs)
+		case <-stop:
+			wg.Done()
+			return
 		}
 	}
-	return false
 }
