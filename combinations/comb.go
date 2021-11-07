@@ -46,7 +46,7 @@ func List(c [WORDS]int) int {
 }
 
 func GetGroups(c [WORDS]int, groups chan [GROUP]int, exit chan bool) {
-	var slice [GROUP]int
+	slice := [GROUP]int{1, 2, 8}
 	for i := 0; i < WORDS; i++ {
 		slice[0] = c[i]
 		for j := i + 1; j < WORDS; j++ {
@@ -55,123 +55,81 @@ func GetGroups(c [WORDS]int, groups chan [GROUP]int, exit chan bool) {
 				slice[2] = c[k]
 				fmt.Println("...Sending slice...", slice)
 				groups <- slice
-				break
 			}
-			break
 		}
-		break
 	}
+
 	exit <- true
 }
 
-func checkIn(slice [GROUP]int, combs [][GROUP]int) bool {
-	var coinc int
-
-	for _, w := range combs {
-		coinc = 0
-		for l, x := range w {
-			if x == slice[l] {
-				coinc++
-			}
-		}
-		if coinc == GROUP {
-			return true
-		}
-	}
-	return false
-}
-
 func search(c [WORDS]int, g [GROUP]int, slices chan [GROUP]int, stop chan bool) {
-	var combs [][GROUP]int
 	var colInOriginal bool
+	var slice [GROUP]int
 	var top bool
-	limit := GROUP - 1
-	slice := [GROUP]int{}
 
-	//	{1,2,3} -> {4,5,6},{4,5,7},{4,5,8},{4,6,7},{4,6,8},{4,7,8},{5,6,7},{5,6,8},{5,7,8},{6,7,8}
+	//	{1,2,8} -> {3,4,5},{3,4,6},{3,4,7},{3,5,6},{3,5,7},{3,6,7},{4,5,6},{4,5,7},{4,6,7},{5,6,7}
 	//	{4,6,7} -> {1,2,3},{1,2,5},{1,2,8},{1,3,5},{1,3,8},{1,5,8},{2,3,5},{2,3,8},{2,5,8},{3,5,8}
 	//	{2,3,7} -> {1,4,5},{1,4,6},{1,4,8},{1,5,6},{1,5,8},{1,6,8},{4,5,6},{4,5,8},{4,6,8},{5,6,8}
 
-	//	for {
 	k := 0
 	for i := 0; i < GROUP; {
-		fmt.Println("slice when done", slice)
 		if top {
-			fmt.Println("limit", limit)
-			//limit = 2
-			//i=2
-			for o := GROUP; o > limit; o-- {
+			for o := GROUP; o > GROUP-1; o-- {
 				i--
-				k = slice[i] + 1
+				k = slice[i]
 				slice[i] = 0
 			}
 			top = false
-			fmt.Println("done", top)
 		}
-		fmt.Println("i: ", i)
+
 		for j := k; j < WORDS; j++ {
-			fmt.Println("k: ", k)
 			colInOriginal = false
 			if slice[i] != 0 {
-				fmt.Println("slice[i]!=0")
+				k = slice[i]
 				i++
 				break
 			} else {
-				//comprobamos que no este ya la columna en el mismo grupo. Por ejemplo: {2,3,7}
 				for _, v := range g {
 					if c[j] == v {
 						colInOriginal = true
 						break
 					}
 				}
-				fmt.Println("colInOriginal", colInOriginal)
-				if !colInOriginal {
+				if colInOriginal {
+					if j == WORDS-1 {
+						if i == 0 {
+							stop <- true
+							return
+						} else {
+							slice[i] = 0
+							top = true
+							break
+						}
+					}
+				} else {
 					switch i {
 					case GROUP - 1:
-						fmt.Println("case i==GROUP-1")
-						if c[j] > slice[i-1] {
-							fmt.Println("c[j] > slice[i-1]")
-							slice[i] = c[j]
-							if !checkIn(slice, combs) {
-								fmt.Println("!checkIn")
-								slice[i] = c[j]
-								combs = append(combs, slice)
-								slices <- slice
-							} else {
-								fmt.Println("checkIn. slice[i]=0")
-								slice[i] = 0
-							}
-							if j == WORDS-1 {
-								top = true
-								limit = i
-								fmt.Println("done", top)
-							}
-							slice[i] = 0
+						slice[i] = c[j]
+						slices <- slice
+						if j == WORDS-1 {
+							top = true
 						}
-					//comprobamos q no este ya contado el caso
+						slice[i] = 0
 					case GROUP - 2:
-						fmt.Println("case 2==GROUP-2")
-						if c[j] > slice[i-1] {
-							fmt.Println("c[j] > slice[i-1]")
-							slice[i] = c[j]
-							if j == WORDS-1 {
-								limit = i
-								fmt.Println("limit", limit)
-							}
-						}
-						//					case GROUP - 3:
-					default:
-						fmt.Println("default case")
 						slice[i] = c[j]
 						if j == WORDS-1 {
-							limit = i
-							fmt.Println("limit", limit)
+							slice[i] = 0
+							top = true
+							break
+						}
+					case GROUP - 3:
+						slice[i] = c[j]
+						if j == WORDS-1 {
+							stop <- true
+							return
 						}
 					}
 				}
-			}
-			if i == 0 && j == WORDS-1 {
-				stop <- true
 			}
 		}
 	}
