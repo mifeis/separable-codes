@@ -13,7 +13,7 @@ const (
 
 func TestMatch(t *testing.T) {
 
-	var c [WORDS]int
+	var c []int
 
 	groups := make(chan [GROUP]int)
 	exit := make(chan bool)
