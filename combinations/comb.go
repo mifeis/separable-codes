@@ -1,5 +1,6 @@
 package combinations
 
+/*
 import (
 	"fmt"
 	"sync"
@@ -153,3 +154,4 @@ func getCombs(c [WORDS]int, g [GROUP]int, cases chan int, wg *sync.WaitGroup) {
 		}
 	}
 }
+*/
