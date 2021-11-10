@@ -15,16 +15,16 @@ func TestMatch(t *testing.T) {
 
 	var c []int
 
-	groups := make(chan [GROUP]int)
+	groups := make(chan combinations.Combin)
 	exit := make(chan bool)
 
 	c = combinations.Init()
-	go combinations.GetGroups(c, groups, exit)
+	go combinations.GetGroups(true, c, groups, exit)
 
 	for {
 		select {
 		case g := <-groups:
-			go match(t, g)
+			go match(t, g.Group)
 		case <-exit:
 			return
 		}
