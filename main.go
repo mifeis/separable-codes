@@ -10,6 +10,6 @@ import (
 func main() {
 
 	c := combinations.Init()
-	totalCases := combinations.List(c)
+	totalCases := combinations.ListSeq(c)
 	fmt.Println("Combinations found:", totalCases)
 }
