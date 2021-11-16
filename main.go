@@ -11,5 +11,5 @@ func main() {
 
 	c := combinations.Init()
 	totalCases := combinations.ListSeq(c)
-	fmt.Println("Combinations found:", totalCases)
+	fmt.Println("Combinations found:", totalCases/2)
 }
