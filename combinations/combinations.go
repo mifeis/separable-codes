@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-const WORDS = 8
+const WORDS = 8 //5 SECONDS, 11% CPU
 const GROUP = 3
 
 type Combin struct {
@@ -27,7 +27,7 @@ func Init() []int {
 func List(c []int) int {
 	combins := make(chan Combin)
 	exit := make(chan bool)
-	cases := make(chan int, 100)
+	cases := make(chan int, 10000)
 	wg := sync.WaitGroup{}
 	var total int
 
@@ -40,18 +40,17 @@ func List(c []int) int {
 			go func(c []int, g [GROUP]int, id int, cases chan int, wg *sync.WaitGroup) {
 				slices := make(chan Combin)
 				stop := make(chan bool)
-				new := c
 				var total int
 
-				remaining := removeSlice(new, g[:])
-				fmt.Println("remaining array ", id, " ", remaining)
+				remaining := RemoveSlice(c[:], g[:])
+				fmt.Println("remaining array", id, remaining)
 
 				go GetGroups(false, remaining, slices, stop)
 				for {
 					select {
-					case s := <-slices:
+					case /*s := */ <-slices:
 						total++
-						fmt.Println("slice from", id, "num", total, ":", s.Group)
+						//						fmt.Println("slice from", id, "num", total, ":", s.Group)
 					case <-stop:
 						cases <- total
 						wg.Done()
@@ -85,7 +84,7 @@ func GetGroups(first bool, c []int, combins chan Combin, exit chan bool) {
 						Group: slice,
 						Id:    rand.Intn(1000),
 					}
-					fmt.Println("...Sending slice ", comb.Id, "...", comb.Group)
+					fmt.Println("...Sending slice", comb.Id, "...", comb.Group)
 				} else {
 					comb = Combin{
 						Group: slice,
@@ -99,7 +98,51 @@ func GetGroups(first bool, c []int, combins chan Combin, exit chan bool) {
 	exit <- true
 }
 
-func removeSlice(new []int, g []int) []int {
+func RemoveSlice(original []int, g []int) []int {
+	/*	k := 1
+
+		for _, elem := range g {
+			for j := k; j < len(original); j++ {
+				if elem != original[j-1] {
+					remaining = append(remaining, original[j-1])
+					k = elem + 1
+				} else {
+					k = elem + 1
+					break
+				}
+			}
+		}
+
+		for i := k; i <= WORDS; i++ {
+			remaining = append(remaining, original[i-1])
+		}
+	*/
+
+	/*for i, elem := range g {
+		for _, v := range original {
+			if elem == v {
+				remaining = RemoveIndex(remaining, elem-i-1)
+			}
+		}
+	}*/
+	var remaining []int
+	remaining = append(remaining, original[:]...)
+
+	//cambiar: https://yourbasic.org/golang/delete-element-slice/-->trunccar
+
+	for i, elem := range g {
+		RemoveIndex(remaining, elem-i-1)
+	}
+
+	return remaining[:WORDS-GROUP]
+
+}
+
+func RemoveIndex(s []int, index int) []int {
+	return append(s[:index], s[index+1:]...)
+}
+
+/*func removeSlice(new []int, g []int) []int {
 	remaining := make([]int, WORDS-GROUP)
 
 	for i, elem := range g {
@@ -115,4 +158,4 @@ func removeSlice(new []int, g []int) []int {
 	}
 
 	return remaining
-}
+}*/

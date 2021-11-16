@@ -33,7 +33,7 @@ func TestRead(t *testing.T) {
 	//	}
 
 	totalCases := 1
-	n := 8
+	n := 16
 	k := 3
 
 	/* Combinations generates all of the combinations of k elements from a set of size n.
