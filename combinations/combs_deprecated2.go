@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
-)
 
-const WORDS = 16 //1 SECONDS, 11% CPU	//Seq: 3 SECONDS, 2% CPU
-const GROUP = 3
+	"github.com/mifeis/Separable-Codes/lib"
+)
 
 type Combin struct {
 	Id    int
@@ -42,7 +41,7 @@ func List(c []int) int {
 				stop := make(chan bool)
 				var total int
 
-				remaining := RemoveSlice(c[:], g[:])
+				remaining := lib.RemoveSlice(c[:], g[:])
 				fmt.Println("remaining array", id, remaining)
 
 				go GetGroups(false, remaining, slices, stop)
@@ -96,20 +95,4 @@ func GetGroups(first bool, c []int, combins chan Combin, exit chan bool) {
 	}
 
 	exit <- true
-}
-
-func RemoveSlice(original []int, g []int) []int {
-	var remaining []int
-	remaining = append(remaining, original[:]...)
-
-	for i, elem := range g {
-		RemoveIndex(remaining, elem-i-1)
-	}
-
-	return remaining[:WORDS-GROUP]
-
-}
-
-func RemoveIndex(s []int, index int) []int {
-	return append(s[:index], s[index+1:]...)
 }

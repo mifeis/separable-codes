@@ -7,10 +7,7 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-const WORDS = 16 //1 SECONDS, 11% CPU	//Seq: 3 SECONDS, 2% CPU
-const GROUP = 3
-
-func ListSeq(c []int) int {
+func ListSeq1(c []int) int {
 	var total int
 
 	groups := GetGroupsSeq(true, c)
@@ -30,7 +27,7 @@ func ListSeq(c []int) int {
 	return total
 }
 
-func GetGroupsSeq(first bool, c []int) []Combin {
+func GetGroupsSeq1(first bool, c []int) []Combin {
 	var comb Combin
 	var combins []Combin
 	slice := [GROUP]int{}
