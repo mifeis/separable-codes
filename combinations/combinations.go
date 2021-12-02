@@ -7,21 +7,21 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-const WORDS = 16
-const GROUP = 3
+const (
+	WORDS = 8
+	GROUP = 3
+)
 
-func ListSeq(c []int) int {
+func List0(c []int) int {
 	var total int
 
-	groups := GetGroupsSeq(true, c)
+	groups := GetGroups0(true, c)
 
 	for _, g := range groups {
-		new := c
-
-		remaining := lib.RemoveSlice(new, g.Group[:])
+		remaining := lib.RemoveSlice(c, g.Group[:])
 		fmt.Println("remaining array ", g.Id, ": ", remaining)
 
-		combins := GetGroupsSeq(false, remaining)
+		combins := GetGroups0(false, remaining)
 		for _, v := range combins {
 			total++
 			fmt.Println("slice from", g.Id, "num", total, ":", v.Group)
@@ -30,7 +30,7 @@ func ListSeq(c []int) int {
 	return total
 }
 
-func GetGroupsSeq(first bool, c []int) []Combin {
+func GetGroups0(first bool, c []int) []Combin {
 	var comb Combin
 	var combins []Combin
 	slice := [GROUP]int{}

@@ -1,7 +1,9 @@
 package lib
 
-const WORDS = 16
-const GROUP = 3
+const (
+	WORDS = 8
+	GROUP = 3
+)
 
 func RemoveSlice(original []int, g []int) []int {
 	var remaining []int

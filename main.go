@@ -14,11 +14,11 @@ const (
 func getCase(c []int, cas int) int {
 	switch cas {
 	case 0:
-		return combinations.ListSeq(c)
-	case 1:
-		return combinations.ListSeq1(c)
+		//		return combinations.List0(c)
+		//	case 1:
+		return combinations.List1(c)
 	case 2:
-		return combinations.ListSeq2(c)
+		return combinations.List2(c)
 	default:
 		return 0
 	}

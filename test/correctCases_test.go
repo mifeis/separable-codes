@@ -8,22 +8,10 @@ import (
 	"gonum.org/v1/gonum/stat/combin"
 )
 
+//casos no disjunts
 const (
 	CASES = 1
 )
-
-func getCase(c int, n int, k int) int {
-	switch c {
-	case 1:
-		return len(combin.Combinations(n-k, k))
-	case 2:
-		return len(combin.Combinations(n-k, k-1))
-	case 3:
-		return len(combin.Combinations(n-k, k-2))
-	default:
-		return 0
-	}
-}
 
 func TestRead(t *testing.T) {
 
@@ -33,7 +21,7 @@ func TestRead(t *testing.T) {
 	//	}
 
 	totalCases := 1
-	n := 16
+	n := 8
 	k := 3
 
 	/* Combinations generates all of the combinations of k elements from a set of size n.
@@ -44,9 +32,12 @@ func TestRead(t *testing.T) {
 	 */
 
 	list := combin.Combinations(n, k)
-	//	log.Println(list)
-	for i := 0; i < CASES; i++ {
-		totalCases *= len(list) * getCase(i+1, n, k) / 2
+	fmt.Println("len first groups", len(list))
+	for i := 1; i <= CASES; i++ {
+		//		disjunt := len(combin.Combinations(n-k, k))
+		nodisjunt := len(combin.Combinations(n-k, k-i)) * k
+		fmt.Println("len combis no disjuntes", nodisjunt)
+		totalCases *= len(list) * nodisjunt / 2
 	}
 
 	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", totalCases)
