@@ -27,8 +27,7 @@ func getCase(c []int, cas int) int {
 //Funció que busca totes les combinacions possibles en grup de 3 d'entre un grup de #WORDS
 func main() {
 	c := combinations.Init()
-	total := combinations.ListSeq(c)
-	//	log.Println(list)
+	total := 1
 	for i := 0; i < CASES; i++ {
 		total *= total * getCase(c, i) / 2
 	}

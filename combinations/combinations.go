@@ -7,7 +7,7 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-const WORDS = 16 //1 SECONDS, 11% CPU	//Seq: 3 SECONDS, 2% CPU
+const WORDS = 16
 const GROUP = 3
 
 func ListSeq(c []int) int {
