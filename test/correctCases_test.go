@@ -10,7 +10,7 @@ import (
 
 //casos no disjunts
 const (
-	CASES = 1
+	CASES = 3
 )
 
 func TestRead(t *testing.T) {
@@ -20,7 +20,7 @@ func TestRead(t *testing.T) {
 	//		t.Errorf("FAILED")
 	//	}
 
-	totalCases := 1
+	total := 1
 	n := 8
 	k := 3
 
@@ -33,12 +33,11 @@ func TestRead(t *testing.T) {
 
 	list := combin.Combinations(n, k)
 	fmt.Println("len first groups", len(list))
-	for i := 1; i <= CASES; i++ {
-		//		disjunt := len(combin.Combinations(n-k, k))
-		nodisjunt := len(combin.Combinations(n-k, k-i)) * k
-		fmt.Println("len combis no disjuntes", nodisjunt)
-		totalCases *= len(list) * nodisjunt / 2
+	for i := 2; i < CASES; i++ {
+		cas := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
+		fmt.Println("len combis no disjuntes (cas 1)", cas)
+		total *= len(list) * cas / 2
 	}
 
-	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", totalCases)
+	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", total)
 }

@@ -16,8 +16,8 @@ func getCase(c []int, cas int) int {
 	case 0:
 		//		return combinations.List0(c)
 		//	case 1:
-		return combinations.List1(c)
-	case 2:
+		//		return combinations.List1(c)
+		//	case 2:
 		return combinations.List2(c)
 	default:
 		return 0
