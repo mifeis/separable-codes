@@ -4,11 +4,12 @@ import (
 	"testing"
 
 	"github.com/mifeis/Separable-Codes/combinations"
+	"github.com/mifeis/Separable-Codes/lib"
 )
 
 const (
-	WORDS = combinations.WORDS
-	GROUP = combinations.GROUP
+	WORDS = lib.WORDS
+	GROUP = lib.GROUP
 )
 
 func TestMatch(t *testing.T) {

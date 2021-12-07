@@ -30,7 +30,7 @@ func List1(c []int) int {
 func GetGroups1(first bool, g []int, remaining []int) []Combin {
 	var comb Combin
 	var combins []Combin
-	slice := [GROUP]int{}
+	slice := [lib.GROUP]int{}
 
 	for l := 0; l < len(g); l++ {
 		slice[0] = g[l]

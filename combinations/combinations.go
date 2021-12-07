@@ -7,10 +7,20 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-const (
-	WORDS = 8
-	GROUP = 3
-)
+type Combin struct {
+	Id    int
+	Group [lib.GROUP]int
+}
+
+func Init() []int {
+	var c []int
+
+	for i := 0; i < lib.WORDS; i++ {
+		c = append(c, i+1)
+	}
+	fmt.Println("Array:", c)
+	return c
+}
 
 func List0(c []int) int {
 	var total int
@@ -33,7 +43,7 @@ func List0(c []int) int {
 func GetGroups0(first bool, c []int) []Combin {
 	var comb Combin
 	var combins []Combin
-	slice := [GROUP]int{}
+	slice := [lib.GROUP]int{}
 	for i := 0; i < len(c); i++ {
 		slice[0] = c[i]
 		for j := i + 1; j < len(c); j++ {

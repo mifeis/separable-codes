@@ -8,21 +8,6 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-type Combin struct {
-	Id    int
-	Group [GROUP]int
-}
-
-func Init() []int {
-	var c []int
-
-	for i := 0; i < WORDS; i++ {
-		c = append(c, i+1)
-	}
-	fmt.Println("Array:", c)
-	return c
-}
-
 func List(c []int) int {
 	combins := make(chan Combin)
 	exit := make(chan bool)
@@ -36,7 +21,7 @@ func List(c []int) int {
 		select {
 		case comb := <-combins:
 			wg.Add(1)
-			go func(c []int, g [GROUP]int, id int, cases chan int, wg *sync.WaitGroup) {
+			go func(c []int, g [lib.GROUP]int, id int, cases chan int, wg *sync.WaitGroup) {
 				slices := make(chan Combin)
 				stop := make(chan bool)
 				var total int
@@ -71,7 +56,7 @@ func List(c []int) int {
 
 func GetGroups(first bool, c []int, combins chan Combin, exit chan bool) {
 	var comb Combin
-	slice := [GROUP]int{}
+	slice := [lib.GROUP]int{}
 	for i := 0; i < len(c); i++ {
 		slice[0] = c[i]
 		for j := i + 1; j < len(c); j++ {

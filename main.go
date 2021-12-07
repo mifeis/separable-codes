@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/mifeis/Separable-Codes/combinations"
+	"github.com/mifeis/Separable-Codes/lib"
 )
 
 const (
@@ -31,5 +32,5 @@ func main() {
 	for i := 0; i < CASES; i++ {
 		total *= total * getCase(c, i) / 2
 	}
-	fmt.Println("Total cases for a code of "+strconv.Itoa(combinations.WORDS)+" words: ", total)
+	fmt.Println("Total cases for a code of "+strconv.Itoa(lib.WORDS)+" words: ", total)
 }
