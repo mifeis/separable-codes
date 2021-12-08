@@ -7,11 +7,15 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
+//Estructura que conté el grup de GROUP elements i un random id
+//per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
+
 type Combin struct {
 	Id    int
 	Group [lib.GROUP]int
 }
 
+//funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
 func Init() []int {
 	var c []int
 
@@ -21,6 +25,9 @@ func Init() []int {
 	fmt.Println("Array:", c)
 	return c
 }
+
+//Funció que retorna els elements disjunts en grups de GROUP elements de l'array inicial
+//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
 
 func List0(c []int) int {
 	var total int
@@ -40,6 +47,7 @@ func List0(c []int) int {
 	return total
 }
 
+//Funció que es crida per tornar les combinacions de l'array passat per argument
 func GetGroups0(first bool, c []int) []Combin {
 	var comb Combin
 	var combins []Combin

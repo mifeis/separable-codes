@@ -8,7 +8,6 @@ import (
 )
 
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
-
 func List2(c []int) int {
 	var total int
 
@@ -18,7 +17,7 @@ func List2(c []int) int {
 		remaining := lib.RemoveSlice(c, g.Group[:])
 		fmt.Println("remaining array ", g.Id, ": ", remaining)
 
-		combins := GetGroups1(false, g.Group[:], remaining)
+		combins := GetGroups2(false, g.Group[:], remaining)
 		for _, v := range combins {
 			total++
 			fmt.Println("slice from", g.Id, "num", total, ":", v.Group)
@@ -27,6 +26,7 @@ func List2(c []int) int {
 	return total
 }
 
+//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
 func GetGroups2(first bool, g []int, remaining []int) []Combin {
 	var comb Combin
 	var combins []Combin
@@ -34,9 +34,9 @@ func GetGroups2(first bool, g []int, remaining []int) []Combin {
 
 	for l := 0; l < len(g); l++ {
 		slice[0] = g[l]
-		for i := 0; i < len(remaining); i++ {
-			slice[1] = remaining[i]
-			for j := i + 1; j < len(remaining); j++ {
+		for i := l + 1; i < len(g); i++ {
+			slice[1] = g[i]
+			for j := 0; j < len(remaining); j++ {
 				slice[2] = remaining[j]
 				if first {
 					comb = Combin{

@@ -2,23 +2,23 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"testing"
 
 	"gonum.org/v1/gonum/stat/combin"
 )
 
-//casos no disjunts
+//casos disjunts i no disjunts
+//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
+//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
+//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
+
 const (
 	CASES = 3
 )
 
-func TestRead(t *testing.T) {
-
-	//	_, err := model.ReadConf(READ_SETTINGS)
-	//	if err {
-	//		t.Errorf("FAILED")
-	//	}
+func TestTeoric(t *testing.T) {
 
 	total := 1
 	n := 8
@@ -30,13 +30,14 @@ func TestRead(t *testing.T) {
 	 * CombinationGenerator may alternatively be used to generate the combinations iteratively instead of collectively,
 	 * or IndexToCombination for random access.
 	 */
-
 	list := combin.Combinations(n, k)
-	fmt.Println("len first groups", len(list))
-	for i := 2; i < CASES; i++ {
-		cas := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
-		fmt.Println("len combis no disjuntes (cas 1)", cas)
-		total *= len(list) * cas / 2
+	log.Println("First group possible combinations:", len(list))
+
+	for i := 0; i < CASES; i++ {
+		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
+		log.Println("CASE:", i, "Combinations:", combinations)
+		total *= len(list) * combinations / 2
+		log.Println("Total:", total)
 	}
 
 	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", total)
