@@ -9,7 +9,7 @@ import (
 )
 
 func List(c []int) int {
-	combins := make(chan Combin)
+	combins := make(chan lib.Combin)
 	exit := make(chan bool)
 	cases := make(chan int, 10000)
 	wg := sync.WaitGroup{}
@@ -22,7 +22,7 @@ func List(c []int) int {
 		case comb := <-combins:
 			wg.Add(1)
 			go func(c []int, g [lib.GROUP]int, id int, cases chan int, wg *sync.WaitGroup) {
-				slices := make(chan Combin)
+				slices := make(chan lib.Combin)
 				stop := make(chan bool)
 				var total int
 
@@ -54,8 +54,8 @@ func List(c []int) int {
 	}
 }
 
-func GetGroups(first bool, c []int, combins chan Combin, exit chan bool) {
-	var comb Combin
+func GetGroups(first bool, c []int, combins chan lib.Combin, exit chan bool) {
+	var comb lib.Combin
 	slice := [lib.GROUP]int{}
 	for i := 0; i < len(c); i++ {
 		slice[0] = c[i]
@@ -64,13 +64,13 @@ func GetGroups(first bool, c []int, combins chan Combin, exit chan bool) {
 			for k := j + 1; k < len(c); k++ {
 				slice[2] = c[k]
 				if first {
-					comb = Combin{
+					comb = lib.Combin{
 						Group: slice,
 						Id:    rand.Intn(1000),
 					}
 					fmt.Println("...Sending slice", comb.Id, "...", comb.Group)
 				} else {
-					comb = Combin{
+					comb = lib.Combin{
 						Group: slice,
 					}
 				}

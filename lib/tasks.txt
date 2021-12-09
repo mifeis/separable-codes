@@ -1,0 +1,14 @@
+Per als casos no disjunts:
+{1,2,3}|{1,4,5}
+0,0,0 0,1,0-> favorable: descendents diferents
+0,1,0 0,0,1-> desfavorable: descendets iguals
+{2,6,7} {2,1,3}->identic al primer
+
+1.Tipus diferents (disjunt-> 1; no disjunt-> 2,3 ) 
+2.Trobar quantes posibilitats de codi quan estan separats-> favorables i desfavorables
+
+0,0,0 0,0,0 == 1,1,1 1,1,1
+
+...
+Tipus 4: 
+Un conjunt te 3 elements i laltre 2

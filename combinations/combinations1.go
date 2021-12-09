@@ -8,27 +8,31 @@ import (
 )
 
 //Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
-func List1(c []int) int {
+func List1(c []int) [][]int {
 	var total int
-
+	var list [][]int
 	groups := GetGroups0(true, c)
 
 	for _, g := range groups {
 		remaining := lib.RemoveSlice(c, g.Group[:])
-		fmt.Println("remaining array ", g.Id, ": ", remaining)
+		fmt.Println("Remaining array from", g.Id, ":", remaining)
 
 		combins := GetGroups1(false, g.Group[:], remaining)
+		fmt.Println("Combinations:")
 		for _, v := range combins {
 			total++
-			fmt.Println("slice from", g.Id, "num", total, ":", v.Group)
+			//			fmt.Println("slice from", g.Group[:], "with id:", g.Id, "num", total, ":", v.Group)
+			fmt.Println(total, "-", g.Group[:], "|", v.Group)
+			groups := append(g.Group[:], v.Group[:]...)
+			list = append(list, groups)
 		}
 	}
-	return total
+	return list
 }
 
-func GetGroups1(first bool, g []int, remaining []int) []Combin {
-	var comb Combin
-	var combins []Combin
+func GetGroups1(first bool, g []int, remaining []int) []lib.Combin {
+	var comb lib.Combin
+	var combins []lib.Combin
 	slice := [lib.GROUP]int{}
 
 	for l := 0; l < len(g); l++ {
@@ -38,13 +42,13 @@ func GetGroups1(first bool, g []int, remaining []int) []Combin {
 			for j := i + 1; j < len(remaining); j++ {
 				slice[2] = remaining[j]
 				if first {
-					comb = Combin{
+					comb = lib.Combin{
 						Group: slice,
 						Id:    rand.Intn(1000),
 					}
-					fmt.Println("...Sending slice ", comb.Id, "...", comb.Group)
+					fmt.Println("...Sending slice", comb.Id, "...", comb.Group)
 				} else {
-					comb = Combin{
+					comb = lib.Combin{
 						Group: slice,
 					}
 				}
