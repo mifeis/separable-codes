@@ -40,16 +40,20 @@ func getTotal(c []int) int {
 //Funció que retorna els casos disjunts (List0) i els no disjunts (List1, List2)
 //per a un array inicial de GROUP elements
 func getCase(c []int, cas int) int {
+	var total int
+	var arraymap map[[lib.GROUP]int][][lib.GROUP]int
 	switch cas {
 	case 0:
-		combs := combinations.List0(c)
-		log.Println(combs)
-		return len(combinations.List0(c))
+		arraymap = combinations.List0(c)
 	case 1:
-		return len(combinations.List1(c))
+		arraymap = combinations.List1(c)
 	case 2:
-		return len(combinations.List2(c))
+		arraymap = combinations.List2(c)
 	default:
 		return 0
 	}
+	for _, combs := range arraymap {
+		total += len(combs)
+	}
+	return total
 }

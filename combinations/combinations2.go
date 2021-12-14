@@ -8,12 +8,13 @@ import (
 )
 
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
-func List2(c []int) [][]int {
+func List2(c []int) map[[lib.GROUP]int][][lib.GROUP]int {
 	var total int
-	var list [][]int
+	arraymap := make(map[[lib.GROUP]int][][lib.GROUP]int)
 	groups := GetGroups0(true, c)
 
 	for _, g := range groups {
+		var list [][lib.GROUP]int
 		remaining := lib.RemoveSlice(c, g.Group[:])
 		fmt.Println("Remaining array from", g.Id, ":", remaining)
 
@@ -21,13 +22,12 @@ func List2(c []int) [][]int {
 		fmt.Println("Combinations:")
 		for _, v := range combins {
 			total++
-			//			fmt.Println("slice from", g.Group[:], "with id:", g.Id, "num", total, ":", v.Group)
 			fmt.Println(total, "-", g.Group[:], "|", v.Group)
-			groups := append(g.Group[:], v.Group[:]...)
-			list = append(list, groups)
+			list = append(list, v.Group)
 		}
+		arraymap[g.Group] = list
 	}
-	return list
+	return arraymap
 }
 
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
