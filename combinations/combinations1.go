@@ -5,17 +5,16 @@ import (
 	"math/rand"
 
 	"github.com/mifeis/Separable-Codes/lib_aux"
-	"github.com/mifeis/Separable-Codes/lib_main"
 )
 
 //Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
-func List1(c []int) map[[lib_main.GROUP]int][][lib_main.GROUP]int {
+func List1(c []int) map[lib_aux.Combi][]lib_aux.Combi {
 	var total int
-	arraymap := make(map[[lib_main.GROUP]int][][lib_main.GROUP]int)
+	arraymap := make(map[lib_aux.Combi][]lib_aux.Combi)
 	groups := GetGroups0(true, c)
 
 	for _, g := range groups {
-		var list [][lib_main.GROUP]int
+		var list []lib_aux.Combi
 		remaining := lib_aux.RemoveSlice(c, g.Group[:])
 		fmt.Println("Remaining array from", g.Id, ":", remaining)
 
@@ -24,17 +23,17 @@ func List1(c []int) map[[lib_main.GROUP]int][][lib_main.GROUP]int {
 		for _, v := range combins {
 			total++
 			fmt.Println(total, "-", g.Group[:], "|", v.Group)
-			list = append(list, v.Group)
+			list = append(list, v)
 		}
-		arraymap[g.Group] = list
+		arraymap[g] = list
 	}
 	return arraymap
 }
 
-func GetGroups1(first bool, g []int, remaining []int) []lib_aux.Combin {
-	var comb lib_aux.Combin
-	var combins []lib_aux.Combin
-	slice := [lib_main.GROUP]int{}
+func GetGroups1(first bool, g []int, remaining []int) []lib_aux.Combi {
+	var comb lib_aux.Combi
+	var combins []lib_aux.Combi
+	slice := [lib_aux.GROUP]int{}
 
 	for l := 0; l < len(g); l++ {
 		slice[0] = g[l]
@@ -43,13 +42,13 @@ func GetGroups1(first bool, g []int, remaining []int) []lib_aux.Combin {
 			for j := i + 1; j < len(remaining); j++ {
 				slice[2] = remaining[j]
 				if first {
-					comb = lib_aux.Combin{
+					comb = lib_aux.Combi{
 						Group: slice,
 						Id:    rand.Intn(1000),
 					}
 					fmt.Println("...Sending slice", comb.Id, "...", comb.Group)
 				} else {
-					comb = lib_aux.Combin{
+					comb = lib_aux.Combi{
 						Group: slice,
 					}
 				}

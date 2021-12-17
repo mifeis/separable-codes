@@ -5,11 +5,11 @@ import (
 	"math/rand"
 	"sync"
 
-	"github.com/mifeis/Separable-Codes/lib"
+	"github.com/mifeis/Separable-Codes/lib_aux"
 )
 
 func List(c []int) int {
-	combins := make(chan lib.Combin)
+	combins := make(chan lib_aux.Combi)
 	exit := make(chan bool)
 	cases := make(chan int, 10000)
 	wg := sync.WaitGroup{}
@@ -21,12 +21,12 @@ func List(c []int) int {
 		select {
 		case comb := <-combins:
 			wg.Add(1)
-			go func(c []int, g [lib.GROUP]int, id int, cases chan int, wg *sync.WaitGroup) {
-				slices := make(chan lib.Combin)
+			go func(c []int, g [lib_aux.GROUP]int, id int, cases chan int, wg *sync.WaitGroup) {
+				slices := make(chan lib_aux.Combi)
 				stop := make(chan bool)
 				var total int
 
-				remaining := lib.RemoveSlice(c[:], g[:])
+				remaining := lib_aux.RemoveSlice(c[:], g[:])
 				fmt.Println("remaining array", id, remaining)
 
 				go GetGroups(false, remaining, slices, stop)
@@ -54,9 +54,9 @@ func List(c []int) int {
 	}
 }
 
-func GetGroups(first bool, c []int, combins chan lib.Combin, exit chan bool) {
-	var comb lib.Combin
-	slice := [lib.GROUP]int{}
+func GetGroups(first bool, c []int, combins chan lib_aux.Combi, exit chan bool) {
+	var comb lib_aux.Combi
+	slice := [lib_aux.GROUP]int{}
 	for i := 0; i < len(c); i++ {
 		slice[0] = c[i]
 		for j := i + 1; j < len(c); j++ {
@@ -64,13 +64,13 @@ func GetGroups(first bool, c []int, combins chan lib.Combin, exit chan bool) {
 			for k := j + 1; k < len(c); k++ {
 				slice[2] = c[k]
 				if first {
-					comb = lib.Combin{
+					comb = lib_aux.Combi{
 						Group: slice,
 						Id:    rand.Intn(1000),
 					}
 					fmt.Println("...Sending slice", comb.Id, "...", comb.Group)
 				} else {
-					comb = lib.Combin{
+					comb = lib_aux.Combi{
 						Group: slice,
 					}
 				}

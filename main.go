@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/mifeis/Separable-Codes/lib_aux"
 	"github.com/mifeis/Separable-Codes/lib_main"
 )
 
@@ -13,5 +14,5 @@ func main() {
 	c := lib_main.Init()
 	cases := lib_main.GetTotal(c)
 
-	fmt.Println("Total cases for a code of "+strconv.Itoa(lib_main.WORDS)+" words: ", cases)
+	fmt.Println("Total cases for a code of "+strconv.Itoa(lib_aux.WORDS)+" words: ", cases)
 }

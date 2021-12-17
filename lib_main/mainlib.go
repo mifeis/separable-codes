@@ -5,27 +5,14 @@ import (
 	"log"
 
 	"github.com/mifeis/Separable-Codes/combinations"
-)
-
-const (
-
-	/* casos totals (disjunts i no disjunts)
-	 * Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
-	 * Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
-	 * Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
-	 */
-
-	CASES = 3
-
-	WORDS = 8
-	GROUP = 3
+	"github.com/mifeis/Separable-Codes/lib_aux"
 )
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
 func Init() []int {
 	var c []int
 
-	for i := 0; i < WORDS; i++ {
+	for i := 0; i < lib_aux.WORDS; i++ {
 		c = append(c, i+1)
 	}
 	fmt.Println("Array:", c)
@@ -34,7 +21,7 @@ func Init() []int {
 
 func GetTotal(c []int) int {
 	cases := 1
-	for i := 0; i < CASES; i++ {
+	for i := 0; i < lib_aux.CASES; i++ {
 		log.Println("CASE", i)
 		cases *= getCases(c, i) / 2
 		log.Println("Total cases:", cases)
@@ -46,7 +33,7 @@ func GetTotal(c []int) int {
 //per a un array inicial de GROUP elements
 func getCases(c []int, cas int) int {
 	var total int
-	var arraymap map[[GROUP]int][][GROUP]int
+	var arraymap map[lib_aux.Combi][]lib_aux.Combi
 	switch cas {
 	case 0:
 		arraymap = combinations.List0(c)
@@ -57,7 +44,7 @@ func getCases(c []int, cas int) int {
 	default:
 		return 0
 	}
-	for _, combs := range arraymap {
+	for k, combs := range arraymap {
 		total += len(combs)
 	}
 	return total

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/mifeis/Separable-Codes/lib"
+	"github.com/mifeis/Separable-Codes/lib_aux"
 	"gonum.org/v1/gonum/stat/combin"
 )
 
@@ -22,8 +22,8 @@ const (
 func TestTeoric(t *testing.T) {
 
 	total := 1
-	n := lib.WORDS
-	k := lib.GROUP
+	n := lib_aux.WORDS
+	k := lib_aux.GROUP
 
 	/* Combinations generates all of the combinations of k elements from a set of size n.
 	 * The returned slice has length Binomial(n,k) and each inner slice has length k.
