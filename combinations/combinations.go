@@ -2,6 +2,7 @@ package combinations
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 
 	"github.com/mifeis/Separable-Codes/lib_aux"
@@ -62,41 +63,33 @@ func GetGroups0(first bool, c []int) []lib_aux.Combi {
 }
 
 //casos de 6 paraules i la diferencia multiplica
-func GetFavsNofavs0(c []int) (int, int) {
+func GetFavsNofavs0(c []int, defaultvalues [][lib_aux.GROUP]int) (int, int) {
 	var favs, nofavs int
 	arraymap := List0(c)
+	//	defaultvalues := lib_aux.GetDefaultValues()
 
 	//first groups
 	for k, combs := range arraymap {
-
 		//array of combinations of the first group
 		for _, comb := range combs {
-			for i := 0; i < lib_aux.GROUP*2; i++ {
-				for j := 0; j < lib_aux.GROUP*2; j++ {
-					//posicio dins l'array
-					p := j / 2
-					//cas dins l'array (0/1)
-					switch j % 2 {
-					case 0:
-						comb.Value[lib_aux.GROUP-1-p]++
-					case 1:
-						comb.Value[lib_aux.GROUP-2-p]--
-						comb.Value[lib_aux.GROUP-1-p]++
-					}
-
+			log.Println(k.Group, "|", comb.Group)
+			for i := 0; i < len(defaultvalues); i++ {
+				k.Value = defaultvalues[i]
+				for j := 0; j < len(defaultvalues); j++ {
+					comb.Value = defaultvalues[j]
 					if lib_aux.Separable(k.Value, comb.Value) {
 						favs++
 					} else {
 						nofavs++
 					}
 				}
-				//fer el same q amb comb
-				k.Value[lib_aux.GROUP-1-i]++
-				comb.Value = [lib_aux.GROUP]int{0, 0, 0}
 			}
+			//
+			break
 		}
-
+		//
+		break
 	}
 
-	return len(arraymap), 0
+	return favs, nofavs
 }

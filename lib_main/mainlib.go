@@ -41,10 +41,8 @@ func getCases(c []int, cas int) int {
 		arraymap = combinations.List1(c)
 	case 2:
 		arraymap = combinations.List2(c)
-	default:
-		return 0
 	}
-	for k, combs := range arraymap {
+	for _, combs := range arraymap {
 		total += len(combs)
 	}
 	return total

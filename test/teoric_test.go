@@ -16,7 +16,7 @@ import (
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 
 const (
-	CASES = 3
+	CASES = 1
 )
 
 func TestTeoric(t *testing.T) {
