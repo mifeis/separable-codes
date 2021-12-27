@@ -59,3 +59,10 @@ func GetGroups2(first bool, g []int, remaining []int) []lib_aux.Combi {
 	}
 	return combins
 }
+
+func GetFavsNofavs2(c []int) (int, int) {
+	var favs, nofavs int
+	//	defaultvalues := lib_aux.GetDefaultValues()
+
+	return favs, nofavs
+}

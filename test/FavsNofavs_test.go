@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"log"
 	"testing"
 
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -23,29 +23,78 @@ func TestFavsNofavs(t *testing.T) {
 		nofavs = +totalnofavs
 	}
 
-	fmt.Println("Total desfavorable cases for a code of "+strconv.Itoa(lib_aux.WORDS)+" words: ", nofavs)
-	fmt.Println("Total favorable cases for a code of "+strconv.Itoa(lib_aux.WORDS)+" words: ", favs)
-
-	/*	if favs+nofavs != lib_main.GetTotal(c) {
-			t.Failed()
-		}
-	*/
+	fmt.Println("Total desfavorable cases:", nofavs)
+	fmt.Println("Total favorable cases:", favs)
 }
 
 //Funció que retorna els casos favorables i no favorables tenint en compte totes les possibles combinacions
 //de grups disjunts (List0) i no disjunts (List1, List2) per a un array inicial de WORDS paraules i grups de GROUP elements
 func getFavs(c []int, cas int) (int, int) {
 	var totalfavs, totalnofavs int
-	defaultvalues := lib_aux.GetDefaultValues(cas)
 
 	switch cas {
 	case 0:
-		totalfavs, totalnofavs = combinations.GetFavsNofavs0(c, defaultvalues)
-		/*	case 1:
-				totalfavs, totalnofavs = combinations.GetFavsNofavs1(c)
-			case 2:
-				totalfavs, totalnofavs = combinations.GetFavsNofavs2(c)
-		*/
+		totalfavs, totalnofavs = GetFavsNofavs(c)
+	case 1:
+		totalfavs, totalnofavs = combinations.GetFavsNofavs1(c)
+	case 2:
+		totalfavs, totalnofavs = combinations.GetFavsNofavs2(c)
+
 	}
-	return totalfavs / 2, totalnofavs / 2
+	return totalfavs, totalnofavs
+}
+
+func GetFavsNofavs(c []int) (int, int) {
+	var favs, nofavs int
+	var first, second lib_aux.Combi
+	arraymap := combinations.List0(c)
+	//Set a combination
+	for k, g := range arraymap {
+		first.Group = k.Group
+		//		first.Value = [lib_aux.GROUP]int{2, 2, 2}
+		second.Group = g[0].Group
+		break
+	}
+
+	defaultvalues := lib_aux.GetDefaultValues()
+	log.Println(first.Group, "|", second.Group)
+
+	//Tipus 1: {1,2,3}{4,5,6}; Tipus 2: {1,2,3}{1,4,5}; Tipus 3: {1,2,3}{1,2,4}
+	for i := 0; i < len(defaultvalues); i++ {
+		first.Value = defaultvalues[i]
+		//Set the repe elements of group
+		assign(first, second)
+		//Set the leaving values
+		//contabilitzar d'alguna manera els casos repetits-> recorre l'array fins a GROUP-elements cops?
+		for j := 0; j < len(defaultvalues); j++ {
+			for l, v2 := range second.Value {
+				if v2 == 2 {
+					log.Println("entra")
+					second.Value[l] = defaultvalues[j][l]
+					log.Println("second value: ", second.Value[l], "default value", defaultvalues[j][l])
+				}
+			}
+			if lib_aux.Separable(first.Value, second.Value) {
+				favs++
+			} else {
+				nofavs++
+			}
+			assign(first, second)
+		}
+	}
+
+	return favs, nofavs
+}
+
+//Function assign assignes values from first to second if the columns are the same
+//If not assignes the number 2 to the leaving columnes
+func assign(first lib_aux.Combi, second lib_aux.Combi) {
+	second.Value = [lib_aux.GROUP]int{2, 2, 2}
+	for _, v1 := range first.Group {
+		for l, v2 := range second.Group {
+			if v1 == v2 {
+				second.Value[l] = v1
+			}
+		}
+	}
 }

@@ -62,11 +62,11 @@ func GetGroups0(first bool, c []int) []lib_aux.Combi {
 	return combins
 }
 
-//casos de 6 paraules i la diferencia multiplica
-func GetFavsNofavs0(c []int, defaultvalues [][lib_aux.GROUP]int) (int, int) {
+func GetFavsNofavs0(c []int) (int, int) {
 	var favs, nofavs int
 	arraymap := List0(c)
-	//	defaultvalues := lib_aux.GetDefaultValues()
+
+	defaultvalues := lib_aux.GetDefaultValues()
 
 	//first groups
 	for k, combs := range arraymap {
@@ -78,16 +78,15 @@ func GetFavsNofavs0(c []int, defaultvalues [][lib_aux.GROUP]int) (int, int) {
 				for j := 0; j < len(defaultvalues); j++ {
 					comb.Value = defaultvalues[j]
 					if lib_aux.Separable(k.Value, comb.Value) {
+						//if lib_aux.Separable(defaultvalues[i], defaultvalues[j]) {
 						favs++
 					} else {
 						nofavs++
 					}
 				}
 			}
-			//
 			break
 		}
-		//
 		break
 	}
 

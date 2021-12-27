@@ -2,7 +2,6 @@ package lib_aux
 
 import (
 	"fmt"
-	"log"
 )
 
 const (
@@ -23,8 +22,8 @@ const (
 //per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
 type Combi struct {
 	Id    int
-	Group [GROUP]int
-	Value [GROUP]int
+	Group [3]int
+	Value [3]int
 }
 
 func RemoveSlice(original []int, g []int) []int {
@@ -42,6 +41,7 @@ func RemoveIndex(s []int, index int) []int {
 	return append(s[:index], s[index+1:]...)
 }
 
+//Says if the two arrays are separable or not
 func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
@@ -74,22 +74,18 @@ func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 }
 
 //Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
-func GetDefaultValues(cas int) [][GROUP]int {
+func GetDefaultValues() [][3]int {
 	var slice [GROUP]int
 	var values [][GROUP]int
 
-	switch cas {
-	case 0:
-		for i := 0; i < 2; i++ {
-			for j := 0; j < 2; j++ {
-				for k := 0; k < 2; k++ {
-					slice = [GROUP]int{i % 2, j % 2, k % 2}
-					values = append(values, slice)
-				}
+	for i := 0; i < 2; i++ {
+		for j := 0; j < 2; j++ {
+			for k := 0; k < 2; k++ {
+				slice = [GROUP]int{i % 2, j % 2, k % 2}
+				values = append(values, slice)
 			}
 		}
-
 	}
-	log.Println("Array possible binari values:", values)
+	fmt.Println("Array possible binari values:", values)
 	return values
 }

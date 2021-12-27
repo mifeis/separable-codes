@@ -1,0 +1,38 @@
+Array: [1 2 3 4 5 6 7 8]
+Array possible binari values: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
+Comparing [0 0 0] with [0 0 0] -> No separables
+Comparing [0 0 0] with [0 0 1] -> Separables: true
+Comparing [0 0 0] with [0 1 0] -> Separables: true
+Comparing [0 0 0] with [0 1 1] -> Separables: true
+Comparing [0 0 1] with [0 0 0] -> Separables: true
+Comparing [0 0 1] with [0 0 1] -> No separables
+Comparing [0 0 1] with [0 1 0] -> No separables
+Comparing [0 0 1] with [0 1 1] -> No separables
+Comparing [0 1 0] with [0 0 0] -> Separables: true
+Comparing [0 1 0] with [0 0 1] -> No separables
+Comparing [0 1 0] with [0 1 0] -> No separables
+Comparing [0 1 0] with [0 1 1] -> No separables
+Comparing [0 1 1] with [0 0 0] -> Separables: true
+Comparing [0 1 1] with [0 0 1] -> No separables
+Comparing [0 1 1] with [0 1 0] -> No separables
+Comparing [0 1 1] with [0 1 1] -> No separables
+Comparing [1 1 1] with [1 1 1] -> No separables
+Comparing [1 1 1] with [1 1 0] -> Separables: true
+Comparing [1 1 1] with [1 0 1] -> Separables: true
+Comparing [1 1 1] with [1 0 0] -> Separables: true
+Comparing [1 1 0] with [1 1 1] -> Separables: true
+Comparing [1 1 0] with [1 1 0] -> No separables
+Comparing [1 1 0] with [1 0 1] -> No separables
+Comparing [1 1 0] with [1 0 0] -> No separables
+Comparing [1 0 1] with [1 1 1] -> Separables: true
+Comparing [1 0 1] with [1 1 0] -> No separables
+Comparing [1 0 1] with [1 0 1] -> No separables
+Comparing [1 0 1] with [1 0 0] -> No separables
+Comparing [1 0 0] with [1 1 1] -> Separables: true
+Comparing [1 0 0] with [1 1 0] -> No separables
+Comparing [1 0 0] with [1 0 1] -> No separables
+Comparing [1 0 0] with [1 0 0] -> No separables
+Total desfavorable cases: 20
+Total favorable cases: 12
+PASS
+ok  	github.com/mifeis/Separable-Codes/test	0.488s

@@ -58,3 +58,29 @@ func GetGroups1(first bool, g []int, remaining []int) []lib_aux.Combi {
 	}
 	return combins
 }
+
+func GetFavsNofavs1(c []int) (int, int) {
+	var favs, nofavs int
+	defaultvalues := lib_aux.GetDefaultValues()
+
+	for i := 0; i < len(defaultvalues)/2; i++ {
+		for j := 0; j < len(defaultvalues)/2; j++ {
+			if lib_aux.Separable(defaultvalues[i], defaultvalues[j]) {
+				favs++
+			} else {
+				nofavs++
+			}
+		}
+	}
+	for i := len(defaultvalues) - 1; i > len(defaultvalues)/2-1; i-- {
+		for j := len(defaultvalues) - 1; j > len(defaultvalues)/2-1; j-- {
+			if lib_aux.Separable(defaultvalues[i], defaultvalues[j]) {
+				favs++
+			} else {
+				nofavs++
+			}
+		}
+	}
+
+	return favs, nofavs
+}
