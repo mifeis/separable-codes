@@ -1,5 +1,4 @@
 Array: [1 2 3 4 5 6 7 8]
-2021/12/23 17:47:12 Array possible binari values: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
 ...Sending slice 81 ... [1 2 3]
 ...Sending slice 887 ... [1 2 4]
 ...Sending slice 847 ... [1 2 5]
@@ -728,72 +727,73 @@ Combinations:
 558 - [6 7 8] | [2 3 5]
 559 - [6 7 8] | [2 4 5]
 560 - [6 7 8] | [3 4 5]
-2021/12/23 17:47:12 [1 7 8] | [2 3 4]
-Comparing [0 0 0] with [0 0 0] -> No separables
+Array possible binari values: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
+2021/12/28 15:50:04 [3 4 5] | [1 2 6]
+Comparing [0 0 0] with [0 0 0] -> Separables: false
 Comparing [0 0 0] with [0 0 1] -> Separables: true
 Comparing [0 0 0] with [0 1 0] -> Separables: true
 Comparing [0 0 0] with [0 1 1] -> Separables: true
 Comparing [0 0 0] with [1 0 0] -> Separables: true
 Comparing [0 0 0] with [1 0 1] -> Separables: true
 Comparing [0 0 0] with [1 1 0] -> Separables: true
-Comparing [0 0 0] with [1 1 1] -> Separables
+Comparing [0 0 0] with [1 1 1] -> Separables: true
 Comparing [0 0 1] with [0 0 0] -> Separables: true
-Comparing [0 0 1] with [0 0 1] -> No separables
-Comparing [0 0 1] with [0 1 0] -> No separables
-Comparing [0 0 1] with [0 1 1] -> No separables
-Comparing [0 0 1] with [1 0 0] -> No separables
-Comparing [0 0 1] with [1 0 1] -> No separables
-Comparing [0 0 1] with [1 1 0] -> No separables
+Comparing [0 0 1] with [0 0 1] -> Separables: false
+Comparing [0 0 1] with [0 1 0] -> Separables: false
+Comparing [0 0 1] with [0 1 1] -> Separables: false
+Comparing [0 0 1] with [1 0 0] -> Separables: false
+Comparing [0 0 1] with [1 0 1] -> Separables: false
+Comparing [0 0 1] with [1 1 0] -> Separables: false
 Comparing [0 0 1] with [1 1 1] -> Separables: true
 Comparing [0 1 0] with [0 0 0] -> Separables: true
-Comparing [0 1 0] with [0 0 1] -> No separables
-Comparing [0 1 0] with [0 1 0] -> No separables
-Comparing [0 1 0] with [0 1 1] -> No separables
-Comparing [0 1 0] with [1 0 0] -> No separables
-Comparing [0 1 0] with [1 0 1] -> No separables
-Comparing [0 1 0] with [1 1 0] -> No separables
+Comparing [0 1 0] with [0 0 1] -> Separables: false
+Comparing [0 1 0] with [0 1 0] -> Separables: false
+Comparing [0 1 0] with [0 1 1] -> Separables: false
+Comparing [0 1 0] with [1 0 0] -> Separables: false
+Comparing [0 1 0] with [1 0 1] -> Separables: false
+Comparing [0 1 0] with [1 1 0] -> Separables: false
 Comparing [0 1 0] with [1 1 1] -> Separables: true
 Comparing [0 1 1] with [0 0 0] -> Separables: true
-Comparing [0 1 1] with [0 0 1] -> No separables
-Comparing [0 1 1] with [0 1 0] -> No separables
-Comparing [0 1 1] with [0 1 1] -> No separables
-Comparing [0 1 1] with [1 0 0] -> No separables
-Comparing [0 1 1] with [1 0 1] -> No separables
-Comparing [0 1 1] with [1 1 0] -> No separables
+Comparing [0 1 1] with [0 0 1] -> Separables: false
+Comparing [0 1 1] with [0 1 0] -> Separables: false
+Comparing [0 1 1] with [0 1 1] -> Separables: false
+Comparing [0 1 1] with [1 0 0] -> Separables: false
+Comparing [0 1 1] with [1 0 1] -> Separables: false
+Comparing [0 1 1] with [1 1 0] -> Separables: false
 Comparing [0 1 1] with [1 1 1] -> Separables: true
 Comparing [1 0 0] with [0 0 0] -> Separables: true
-Comparing [1 0 0] with [0 0 1] -> No separables
-Comparing [1 0 0] with [0 1 0] -> No separables
-Comparing [1 0 0] with [0 1 1] -> No separables
-Comparing [1 0 0] with [1 0 0] -> No separables
-Comparing [1 0 0] with [1 0 1] -> No separables
-Comparing [1 0 0] with [1 1 0] -> No separables
+Comparing [1 0 0] with [0 0 1] -> Separables: false
+Comparing [1 0 0] with [0 1 0] -> Separables: false
+Comparing [1 0 0] with [0 1 1] -> Separables: false
+Comparing [1 0 0] with [1 0 0] -> Separables: false
+Comparing [1 0 0] with [1 0 1] -> Separables: false
+Comparing [1 0 0] with [1 1 0] -> Separables: false
 Comparing [1 0 0] with [1 1 1] -> Separables: true
 Comparing [1 0 1] with [0 0 0] -> Separables: true
-Comparing [1 0 1] with [0 0 1] -> No separables
-Comparing [1 0 1] with [0 1 0] -> No separables
-Comparing [1 0 1] with [0 1 1] -> No separables
-Comparing [1 0 1] with [1 0 0] -> No separables
-Comparing [1 0 1] with [1 0 1] -> No separables
-Comparing [1 0 1] with [1 1 0] -> No separables
+Comparing [1 0 1] with [0 0 1] -> Separables: false
+Comparing [1 0 1] with [0 1 0] -> Separables: false
+Comparing [1 0 1] with [0 1 1] -> Separables: false
+Comparing [1 0 1] with [1 0 0] -> Separables: false
+Comparing [1 0 1] with [1 0 1] -> Separables: false
+Comparing [1 0 1] with [1 1 0] -> Separables: false
 Comparing [1 0 1] with [1 1 1] -> Separables: true
 Comparing [1 1 0] with [0 0 0] -> Separables: true
-Comparing [1 1 0] with [0 0 1] -> No separables
-Comparing [1 1 0] with [0 1 0] -> No separables
-Comparing [1 1 0] with [0 1 1] -> No separables
-Comparing [1 1 0] with [1 0 0] -> No separables
-Comparing [1 1 0] with [1 0 1] -> No separables
-Comparing [1 1 0] with [1 1 0] -> No separables
+Comparing [1 1 0] with [0 0 1] -> Separables: false
+Comparing [1 1 0] with [0 1 0] -> Separables: false
+Comparing [1 1 0] with [0 1 1] -> Separables: false
+Comparing [1 1 0] with [1 0 0] -> Separables: false
+Comparing [1 1 0] with [1 0 1] -> Separables: false
+Comparing [1 1 0] with [1 1 0] -> Separables: false
 Comparing [1 1 0] with [1 1 1] -> Separables: true
-Comparing [1 1 1] with [0 0 0] -> Separables
+Comparing [1 1 1] with [0 0 0] -> Separables: true
 Comparing [1 1 1] with [0 0 1] -> Separables: true
 Comparing [1 1 1] with [0 1 0] -> Separables: true
 Comparing [1 1 1] with [0 1 1] -> Separables: true
 Comparing [1 1 1] with [1 0 0] -> Separables: true
 Comparing [1 1 1] with [1 0 1] -> Separables: true
 Comparing [1 1 1] with [1 1 0] -> Separables: true
-Comparing [1 1 1] with [1 1 1] -> No separables
-Total desfavorable cases for a code of 8 words:  38
-Total favorable cases for a code of 8 words:  26
+Comparing [1 1 1] with [1 1 1] -> Separables: false
+Total desfavorable cases: 38
+Total favorable cases: 26
 PASS
-ok  	github.com/mifeis/Separable-Codes/test	0.435s
+ok  	github.com/mifeis/Separable-Codes/test	0.640s

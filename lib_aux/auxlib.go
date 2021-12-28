@@ -62,10 +62,10 @@ func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 		_, z1 := first[0]
 		_, z2 := second[0]
 		if (z1 && z2) || (!z1 && !z2) {
-			fmt.Println(" -> No separables")
+			fmt.Println(" -> Separables: false")
 			return false
 		}
-		fmt.Println(" -> Separables")
+		fmt.Println(" -> Separables: true")
 		return true
 	} else {
 		fmt.Println(" -> Separables:", len(first) != len(second))
@@ -86,6 +86,6 @@ func GetDefaultValues() [][3]int {
 			}
 		}
 	}
-	fmt.Println("Array possible binari values:", values)
+	fmt.Println("\nPossible binari values for a group of", GROUP, "elements:", values)
 	return values
 }
