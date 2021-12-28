@@ -12,7 +12,7 @@ const (
 	 * Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 	 */
 
-	CASES = 1
+	CASES = 3
 
 	WORDS = 8
 	GROUP = 3
@@ -26,17 +26,19 @@ type Combi struct {
 	Value [3]int
 }
 
-func RemoveSlice(original []int, g []int) []int {
+//Removes the slice from the original
+func RemoveSlice(original []int, slice []int) []int {
 	var remaining []int
 	remaining = append(remaining, original[:]...)
 
-	for i, elem := range g {
+	for i, elem := range slice {
 		RemoveIndex(remaining, elem-i-1)
 	}
 
 	return remaining[:WORDS-GROUP]
 }
 
+//Removes the index from the slice
 func RemoveIndex(s []int, index int) []int {
 	return append(s[:index], s[index+1:]...)
 }

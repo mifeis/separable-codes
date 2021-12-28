@@ -16,15 +16,14 @@ import (
 func TestFavs(t *testing.T) {
 	var favs, nofavs int
 	c := lib_main.Init()
-	for i := 1; i < CASES; i++ {
+	for i := 1; i < lib_aux.CASES; i++ {
 		totalfavs, totalnofavs := getFavs(c, i)
+		favs = 0
+		nofavs = 0
 		favs = +totalfavs
 		nofavs = +totalnofavs
 		fmt.Println("Total desfavorable cases:", nofavs)
 		fmt.Println("Total favorable cases:", favs)
-		favs = 0
-		nofavs = 0
-
 	}
 
 	//	fmt.Println("Total desfavorable cases:", nofavs)
@@ -36,18 +35,12 @@ func TestFavs(t *testing.T) {
 func getFavs(c []int, cas int) (int, int) {
 	var favs, nofavs int
 	var first, second lib_aux.Combi
-	var arraymap map[lib_aux.Combi][]lib_aux.Combi
 
-	switch cas {
-	case 0:
-		arraymap = combinations.List0(c)
-		cas = 1
-	case 1:
-		arraymap = combinations.List1(c)
-	case 2:
-		arraymap = combinations.List2(c)
+	arraymap := combinations.List(c, cas)
+	//canviar
+	if cas == 0 {
+		cas++
 	}
-
 	fmt.Println("Getting favorable and desfavorable cases for the case", cas)
 	//Set a combination
 	for k, g := range arraymap {

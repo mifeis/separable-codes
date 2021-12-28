@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"testing"
 
@@ -15,13 +14,10 @@ import (
 //Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 
-const (
-	CASES = 3
-)
-
 func TestTeoric(t *testing.T) {
 
 	total := 1
+	all := 1
 	n := lib_aux.WORDS
 	k := lib_aux.GROUP
 
@@ -32,14 +28,15 @@ func TestTeoric(t *testing.T) {
 	 * or IndexToCombination for random access.
 	 */
 	list := combin.Combinations(n, k)
-	log.Println("First group possible combinations:", len(list))
+	fmt.Println("First group possible combinations:", len(list))
 
-	for i := 0; i < CASES; i++ {
+	for i := 0; i < lib_aux.CASES; i++ {
 		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
-		log.Println("CASE:", i, "Combinations:", combinations)
-		total *= len(list) * combinations / 2
-		log.Println("Total:", total)
+		fmt.Println("Type", i+1, "-> Combinations:", combinations)
+		total = len(list) * combinations / 2
+		fmt.Println("Total cases:", total)
+		all *= total
 	}
 
-	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words: ", total)
+	fmt.Println("Total cases (", lib_aux.CASES, "types ) for a code of "+strconv.Itoa(n)+" words: ", all)
 }
