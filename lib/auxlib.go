@@ -1,7 +1,8 @@
-package lib_aux
+package lib
 
 import (
 	"fmt"
+	"log"
 )
 
 const (
@@ -21,8 +22,8 @@ const (
 //Estructura que conté el grup de GROUP elements i un random id
 //per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
 type Combi struct {
-	Group [3]int
-	Value [3]int
+	Rows   [3]int
+	Values [3]int
 }
 
 //Removes the slice from the original
@@ -34,6 +35,7 @@ func RemoveSlice(original []int, slice []int) []int {
 		RemoveIndex(remaining, elem-i-1)
 	}
 
+	//	fmt.Println("Remaining array from", slice, ":", remaining)
 	return remaining[:WORDS-GROUP]
 }
 
@@ -56,22 +58,27 @@ func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 		second[v] = v
 	}
 
-	//Comprobar casos especials en que lengths iguals:
-	//No separables-> (0,0,0) i (0,0,0), (1,1,1) i (1,1,1)
-	//Separables-> (0,0,0) i (1,1,1), (1,1,1) i (0,0,0)
+	var isSep bool
 	if len(first) == len(second) {
+		//Comprobar casos especials en que lengths iguals:
+		//No separables-> (0,0,0) i (0,0,0), (1,1,1) i (1,1,1)
+		//Separables-> (0,0,0) i (1,1,1), (1,1,1) i (0,0,0)
+
 		_, z1 := first[0]
 		_, z2 := second[0]
 		if (z1 && z2) || (!z1 && !z2) {
-			fmt.Println(" -> Separables: false")
-			return false
+		} else {
+			isSep = true
 		}
-		fmt.Println(" -> Separables: true")
-		return true
 	} else {
-		fmt.Println(" -> Separables:", len(first) != len(second))
-		return len(first) != len(second)
+		//Altres casos
+		//No separables-> (0,0,1) i (1,0,0), (0,0,0) i (0,0,0)
+		//Separables-> (0,0,0) i (1,0,0), (1,1,1) i (0,1,0)
+
+		isSep = len(first) != len(second)
 	}
+	fmt.Println(" -> Separables:", isSep)
+	return isSep
 }
 
 //Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
@@ -87,6 +94,6 @@ func GetDefaultValues() [][3]int {
 			}
 		}
 	}
-	fmt.Println("\nPossible binari values for a group of", GROUP, "elements:", values)
+	log.Println("Possible binari values for a group of", GROUP, "elements:", values)
 	return values
 }

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/mifeis/Separable-Codes/lib_aux"
+	"github.com/mifeis/Separable-Codes/lib"
 	"gonum.org/v1/gonum/stat/combin"
 )
 
@@ -18,8 +18,8 @@ func TestTeoric(t *testing.T) {
 
 	total := 1
 	all := 1
-	n := lib_aux.WORDS
-	k := lib_aux.GROUP
+	n := lib.WORDS
+	k := lib.GROUP
 
 	/* Combinations generates all of the combinations of k elements from a set of size n.
 	 * The returned slice has length Binomial(n,k) and each inner slice has length k.
@@ -30,13 +30,13 @@ func TestTeoric(t *testing.T) {
 	list := combin.Combinations(n, k)
 	fmt.Println("First group possible combinations:", len(list))
 
-	for i := 0; i < lib_aux.CASES; i++ {
+	for i := 0; i < lib.CASES; i++ {
 		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
 		fmt.Println("Type", i+1, "-> Combinations:", combinations)
 		total = len(list) * combinations / 2
 		fmt.Println("Total cases:", total)
-		all *= total
-	}
+		all += total
 
-	fmt.Println("Total cases (", lib_aux.CASES, "types ) for a code of "+strconv.Itoa(n)+" words: ", all)
+	}
+	fmt.Println("Total cases (", lib.CASES, "types ) for a code of "+strconv.Itoa(n)+" words: ", all)
 }

@@ -5,6 +5,6 @@ Type 2 -> Combinations: 30
 Total cases: 840
 Type 3 -> Combinations: 15
 Total cases: 420
-Total cases ( 3 types ) for a code of 8 words:  98784000
+Total cases ( 3 types ) for a code of 8 words:  1541
 PASS
-ok  	github.com/mifeis/Separable-Codes/test	0.459s
+ok  	github.com/mifeis/Separable-Codes/test	0.550s
