@@ -21,7 +21,6 @@ const (
 //Estructura que conté el grup de GROUP elements i un random id
 //per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
 type Combi struct {
-	Id    int
 	Group [3]int
 	Value [3]int
 }
