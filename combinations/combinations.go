@@ -34,8 +34,8 @@ func GetGroups(initial []int, g []int, t int) []lib.Combi {
 	}
 
 	switch t {
-	//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
 	case 1:
+		//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
 		for i := 0; i < len(remaining); i++ {
 			slice[0] = remaining[i]
 			for j := i + 1; j < len(remaining); j++ {
@@ -50,14 +50,14 @@ func GetGroups(initial []int, g []int, t int) []lib.Combi {
 			}
 		}
 
-	//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
 	case 2:
-		for l := 0; l < len(g); l++ {
-			slice[0] = g[l]
-			for i := 0; i < len(remaining); i++ {
-				slice[1] = remaining[i]
-				for j := i + 1; j < len(remaining); j++ {
-					slice[2] = remaining[j]
+		//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
+		for i := 0; i < len(g); i++ {
+			slice[0] = g[i]
+			for j := 0; j < len(remaining); j++ {
+				slice[1] = remaining[j]
+				for k := j + 1; k < len(remaining); k++ {
+					slice[2] = remaining[k]
 					c = lib.Combi{
 						Rows: slice,
 					}
@@ -66,14 +66,14 @@ func GetGroups(initial []int, g []int, t int) []lib.Combi {
 			}
 		}
 
-	//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
 	case 3:
-		for l := 0; l < len(g); l++ {
-			slice[0] = g[l]
-			for i := l + 1; i < len(g); i++ {
-				slice[1] = g[i]
-				for j := 0; j < len(remaining); j++ {
-					slice[2] = remaining[j]
+		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
+		for i := 0; i < len(g); i++ {
+			slice[0] = g[i]
+			for j := i + 1; j < len(g); j++ {
+				slice[1] = g[j]
+				for k := 0; k < len(remaining); k++ {
+					slice[2] = remaining[k]
 					c = lib.Combi{
 						Rows: slice,
 					}

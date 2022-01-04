@@ -33,8 +33,8 @@ func Init() []int {
 //Estructura que conté el grup de GROUP elements i un random id
 //per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
 type Combi struct {
-	Rows   [3]int
-	Values [3]int
+	Rows   [GROUP]int
+	Values [GROUP]int
 }
 
 //Removes the slice from the original
@@ -56,7 +56,7 @@ func RemoveIndex(s []int, index int) []int {
 }
 
 //Says if the two arrays are separable or not
-func Separable(group1 [3]int, group2 [3]int) bool {
+func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 
