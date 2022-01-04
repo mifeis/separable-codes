@@ -30,7 +30,7 @@ func TestTeoric(t *testing.T) {
 	list := combin.Combinations(n, k)
 	fmt.Println("First group possible combinations:", len(list))
 
-	for i := 0; i < lib.CASES; i++ {
+	for i := 0; i < lib.REPS; i++ {
 		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
 		fmt.Println("Type", i+1, "-> Combinations:", combinations)
 		total = len(list) * combinations / 2
@@ -38,5 +38,5 @@ func TestTeoric(t *testing.T) {
 		all += total
 
 	}
-	fmt.Println("Total cases (", lib.CASES, "types ) for a code of "+strconv.Itoa(n)+" words: ", all)
+	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(n)+" words: ", all)
 }

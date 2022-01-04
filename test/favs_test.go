@@ -15,7 +15,7 @@ import (
 
 func TestFavs(t *testing.T) {
 	initial := lib.Init()
-	for i := 0; i < lib.CASES; i++ {
+	for i := 0; i < lib.REPS; i++ {
 
 		lib.LogType(i + 1)
 		favs, nofavs := getFavs(initial, i+1)

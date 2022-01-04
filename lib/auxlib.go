@@ -13,11 +13,22 @@ const (
 	 * Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 	 */
 
-	CASES = 3
+	REPS = 3
 
 	WORDS = 8
 	GROUP = 3
 )
+
+//funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
+func Init() []int {
+	var initial []int
+
+	for i := 0; i < WORDS; i++ {
+		initial = append(initial, i+1)
+	}
+	fmt.Println("Initial array:", initial)
+	return initial
+}
 
 //Estructura que conté el grup de GROUP elements i un random id
 //per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
@@ -45,7 +56,7 @@ func RemoveIndex(s []int, index int) []int {
 }
 
 //Says if the two arrays are separable or not
-func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
+func Separable(group1 [3]int, group2 [3]int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 

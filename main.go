@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -14,13 +15,13 @@ func main() {
 	initial := lib.Init()
 	allcases := getAllCases(initial)
 
-	fmt.Println("Total cases (", lib.CASES, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words: ", allcases)
+	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words: ", allcases)
 }
 
 func getAllCases(c []int) int {
 	//	fmt.Println("First group possible combinations:", len(list))
-	all := 1
-	for i := 0; i < lib.CASES; i++ {
+	var all int
+	for i := 0; i < lib.REPS; i++ {
 		//Total pren el valor dels casos disjunts ó no disjunts
 		//per a un array inicial de GROUP elements
 		var total int
@@ -33,6 +34,7 @@ func getAllCases(c []int) int {
 		for g, combs := range arraymap {
 			total += lib.LogCombinations(g, combs)
 		}
+		log.Println(total / 2)
 
 		fmt.Println("Total cases:", total/2)
 		//ó *
