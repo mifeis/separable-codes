@@ -15,7 +15,7 @@ const (
 
 	REPS = 3
 
-	WORDS = 16
+	WORDS = 8
 	GROUP = 3
 )
 

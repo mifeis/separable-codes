@@ -34,44 +34,86 @@ func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 
 	switch t {
 	case 1:
+		//Casos disjunts
 		//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
 		for i := 0; i < len(remaining); i++ {
-			slice[0] = remaining[i]
 			for j := i + 1; j < len(remaining); j++ {
-				slice[1] = remaining[j]
 				for k := j + 1; k < len(remaining); k++ {
-					slice[2] = remaining[k]
-					combins = append(combins, slice)
+					slice = [lib.GROUP]int{remaining[i], remaining[j], remaining[k]}
+					/*
+					 *	If pel cas de GROUP ==4
+					 *	A arrel d'aixo tenir en compte els casos on 2n es menor a k
+					 *	llavors les combinacions s'haurien de tenir en compte (for) per crear-
+					 * 	les igualment (Parlem del tipus 4 a lib/apunts.txt)
+					 */
+
+					if lib.GROUP == 4 {
+						//Tipus {1,2,3,4}|{5,6,7,8}, ...
+						init := 2
+						for l := k + 1; l < len(remaining); l++ {
+							slice[init+1] = remaining[l]
+							combins = append(combins, slice)
+						}
+					} else {
+						combins = append(combins, slice)
+					}
 				}
 			}
 		}
-
 	case 2:
+		//Casos NO disjunts
 		//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
-		for i := 0; i < len(g); i++ {
-			slice[0] = g[i]
-			for j := 0; j < len(remaining); j++ {
-				slice[1] = remaining[j]
-				for k := j + 1; k < len(remaining); k++ {
-					slice[2] = remaining[k]
-					combins = append(combins, slice)
+		var init int
+		for p := 0; p < lib.GROUP; p++ {
+			init = 0
+			for r := init; r < t-1; r++ {
+				slice[r] = g[(r+p)%lib.GROUP]
+				init++
+			}
+			for i := 0; i < len(remaining); i++ {
+				slice[init] = remaining[i]
+				for j := i + 1; j < len(remaining); j++ {
+					slice[init+1] = remaining[j]
+
+					if lib.GROUP == 4 {
+						//Tipus {1,2,3,4}|{1,5,6,7}, {1,2,3,4}|{2,5,6,7}
+						for l := j + 1; l < len(remaining); l++ {
+							slice[init+2] = remaining[l]
+							combins = append(combins, slice)
+						}
+					} else {
+						combins = append(combins, slice)
+					}
 				}
 			}
 		}
 
 	case 3:
+		//Casos NO disjunts
 		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
-		for i := 0; i < len(g); i++ {
-			slice[0] = g[i]
-			for j := i + 1; j < len(g); j++ {
-				slice[1] = g[j]
-				for k := 0; k < len(remaining); k++ {
-					slice[2] = remaining[k]
+		var init int
+		for p := 0; p < 2*(lib.GROUP/2)+lib.GROUP%2; p++ { //GROUP=3->3; GROUP=4->6; GROUP=5->10
+			init = 0
+			for r := init; r < t-1; r++ {
+				slice[r] = g[(r+p)%lib.GROUP]
+				init++
+			}
+			for j := 0; j < len(remaining); j++ {
+				slice[init] = remaining[j]
+				if lib.GROUP == 4 {
+					//Tipus {1,2,3,4}|{1,2,5,6}, {1,2,3,4}|{1,4,5,6}, {1,2,3,4}|{2,3,6,7}
+					for l := j + 1; l < len(remaining); l++ {
+						//canviar el 1/index per GROUP(t)
+						slice[init+1] = remaining[l]
+						combins = append(combins, slice)
+					}
+				} else {
 					combins = append(combins, slice)
 				}
+
 			}
 		}
-
 	}
+
 	return combins
 }
