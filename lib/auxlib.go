@@ -15,7 +15,7 @@ const (
 
 	REPS = 3
 
-	WORDS = 8
+	WORDS = 16
 	GROUP = 3
 )
 
@@ -56,7 +56,7 @@ func RemoveIndex(s []int, index int) []int {
 }
 
 //Says if the two arrays are separable or not
-func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
+func Separable(group1 [3]int, group2 [3]int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 

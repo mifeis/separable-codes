@@ -8,11 +8,11 @@ func LogType(tipus int) {
 	fmt.Println("--------------------------------------------------------------------------------")
 }
 
-func LogCombinations(g Combi, combs []Combi) int {
+func LogCombinations(g []int, combs [][GROUP]int) int {
 	var total int
 	fmt.Println()
 	for _, c := range combs {
-		fmt.Println("\t\t", g.Rows[:], "|", c.Rows)
+		fmt.Println("\t\t", g, "|", c)
 		total++
 	}
 	return total

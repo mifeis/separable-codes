@@ -15,7 +15,7 @@ func main() {
 	initial := lib.Init()
 	allcases := getAllCases(initial)
 
-	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words: ", allcases)
+	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words:", allcases)
 }
 
 func getAllCases(c []int) int {
@@ -32,7 +32,7 @@ func getAllCases(c []int) int {
 
 		fmt.Println("Combinations:")
 		for g, combs := range arraymap {
-			total += lib.LogCombinations(g, combs)
+			total += lib.LogCombinations(g[:], combs)
 		}
 		log.Println(total / 2)
 

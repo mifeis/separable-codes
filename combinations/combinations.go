@@ -5,15 +5,15 @@ import (
 )
 
 //Funció que retorna els elements disjunts en grups de GROUP elements de l'array inicial
-func List(initial []int, t int) map[lib.Combi]([]lib.Combi) {
-	var combins []lib.Combi
-	arraymap := make(map[lib.Combi][]lib.Combi)
+func List(initial []int, t int) map[[lib.GROUP]int][][lib.GROUP]int {
+	var combins [][lib.GROUP]int
+	arraymap := make(map[[lib.GROUP]int][][lib.GROUP]int)
 
 	//First combinations of GROUP elements
-	groups := GetGroups(initial, nil, 1)
+	groups := GetGroups(initial, [lib.GROUP]int{}, 1)
 	for _, g := range groups {
-		var list []lib.Combi
-		combins = GetGroups(initial, g.Rows[:], t)
+		var list [][lib.GROUP]int
+		combins = GetGroups(initial, g, t)
 		list = append(list, combins...)
 		arraymap[g] = list
 	}
@@ -21,14 +21,13 @@ func List(initial []int, t int) map[lib.Combi]([]lib.Combi) {
 }
 
 //treure els tipus automaticaments
-func GetGroups(initial []int, g []int, t int) []lib.Combi {
-	var c lib.Combi
-	var combins []lib.Combi
+func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
+	var combins [][lib.GROUP]int
 	var remaining []int
 	slice := [lib.GROUP]int{}
 
-	if g != nil {
-		remaining = lib.RemoveSlice(initial, g) //Remaining array
+	if g != [lib.GROUP]int{} {
+		remaining = lib.RemoveSlice(initial, g[:]) //Remaining array
 	} else {
 		remaining = initial
 	}
@@ -42,10 +41,7 @@ func GetGroups(initial []int, g []int, t int) []lib.Combi {
 				slice[1] = remaining[j]
 				for k := j + 1; k < len(remaining); k++ {
 					slice[2] = remaining[k]
-					c = lib.Combi{
-						Rows: slice,
-					}
-					combins = append(combins, c)
+					combins = append(combins, slice)
 				}
 			}
 		}
@@ -58,10 +54,7 @@ func GetGroups(initial []int, g []int, t int) []lib.Combi {
 				slice[1] = remaining[j]
 				for k := j + 1; k < len(remaining); k++ {
 					slice[2] = remaining[k]
-					c = lib.Combi{
-						Rows: slice,
-					}
-					combins = append(combins, c)
+					combins = append(combins, slice)
 				}
 			}
 		}
@@ -74,10 +67,7 @@ func GetGroups(initial []int, g []int, t int) []lib.Combi {
 				slice[1] = g[j]
 				for k := 0; k < len(remaining); k++ {
 					slice[2] = remaining[k]
-					c = lib.Combi{
-						Rows: slice,
-					}
-					combins = append(combins, c)
+					combins = append(combins, slice)
 				}
 			}
 		}

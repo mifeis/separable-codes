@@ -36,8 +36,8 @@ func getFavs(initial []int, tipus int) (int, int) {
 	log.Println("...Getting favorable and desfavorable cases for the type", tipus)
 	//Set a combination
 	for g, combins := range arraymap {
-		first.Rows = g.Rows
-		second.Rows = combins[0].Rows
+		first.Rows = g           //rows
+		second.Rows = combins[0] //rows
 		break
 	}
 	log.Println("->", first.Rows, "|", second.Rows)
