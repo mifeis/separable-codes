@@ -16,7 +16,7 @@ const (
 	REPS = 3
 
 	WORDS = 8
-	GROUP = 3
+	GROUP = 4
 )
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
@@ -56,7 +56,7 @@ func RemoveIndex(s []int, index int) []int {
 }
 
 //Says if the two arrays are separable or not
-func Separable(group1 [3]int, group2 [3]int) bool {
+func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 
@@ -93,7 +93,7 @@ func Separable(group1 [3]int, group2 [3]int) bool {
 }
 
 //Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
-func GetDefaultValues() [][3]int {
+func GetDefaultValues() [][GROUP]int {
 	var slice [GROUP]int
 	var values [][GROUP]int
 

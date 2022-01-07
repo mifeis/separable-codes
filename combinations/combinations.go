@@ -2,6 +2,7 @@ package combinations
 
 import (
 	"github.com/mifeis/Separable-Codes/lib"
+	"gonum.org/v1/gonum/stat/combin"
 )
 
 //Funció que retorna els elements disjunts en grups de GROUP elements de l'array inicial
@@ -92,10 +93,13 @@ func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 		//Casos NO disjunts
 		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
 		var init int
-		for p := 0; p < 2*(lib.GROUP/2)+lib.GROUP%2; p++ { //GROUP=3->3; GROUP=4->6; GROUP=5->10
+		//GROUP=3->3; GROUP=4->6; GROUP=5->10;
+		for p := 0; p < len(combin.Combinations(lib.GROUP, t-1)); p++ {
 			init = 0
 			for r := init; r < t-1; r++ {
+				//no va
 				slice[r] = g[(r+p)%lib.GROUP]
+				//				slice[r] = g[(r+p*init)%lib.GROUP]
 				init++
 			}
 			for j := 0; j < len(remaining); j++ {
