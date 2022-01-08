@@ -2,7 +2,6 @@ package lib
 
 import (
 	"fmt"
-	"log"
 )
 
 const (
@@ -106,10 +105,33 @@ func GetDefaultValues() [][GROUP]int {
 		for j := 0; j < 2; j++ {
 			for k := 0; k < 2; k++ {
 				slice = [GROUP]int{i % 2, j % 2, k % 2}
-				values = append(values, slice)
+				if GROUP == 4 {
+					for l := 0; l < 2; l++ {
+						slice[GROUP-1] = l % 2
+						values = append(values, slice)
+					}
+				} else {
+					values = append(values, slice)
+				}
 			}
 		}
 	}
-	log.Println("Possible binari values for a group of", GROUP, "elements:", values)
+	fmt.Println("Possible binari values for a group of", GROUP, "elements:", values)
 	return values
+}
+
+//Function assign values from first to second if the columns are the same
+//If not assignes the number 2 to the leaving columnes
+func SetValues(first Combi, second *Combi) {
+	second.Values = [GROUP]int{2, 2, 2}
+	if GROUP == 4 {
+		second.Values[GROUP-1] = 2
+	}
+	for m, v1 := range first.Rows {
+		for n, v2 := range second.Rows {
+			if v1 == v2 {
+				second.Values[m] = first.Values[n]
+			}
+		}
+	}
 }

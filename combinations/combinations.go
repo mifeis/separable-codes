@@ -65,7 +65,7 @@ func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 		//Casos NO disjunts
 		//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
 		in := combin.Combinations(lib.GROUP, t-1)
-		for p := 0; p < lib.GROUP; p++ {
+		for p := 0; p < len(in); p++ {
 			for r := 0; r < t-1; r++ {
 				slice[r] = g[in[p][r]]
 			}
@@ -94,7 +94,7 @@ func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
 		in := combin.Combinations(lib.GROUP, t-1)
 		//GROUP=3->3; GROUP=4->6; GROUP=5->10;
-		for p := 0; p < len(combin.Combinations(lib.GROUP, t-1)); p++ {
+		for p := 0; p < len(in); p++ {
 			for r := 0; r < t-1; r++ {
 				slice[r] = g[in[p][r]]
 			}

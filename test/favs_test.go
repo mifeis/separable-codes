@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"testing"
 
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -15,8 +14,7 @@ import (
 
 func TestFavs(t *testing.T) {
 	initial := lib.Init()
-	for i := 0; i < lib.REPS; i++ {
-
+	for i := 0; i < lib.GROUP; i++ {
 		lib.LogType(i + 1)
 		favs, nofavs := getFavs(initial, i+1)
 		fmt.Println("Total favorable cases:", favs)
@@ -33,14 +31,14 @@ func getFavs(initial []int, tipus int) (int, int) {
 	var first, second lib.Combi
 
 	arraymap := combinations.List(initial, tipus)
-	log.Println("...Getting favorable and desfavorable cases for the type", tipus)
+	fmt.Print("...Getting favorable and desfavorable cases for the type ", tipus)
 	//Set a combination
 	for g, combins := range arraymap {
 		first.Rows = g           //rows
 		second.Rows = combins[0] //rows
 		break
 	}
-	log.Println("->", first.Rows, "|", second.Rows)
+	fmt.Println("->", first.Rows, "|", second.Rows)
 
 	defaultvalues := lib.GetDefaultValues()
 
@@ -53,7 +51,7 @@ func getFavs(initial []int, tipus int) (int, int) {
 		//contabilitzar d'alguna manera els casos repetits-> recorre l'array fins a GROUP-elements cops?
 		for j := 0; j < len(defaultvalues)/(tipus); j++ {
 			//Set the repe elements of group
-			setValues(first, &second)
+			lib.SetValues(first, &second)
 			for l, v := range second.Values {
 				//Set the leaving values
 				if v == 2 {
@@ -69,17 +67,4 @@ func getFavs(initial []int, tipus int) (int, int) {
 	}
 
 	return favs, nofavs
-}
-
-//Function assign values from first to second if the columns are the same
-//If not assignes the number 2 to the leaving columnes
-func setValues(first lib.Combi, second *lib.Combi) {
-	second.Values = [lib.GROUP]int{2, 2, 2}
-	for m, v1 := range first.Rows {
-		for n, v2 := range second.Rows {
-			if v1 == v2 {
-				second.Values[m] = first.Values[n]
-			}
-		}
-	}
 }
