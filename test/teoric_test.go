@@ -30,13 +30,13 @@ func TestTeoric(t *testing.T) {
 	list := combin.Combinations(n, k)
 	fmt.Println("First group possible combinations:", len(list))
 
-	for i := 2; i < lib.REPS; i++ {
+	for i := 0; i < lib.GROUP; i++ {
 		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
 		fmt.Println("Type", i+1, "-> Combinations:", combinations)
 		total = len(list) * combinations / 2
 		fmt.Println("Total cases:", total)
 		all += total
-
 	}
+	//falta sumar els incomplerts
 	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", all)
 }

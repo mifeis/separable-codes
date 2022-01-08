@@ -1,0 +1,12 @@
+First group possible combinations: 70
+Type 1 -> Combinations: 1
+Total cases: 35
+Type 2 -> Combinations: 16
+Total cases: 560
+Type 3 -> Combinations: 36
+Total cases: 1260
+Type 4 -> Combinations: 16
+Total cases: 560
+Total cases ( 7 types ) for a code of 8 words in elements of 4 : 2415
+PASS
+ok  	github.com/mifeis/Separable-Codes/test	0.190s

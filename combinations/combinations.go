@@ -25,7 +25,7 @@ func List(initial []int, t int) map[[lib.GROUP]int][][lib.GROUP]int {
 func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 	var combins [][lib.GROUP]int
 	var remaining []int
-	slice := [lib.GROUP]int{}
+	var slice [lib.GROUP]int
 
 	if g != [lib.GROUP]int{} {
 		remaining = lib.RemoveSlice(initial, g[:]) //Remaining array
@@ -64,22 +64,20 @@ func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 	case 2:
 		//Casos NO disjunts
 		//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
-		var init int
+		in := combin.Combinations(lib.GROUP, t-1)
 		for p := 0; p < lib.GROUP; p++ {
-			init = 0
-			for r := init; r < t-1; r++ {
-				slice[r] = g[(r+p)%lib.GROUP]
-				init++
+			for r := 0; r < t-1; r++ {
+				slice[r] = g[in[p][r]]
 			}
 			for i := 0; i < len(remaining); i++ {
-				slice[init] = remaining[i]
+				slice[t-1] = remaining[i]
 				for j := i + 1; j < len(remaining); j++ {
-					slice[init+1] = remaining[j]
+					slice[t-1+1] = remaining[j]
 
 					if lib.GROUP == 4 {
 						//Tipus {1,2,3,4}|{1,5,6,7}, {1,2,3,4}|{2,5,6,7}
 						for l := j + 1; l < len(remaining); l++ {
-							slice[init+2] = remaining[l]
+							slice[t-1+2] = remaining[l]
 							combins = append(combins, slice)
 						}
 					} else {
@@ -89,26 +87,24 @@ func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 			}
 		}
 
+		//probaR FUNCION QUE DEVUELVA INDICES CON TRUE/FALSE COMO PARAM PARA SUBIR EL INDICE O NO (DENTRO DEL FOR)
+
 	case 3:
 		//Casos NO disjunts
 		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
-		var init int
+		in := combin.Combinations(lib.GROUP, t-1)
 		//GROUP=3->3; GROUP=4->6; GROUP=5->10;
 		for p := 0; p < len(combin.Combinations(lib.GROUP, t-1)); p++ {
-			init = 0
-			for r := init; r < t-1; r++ {
-				//no va
-				slice[r] = g[(r+p)%lib.GROUP]
-				//				slice[r] = g[(r+p*init)%lib.GROUP]
-				init++
+			for r := 0; r < t-1; r++ {
+				slice[r] = g[in[p][r]]
 			}
 			for j := 0; j < len(remaining); j++ {
-				slice[init] = remaining[j]
+				slice[t-1] = remaining[j]
 				if lib.GROUP == 4 {
 					//Tipus {1,2,3,4}|{1,2,5,6}, {1,2,3,4}|{1,4,5,6}, {1,2,3,4}|{2,3,6,7}
 					for l := j + 1; l < len(remaining); l++ {
 						//canviar el 1/index per GROUP(t)
-						slice[init+1] = remaining[l]
+						slice[t-1+1] = remaining[l]
 						combins = append(combins, slice)
 					}
 				} else {

@@ -1,8 +1,29 @@
 Notes
 ------------------------------------------------------------------------
 
-Per als casos no disjunts:
-{1,2,3}|{1,4,5} == {2,6,7} {2,1,3}
+CASOS TOTALS lib.GROUP=3
+    - disjunts:
+        Tipus 1: {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
+    - no disjunts:
+        Tipus 2: {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
+        Tipus 3: {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
+    - inclomplerts:
+        Tipus 4: {1,2,3}|{4},
+        Tipus 5: {1,2,3}|{4,5}
+    total: lib.GROUP+lib.GROUP-1 = 2*lib.GROUP-1 = 5
+
+CASOS TOTALS lib.GROUP=4
+    - disjunts:
+        Tipus {1,2,3,4}|{5,6,7,8}, ...
+    - no disjunts:
+        Tipus {1,2,3,4}|{1,5,6,7}, {1,2,3,4}|{2,5,6,7}, ...
+        Tipus {1,2,3,4}|{1,2,5,6}, {1,2,3,4}|{1,4,5,6}, {1,2,3,4}|{2,3,6,7}, ...
+        Tipus {1,2,3,4}|{1,2,3,6}, {1,2,3,4}|{1,3,4,6}, {1,2,3,4}|{2,3,4,8}, ...
+   - inclomplerts:
+        Tipus {1,2,3,4}|{5},
+        Tipus {1,2,3,4}|{5,6}
+        Tipus {1,2,3,4}|{5,6,7}
+    total: lib.GROUP+lib.GROUP-1 = 2*lib.GROUP-1 = 7
 
 ...
 Tipus 4: Un conjunt te 3 elements i laltre 2

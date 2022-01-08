@@ -21,14 +21,14 @@ func main() {
 func getAllCases(c []int) int {
 	//	fmt.Println("First group possible combinations:", len(list))
 	var all int
-	for i := 2; i < lib.REPS; i++ {
+	for i := 1; i < lib.REPS; i++ {
 		//Total pren el valor dels casos disjunts ó no disjunts
 		//per a un array inicial de GROUP elements
 		var total int
 
-		lib.LogType(i + 1)
+		lib.LogType(i)
 
-		arraymap := combinations.List(c, i+1)
+		arraymap := combinations.List(c, i)
 
 		fmt.Println("Combinations:")
 		for g, combs := range arraymap {
