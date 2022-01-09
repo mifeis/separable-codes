@@ -12,7 +12,7 @@ import (
 //Main retorna el numero total de totes les combinacions possibles en grup de GROUP elements
 //d'entre un array c de WORDS
 func main() {
-	initial := lib.Init()
+	initial := lib.Init(0, lib.WORDS)
 	allcases := getAllCases(initial)
 
 	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words:", allcases)

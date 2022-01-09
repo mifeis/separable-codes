@@ -17,20 +17,20 @@ const (
 	 * Tipus {1,2,3}|{4,5}
 	 */
 
-	REPS = 2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
+	REPS = 4 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
 
 	WORDS = 8
 	GROUP = 4
 )
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
-func Init() []int {
+func Init(init int, len int) []int {
 	var initial []int
 
-	for i := 0; i < WORDS; i++ {
+	for i := init; i < len; i++ {
 		initial = append(initial, i+1)
 	}
-	fmt.Println("Initial array:", initial)
+	//	fmt.Println("Initial array:", initial)
 	return initial
 }
 
@@ -96,6 +96,7 @@ func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 	return isSep
 }
 
+//canviar amb combin.Combinations
 //Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
 func GetDefaultValues() [][GROUP]int {
 	var slice [GROUP]int

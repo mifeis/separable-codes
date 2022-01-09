@@ -13,7 +13,7 @@ import (
 //desFav: {0,0,0}|{0,0,0}, {0,0,1}|{1,0,1}, ...
 
 func TestFavs(t *testing.T) {
-	initial := lib.Init()
+	initial := lib.Init(0, lib.WORDS)
 	for i := 0; i < lib.GROUP; i++ {
 		lib.LogType(i + 1)
 		favs, nofavs := getFavs(initial, i+1)

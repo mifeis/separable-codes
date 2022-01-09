@@ -14,106 +14,32 @@ func List(initial []int, t int) map[[lib.GROUP]int][][lib.GROUP]int {
 	groups := GetGroups(initial, [lib.GROUP]int{}, 1)
 	for _, g := range groups {
 		var list [][lib.GROUP]int
-		combins = GetGroups(initial, g, t)
+		combins = GetGroups(lib.RemoveSlice(initial, g[:]), g, t)
 		list = append(list, combins...)
 		arraymap[g] = list
 	}
 	return arraymap
 }
 
-//treure els tipus automaticaments
-func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
+func GetGroups(remaining []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
 	var combins [][lib.GROUP]int
-	var remaining []int
 	var slice [lib.GROUP]int
-
-	if g != [lib.GROUP]int{} {
-		remaining = lib.RemoveSlice(initial, g[:]) //Remaining array
-	} else {
-		remaining = initial
-	}
-
-	switch t {
-	case 1:
-		//Casos disjunts
-		//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
-		for i := 0; i < len(remaining); i++ {
-			for j := i + 1; j < len(remaining); j++ {
-				for k := j + 1; k < len(remaining); k++ {
-					slice = [lib.GROUP]int{remaining[i], remaining[j], remaining[k]}
-					/*
-					 *	If pel cas de GROUP ==4
-					 *	A arrel d'aixo tenir en compte els casos on 2n es menor a k
-					 *	llavors les combinacions s'haurien de tenir en compte (for) per crear-
-					 * 	les igualment (Parlem del tipus 4 a lib/apunts.txt)
-					 */
-
-					if lib.GROUP == 4 {
-						//Tipus {1,2,3,4}|{5,6,7,8}, ...
-						init := 2
-						for l := k + 1; l < len(remaining); l++ {
-							slice[init+1] = remaining[l]
-							combins = append(combins, slice)
-						}
-					} else {
-						combins = append(combins, slice)
-					}
-				}
-			}
+	in := combin.Combinations(lib.GROUP, t-1)
+	for p := 0; p < len(in); p++ {
+		var init int
+		//valors no disjunts
+		for r := 0; r < t-1; r++ {
+			slice[r] = g[in[p][r]]
+			init++
 		}
-	case 2:
-		//Casos NO disjunts
-		//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
-		in := combin.Combinations(lib.GROUP, t-1)
-		for p := 0; p < len(in); p++ {
-			for r := 0; r < t-1; r++ {
-				slice[r] = g[in[p][r]]
+		//valors disjunts
+		indexes := combin.Combinations(len(remaining), lib.GROUP-(t-1))
+		for _, index := range indexes { //{0,1,2},{0,1,3}...
+			for i, v := range index {
+				slice[init+i] = remaining[v]
 			}
-			for i := 0; i < len(remaining); i++ {
-				slice[t-1] = remaining[i]
-				for j := i + 1; j < len(remaining); j++ {
-					slice[t-1+1] = remaining[j]
-
-					if lib.GROUP == 4 {
-						//Tipus {1,2,3,4}|{1,5,6,7}, {1,2,3,4}|{2,5,6,7}
-						for l := j + 1; l < len(remaining); l++ {
-							slice[t-1+2] = remaining[l]
-							combins = append(combins, slice)
-						}
-					} else {
-						combins = append(combins, slice)
-					}
-				}
-			}
-		}
-
-		//probaR FUNCION QUE DEVUELVA INDICES CON TRUE/FALSE COMO PARAM PARA SUBIR EL INDICE O NO (DENTRO DEL FOR)
-
-	case 3:
-		//Casos NO disjunts
-		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
-		in := combin.Combinations(lib.GROUP, t-1)
-		//GROUP=3->3; GROUP=4->6; GROUP=5->10;
-		for p := 0; p < len(in); p++ {
-			for r := 0; r < t-1; r++ {
-				slice[r] = g[in[p][r]]
-			}
-			for j := 0; j < len(remaining); j++ {
-				slice[t-1] = remaining[j]
-				if lib.GROUP == 4 {
-					//Tipus {1,2,3,4}|{1,2,5,6}, {1,2,3,4}|{1,4,5,6}, {1,2,3,4}|{2,3,6,7}
-					for l := j + 1; l < len(remaining); l++ {
-						//canviar el 1/index per GROUP(t)
-						slice[t-1+1] = remaining[l]
-						combins = append(combins, slice)
-					}
-				} else {
-					combins = append(combins, slice)
-				}
-
-			}
+			combins = append(combins, slice)
 		}
 	}
-
 	return combins
 }
