@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"math"
 )
 
 const (
@@ -17,10 +18,10 @@ const (
 	 * Tipus {1,2,3}|{4,5}
 	 */
 
-	REPS = 4 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
+	REPS = 2 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
 
 	WORDS = 8
-	GROUP = 4
+	GROUP = 3
 )
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
@@ -102,20 +103,14 @@ func GetDefaultValues() [][GROUP]int {
 	var slice [GROUP]int
 	var values [][GROUP]int
 
-	for i := 0; i < 2; i++ {
-		for j := 0; j < 2; j++ {
-			for k := 0; k < 2; k++ {
-				slice = [GROUP]int{i % 2, j % 2, k % 2}
-				if GROUP == 4 {
-					for l := 0; l < 2; l++ {
-						slice[GROUP-1] = l % 2
-						values = append(values, slice)
-					}
-				} else {
-					values = append(values, slice)
-				}
-			}
+	total := int(math.Exp2(GROUP))
+	for t := 0; t < total; t++ {
+
+		for i := range slice {
+			ijk := t / (total / (2 * (i + 1)))
+			slice[i] = ijk % 2
 		}
+		values = append(values, slice)
 	}
 	fmt.Println("Possible binari values for a group of", GROUP, "elements:", values)
 	return values
