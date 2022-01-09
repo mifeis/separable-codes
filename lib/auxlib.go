@@ -20,8 +20,8 @@ const (
 
 	REPS = 2 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
 
-	WORDS = 8
-	GROUP = 3
+	WORDS = 10
+	GROUP = 5
 )
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
@@ -103,11 +103,10 @@ func GetDefaultValues() [][GROUP]int {
 	var slice [GROUP]int
 	var values [][GROUP]int
 
-	total := int(math.Exp2(GROUP))
-	for t := 0; t < total; t++ {
-
+	len := int(math.Exp2(GROUP))
+	for t := 0; t < len; t++ {
 		for i := range slice {
-			ijk := t / (total / (2 * (i + 1)))
+			ijk := t / (len / int(math.Exp2(float64(i+1))))
 			slice[i] = ijk % 2
 		}
 		values = append(values, slice)
