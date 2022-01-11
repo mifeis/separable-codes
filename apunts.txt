@@ -9,8 +9,8 @@ CASOS TOTALS lib.GROUP=3
         Tipus 2: {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
         Tipus 3: {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
     - inclomplerts:
-        Tipus 4: {1,2,3}|{4},
-        Tipus 5: {1,2,3}|{4,5}
+        Tipus 5: {1,2,3}|{4},
+        Tipus 4: {1,2,3}|{4,5}
     total: lib.GROUP+lib.GROUP-1 = 2*lib.GROUP-1 = 5
 
 CASOS TOTALS lib.GROUP=4

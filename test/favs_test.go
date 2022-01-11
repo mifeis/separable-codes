@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -13,6 +14,9 @@ import (
 //desFav: {0,0,0}|{0,0,0}, {0,0,1}|{1,0,1}, ...
 
 func TestFavs(t *testing.T) {
+	if lib.WORDS <= lib.GROUP {
+		log.Fatal("Can't combine elements because num of words is smaller than group elements")
+	}
 	initial := lib.Init(0, lib.WORDS)
 	for i := 1; i < lib.REPS; i++ {
 		lib.LogType(i)

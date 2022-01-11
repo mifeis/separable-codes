@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"testing"
 
@@ -15,7 +16,10 @@ import (
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 
 func TestTeoric(t *testing.T) {
-
+	//comprobar
+	if lib.WORDS < 2*lib.GROUP {
+		log.Fatal("Can't combine elements because num of words is smaller than group elements")
+	}
 	total := 1
 	all := 0
 	n := lib.WORDS

@@ -20,8 +20,8 @@ const (
 
 	REPS = 2 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
 
-	WORDS = 10
-	GROUP = 5
+	WORDS = 8
+	GROUP = 3
 )
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}

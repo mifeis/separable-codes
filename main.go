@@ -12,6 +12,9 @@ import (
 //Main retorna el numero total de totes les combinacions possibles en grup de GROUP elements
 //d'entre un array c de WORDS
 func main() {
+	if lib.WORDS <= lib.GROUP {
+		log.Fatal("Can't combine elements because num of words is smaller than group elements")
+	}
 	initial := lib.Init(0, lib.WORDS)
 	allcases := getAllCases(initial)
 
