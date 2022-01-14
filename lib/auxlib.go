@@ -18,11 +18,19 @@ const (
 	 * Tipus {1,2,3}|{4,5}
 	 */
 
-	REPS = 2 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts:  lib.GROUP+lib.GROUP-1
+	REPS = 2 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts (lib.GROUP+lib.GROUP-1)
+	//- when (WORDS<2GROUP)
 
-	WORDS = 8
+	WORDS = 6
 	GROUP = 3
 )
+
+//Estructura que conté el primer element d'un tamany desde GROUP elements fins a 1
+//i un segon array que consta de totes les combinacions possibles per aquest primer grup
+type Map struct {
+	First   []int
+	Seconds [][]int
+}
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
 func Init(init int, len int) []int {
@@ -33,13 +41,6 @@ func Init(init int, len int) []int {
 	}
 	//	fmt.Println("Initial array:", initial)
 	return initial
-}
-
-//Estructura que conté el grup de GROUP elements i un random id
-//per saber de quina combinació es tracta i fer mes entendible l'arxiu resultant
-type Combi struct {
-	Rows   [GROUP]int
-	Values [GROUP]int
 }
 
 //Removes the slice from the original
@@ -60,8 +61,50 @@ func RemoveIndex(s []int, index int) []int {
 	return append(s[:index], s[index+1:]...)
 }
 
+//Estructura que defineix valors (0/1) per a un grup d'elements
+type Code struct {
+	Row    []int
+	Values []int
+}
+
+//Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
+func GetDefaultValues() [][]int {
+	var slice []int
+	var values [][]int
+	//s'haura de passar len per argument depenent del GROUP del moment (3,2,1...)
+	len := int(math.Exp2(GROUP))
+	for t := 0; t < len; t++ {
+		for i := range slice {
+			ijk := t / (len / int(math.Exp2(float64(i+1))))
+			slice[i] = ijk % 2
+		}
+		values = append(values, slice)
+	}
+	fmt.Println("Possible binari values for a group of", GROUP, "elements:", values)
+	return values
+}
+
+//Function assign values from first to second if the columns are the same
+//If not assignes the number 2 to the leaving columnes
+func SetValues(first Code, second *Code) {
+	//comprobar
+	for i := 0; i < GROUP; i++ {
+		second.Values[i] = 2
+	}
+	//	if GROUP == 4 {
+	//		second.Value[GROUP-1] = 2
+	//	}
+	for m, v1 := range first.Row {
+		for n, v2 := range second.Row {
+			if v1 == v2 {
+				second.Values[m] = first.Values[n]
+			}
+		}
+	}
+}
+
 //Says if the two arrays are separable or not
-func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
+func Separable(group1 []int, group2 []int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 
@@ -95,38 +138,4 @@ func Separable(group1 [GROUP]int, group2 [GROUP]int) bool {
 	}
 	fmt.Println(" -> Separables:", isSep)
 	return isSep
-}
-
-//canviar amb combin.Combinations
-//Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
-func GetDefaultValues() [][GROUP]int {
-	var slice [GROUP]int
-	var values [][GROUP]int
-
-	len := int(math.Exp2(GROUP))
-	for t := 0; t < len; t++ {
-		for i := range slice {
-			ijk := t / (len / int(math.Exp2(float64(i+1))))
-			slice[i] = ijk % 2
-		}
-		values = append(values, slice)
-	}
-	fmt.Println("Possible binari values for a group of", GROUP, "elements:", values)
-	return values
-}
-
-//Function assign values from first to second if the columns are the same
-//If not assignes the number 2 to the leaving columnes
-func SetValues(first Combi, second *Combi) {
-	second.Values = [GROUP]int{2, 2, 2}
-	if GROUP == 4 {
-		second.Values[GROUP-1] = 2
-	}
-	for m, v1 := range first.Rows {
-		for n, v2 := range second.Rows {
-			if v1 == v2 {
-				second.Values[m] = first.Values[n]
-			}
-		}
-	}
 }
