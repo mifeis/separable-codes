@@ -12,12 +12,16 @@ import (
 //Main retorna el numero total de totes les combinacions possibles en grup de GROUP elements
 //d'entre un array c de WORDS
 func main() {
+	if lib.WORDS < 2*lib.GROUP {
+		log.Fatal("num of words must be smaller than 2 * group elements")
+	}
 	initial := lib.Init(0, lib.WORDS)
 	all := getAllCombinations(initial)
 
 	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words:", all)
 }
 
+//Canviar
 func getAllCombinations(c []int) int {
 	//	fmt.Println("First group possible combinations:", len(list))
 	var all int

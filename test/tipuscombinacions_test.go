@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
 func TestTipus(t *testing.T) {
+	if lib.WORDS < 2*lib.GROUP {
+		log.Fatal("num of words must be smaller than 2 * group elements")
+	}
+
 	var tipusdisjunts, tipusnodisjunts int
 	for i := lib.GROUP; i > 0; i-- {
 		for j := i; j > 0; j-- {

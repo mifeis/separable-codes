@@ -14,8 +14,8 @@ import (
 //desFav: {0,0,0}|{0,0,0}, {0,0,1}|{1,0,1}, ...
 
 func TestFavs(t *testing.T) {
-	if lib.WORDS <= lib.GROUP {
-		log.Fatal("Can't combine elements because num of words is smaller than group elements")
+	if lib.WORDS < 2*lib.GROUP {
+		log.Fatal("num of words must be smaller than 2 * group elements")
 	}
 	initial := lib.Init(0, lib.WORDS)
 	for i := 1; i < lib.REPS; i++ {
