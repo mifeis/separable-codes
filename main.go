@@ -12,10 +12,6 @@ import (
 //Main retorna el numero total de totes les combinacions possibles en grup de GROUP elements
 //d'entre un array c de WORDS
 func main() {
-	log.Println("STARTS")
-	if lib.WORDS <= lib.GROUP {
-		log.Fatal("Can't combine elements because num of words is smaller than group elements")
-	}
 	initial := lib.Init(0, lib.WORDS)
 	all := getAllCombinations(initial)
 
@@ -37,9 +33,8 @@ func getAllCombinations(c []int) int {
 		for _, m := range arraymap {
 			total += lib.LogCombinations(m)
 		}
-		log.Println(total / 2)
-
 		fmt.Println("Total cases:", total/2)
+		log.Println(total / 2)
 
 		all += total / 2
 	}

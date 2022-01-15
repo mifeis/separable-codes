@@ -1,8 +1,6 @@
 package combinations
 
 import (
-	"log"
-
 	"github.com/mifeis/Separable-Codes/lib"
 	"gonum.org/v1/gonum/stat/combin"
 )
@@ -31,29 +29,28 @@ func List(initial []int, t int) []lib.Map {
 
 //comptar els casos incomplerts i els complerts (done)
 func GetGroups(remaining []int, g []int, t int) map[int][]int {
+	var key int
 	combins := make(map[int][]int, 1000)
 	in := combin.Combinations(lib.GROUP, t-1)
 	for p := 0; p < len(in); p++ {
-		var slice [lib.GROUP]int
-		var init int
+		var slice1 []int
 		//valors no disjunts
 		for r := 0; r < t-1; r++ {
-			slice[r] = g[in[p][r]]
-			init++
+			slice1 = append(slice1, g[in[p][r]])
 		}
 		//valors disjunts
 		//Casos complerts:
 		indexes := combin.Combinations(len(remaining), lib.GROUP-(t-1))
-		log.Println(len(indexes))
-		for o, index := range indexes {
-			var slice [lib.GROUP]int
-			for i, v := range index {
-				slice[init+i] = remaining[v]
+		for _, index := range indexes {
+			var slice2 []int
+			slice2 = append(slice2, slice1...)
+			for _, v := range index {
+				slice2 = append(slice2, remaining[v])
 			}
-			combins[o] = slice[:]
-			log.Println("----------POST---------")
-			log.Println(combins)
+			combins[key] = slice2[:]
+			key++
 		}
+
 		//*Comentar marcel
 		//treure if i tenir en compte els casos de 2 i 3 grups p 1 i 3 (al revés)
 		/*		if g[0] != 0 {
@@ -74,5 +71,6 @@ func GetGroups(remaining []int, g []int, t int) map[int][]int {
 				}
 		*/
 	}
+
 	return combins
 }

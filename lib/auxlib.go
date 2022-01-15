@@ -18,10 +18,10 @@ const (
 	 * Tipus {1,2,3}|{4,5}
 	 */
 
-	REPS = 2 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts (lib.GROUP+lib.GROUP-1)
+	REPS = 4 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts (lib.GROUP+lib.GROUP-1)
 	//- when (WORDS<2GROUP)
 
-	WORDS = 6
+	WORDS = 8
 	GROUP = 3
 )
 
@@ -69,16 +69,16 @@ type Code struct {
 
 //Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
 func GetDefaultValues() [][]int {
-	var slice []int
 	var values [][]int
 	//s'haura de passar len per argument depenent del GROUP del moment (3,2,1...)
 	len := int(math.Exp2(GROUP))
 	for t := 0; t < len; t++ {
+		var slice [GROUP]int
 		for i := range slice {
 			ijk := t / (len / int(math.Exp2(float64(i+1))))
 			slice[i] = ijk % 2
 		}
-		values = append(values, slice)
+		values = append(values, slice[:])
 	}
 	fmt.Println("Possible binari values for a group of", GROUP, "elements:", values)
 	return values
@@ -88,8 +88,9 @@ func GetDefaultValues() [][]int {
 //If not assignes the number 2 to the leaving columnes
 func SetValues(first Code, second *Code) {
 	//comprobar
+	second.Values = []int{}
 	for i := 0; i < GROUP; i++ {
-		second.Values[i] = 2
+		second.Values = append(second.Values, 2)
 	}
 	//	if GROUP == 4 {
 	//		second.Value[GROUP-1] = 2

@@ -42,5 +42,5 @@ func TestTeoric(t *testing.T) {
 		all += total
 	}
 	//falta sumar els incomplerts
-	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", all)
+	fmt.Println("Total cases (", lib.REPS-1, "types ) for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", all)
 }
