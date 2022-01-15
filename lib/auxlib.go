@@ -6,20 +6,7 @@ import (
 )
 
 const (
-
-	/* CASOS TOTALS
-	 * disjunts:
-	 * Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
-	 * no disjunts:
-	 * Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
-	 * Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
-	 * inclomplerts:
-	 * Tipus {1,2,3}|{4},
-	 * Tipus {1,2,3}|{4,5}
-	 */
-
-	REPS = 4 //2*GROUP - 1 //disjunts+no disjunts+ inclomplerts (lib.GROUP+lib.GROUP-1)
-	//- when (WORDS<2GROUP)
+	REPS = 4 //nodisjuntes
 
 	WORDS = 8
 	GROUP = 3
