@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	REPS = 4 //nodisjuntes
+	REPS = 1 //nodisjuntes
 
 	WORDS = 8
 	GROUP = 3
@@ -40,7 +40,7 @@ func RemoveSlice(original []int, slice []int) []int {
 	}
 
 	//	fmt.Println("Remaining array from", slice, ":", remaining)
-	return remaining[:WORDS-GROUP]
+	return remaining[:WORDS-len(slice)]
 }
 
 //Removes the index from the slice

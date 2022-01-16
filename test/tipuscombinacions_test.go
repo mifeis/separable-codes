@@ -10,7 +10,7 @@ import (
 
 func TestTipus(t *testing.T) {
 	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words must be smaller than 2 * group elements")
+		log.Fatal("num of words is small")
 	}
 
 	var tipusdisjunts, tipusnodisjunts int

@@ -13,7 +13,7 @@ import (
 //d'entre un array c de WORDS
 func main() {
 	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words must be smaller than 2 * group elements")
+		log.Fatal("num of words is small")
 	}
 	initial := lib.Init(0, lib.WORDS)
 	all := getAllCombinations(initial)
@@ -23,24 +23,14 @@ func main() {
 
 //Canviar
 func getAllCombinations(c []int) int {
-	//	fmt.Println("First group possible combinations:", len(list))
 	var all int
-	for i := 1; i < lib.REPS; i++ {
-		//Total pren el valor dels casos disjunts ó no disjunts
-		//per a un array inicial de GROUP elements
-		var total int
 
-		lib.LogTipus(i)
-		arraymap := combinations.List(c, i)
-
-		fmt.Println("Combinations:")
-		for _, m := range arraymap {
-			total += lib.LogCombinations(m)
+	for k := 0; k < lib.GROUP; k++ {
+		for reps := 0; reps < lib.REPS; reps++ {
+			lib.LogTipus(reps, lib.GROUP-k)
+			arraymap := combinations.List(c, k, reps)
+			all += lib.LogCombinations(arraymap) / 2
 		}
-		fmt.Println("Total cases:", total/2)
-		log.Println(total / 2)
-
-		all += total / 2
 	}
 	return all
 }

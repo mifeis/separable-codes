@@ -15,17 +15,16 @@ import (
 
 func TestFavs(t *testing.T) {
 	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words must be smaller than 2 * group elements")
+		log.Fatal("num of words is small")
 	}
 	initial := lib.Init(0, lib.WORDS)
 	for i := 1; i < lib.REPS; i++ {
-		lib.LogTipus(i)
+		lib.LogTipus(i, 1)
 		favs, nofavs := getFavs(initial, i)
 		fmt.Println("Total favorable cases:", favs)
 		fmt.Println("Total desfavorable cases:", nofavs)
 	}
 
-	//	fmt.Println("Total favorable cases:", favs)
 }
 
 //Funció que retorna els casos favorables i no favorables tenint en compte totes les possibles combinacions
@@ -34,7 +33,7 @@ func getFavs(initial []int, tipus int) (int, int) {
 	var favs, nofavs int
 	var first, second lib.Code
 
-	arraymap := combinations.List(initial, tipus)
+	arraymap := combinations.List(initial, 0, tipus)
 	fmt.Print("...Getting favorable and desfavorable cases for the type ", tipus)
 	//Set a combination
 	for _, m := range arraymap {

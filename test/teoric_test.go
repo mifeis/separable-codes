@@ -17,7 +17,7 @@ import (
 
 func TestTeoric(t *testing.T) {
 	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words must be smaller than 2 * group elements")
+		log.Fatal("num of words is small")
 	}
 	total := 1
 	all := 0
