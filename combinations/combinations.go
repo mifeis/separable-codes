@@ -2,76 +2,55 @@ package combinations
 
 import (
 	"github.com/mifeis/Separable-Codes/lib"
+	"gonum.org/v1/gonum/stat/combin"
 )
 
 //Funció que retorna els elements disjunts en grups de GROUP elements de l'array inicial
-func List(initial []int, t int) map[[lib.GROUP]int][][lib.GROUP]int {
-	var combins [][lib.GROUP]int
-	arraymap := make(map[[lib.GROUP]int][][lib.GROUP]int)
-
+func List(initial []int, t int) []lib.Map {
+	var combins map[int][]int
+	arraymap := []lib.Map{}
 	//First combinations of GROUP elements
-	groups := GetGroups(initial, [lib.GROUP]int{}, 1)
+	groups := GetGroups(initial, []int{}, 1)
 	for _, g := range groups {
-		var list [][lib.GROUP]int
-		combins = GetGroups(initial, g, t)
-		list = append(list, combins...)
-		arraymap[g] = list
+		var list [][]int
+		combins = GetGroups(lib.RemoveSlice(initial, g[:]), g, t)
+		for i := range combins {
+			list = append(list, combins[i])
+		}
+		//		list = append(list, combins...)
+		m := lib.Map{
+			First:   g,
+			Seconds: list,
+		}
+		arraymap = append(arraymap, m)
 	}
 	return arraymap
 }
 
-//treure els tipus automaticaments
-func GetGroups(initial []int, g [lib.GROUP]int, t int) [][lib.GROUP]int {
-	var combins [][lib.GROUP]int
-	var remaining []int
-	slice := [lib.GROUP]int{}
-
-	if g != [lib.GROUP]int{} {
-		remaining = lib.RemoveSlice(initial, g[:]) //Remaining array
-	} else {
-		remaining = initial
+//comptar els casos incomplerts i els complerts (done)
+func GetGroups(remaining []int, g []int, t int) map[int][]int {
+	var key int
+	combins := make(map[int][]int, 1000)
+	in := combin.Combinations(lib.GROUP, t-1)
+	for p := 0; p < len(in); p++ {
+		var slice1 []int
+		//valors no disjunts
+		for r := 0; r < t-1; r++ {
+			slice1 = append(slice1, g[in[p][r]])
+		}
+		//valors disjunts
+		//Casos complerts:
+		indexes := combin.Combinations(len(remaining), lib.GROUP-(t-1))
+		for _, index := range indexes {
+			var slice2 []int
+			slice2 = append(slice2, slice1...)
+			for _, v := range index {
+				slice2 = append(slice2, remaining[v])
+			}
+			combins[key] = slice2[:]
+			key++
+		}
 	}
 
-	switch t {
-	case 1:
-		//Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
-		for i := 0; i < len(remaining); i++ {
-			slice[0] = remaining[i]
-			for j := i + 1; j < len(remaining); j++ {
-				slice[1] = remaining[j]
-				for k := j + 1; k < len(remaining); k++ {
-					slice[2] = remaining[k]
-					combins = append(combins, slice)
-				}
-			}
-		}
-
-	case 2:
-		//Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}
-		for i := 0; i < len(g); i++ {
-			slice[0] = g[i]
-			for j := 0; j < len(remaining); j++ {
-				slice[1] = remaining[j]
-				for k := j + 1; k < len(remaining); k++ {
-					slice[2] = remaining[k]
-					combins = append(combins, slice)
-				}
-			}
-		}
-
-	case 3:
-		//Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}
-		for i := 0; i < len(g); i++ {
-			slice[0] = g[i]
-			for j := i + 1; j < len(g); j++ {
-				slice[1] = g[j]
-				for k := 0; k < len(remaining); k++ {
-					slice[2] = remaining[k]
-					combins = append(combins, slice)
-				}
-			}
-		}
-
-	}
 	return combins
 }

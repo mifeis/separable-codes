@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"testing"
 
@@ -15,9 +16,12 @@ import (
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 
 func TestTeoric(t *testing.T) {
-
+	//comprobar
+	if lib.WORDS < 2*lib.GROUP {
+		log.Fatal("Can't combine elements because num of words is smaller than group elements")
+	}
 	total := 1
-	all := 1
+	all := 0
 	n := lib.WORDS
 	k := lib.GROUP
 
@@ -30,13 +34,13 @@ func TestTeoric(t *testing.T) {
 	list := combin.Combinations(n, k)
 	fmt.Println("First group possible combinations:", len(list))
 
-	for i := 0; i < lib.REPS; i++ {
+	for i := 0; i < lib.GROUP; i++ {
 		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
 		fmt.Println("Type", i+1, "-> Combinations:", combinations)
 		total = len(list) * combinations / 2
 		fmt.Println("Total cases:", total)
 		all += total
-
 	}
-	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(n)+" words: ", all)
+	//falta sumar els incomplerts
+	fmt.Println("Total cases (", lib.REPS-1, "types ) for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", all)
 }

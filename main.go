@@ -12,32 +12,30 @@ import (
 //Main retorna el numero total de totes les combinacions possibles en grup de GROUP elements
 //d'entre un array c de WORDS
 func main() {
-	initial := lib.Init()
-	allcases := getAllCases(initial)
+	initial := lib.Init(0, lib.WORDS)
+	all := getAllCombinations(initial)
 
-	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words:", allcases)
+	fmt.Println("Total cases (", lib.REPS, "types ) for a code of "+strconv.Itoa(lib.WORDS)+" words:", all)
 }
 
-func getAllCases(c []int) int {
+func getAllCombinations(c []int) int {
 	//	fmt.Println("First group possible combinations:", len(list))
 	var all int
-	for i := 0; i < lib.REPS; i++ {
+	for i := 1; i < lib.REPS; i++ {
 		//Total pren el valor dels casos disjunts ó no disjunts
 		//per a un array inicial de GROUP elements
 		var total int
 
-		lib.LogType(i + 1)
-
-		arraymap := combinations.List(c, i+1)
+		lib.LogTipus(i)
+		arraymap := combinations.List(c, i)
 
 		fmt.Println("Combinations:")
-		for g, combs := range arraymap {
-			total += lib.LogCombinations(g[:], combs)
+		for _, m := range arraymap {
+			total += lib.LogCombinations(m)
 		}
+		fmt.Println("Total cases:", total/2)
 		log.Println(total / 2)
 
-		fmt.Println("Total cases:", total/2)
-		//ó *
 		all += total / 2
 	}
 	return all
