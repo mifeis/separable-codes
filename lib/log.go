@@ -5,29 +5,51 @@ import (
 	"log"
 )
 
-func LogTipus(tipus int, k int) {
+func LogTipus(k int) {
 	fmt.Println("\n--------------------------------------------------------------------------------")
-	fmt.Println("\t\t\t\t\t\t\t\tFirst group length:", k)
-	fmt.Println("\t\t\t\t\t\tCombinations for", tipus, "element repetitions")
+	fmt.Println("\t\t\t\t\t\t\t\tmax length:", k)
 	fmt.Println("--------------------------------------------------------------------------------")
 
-	log.Print("First group length: ", k)
-	log.Print("Combinations for ", tipus, " element repetitions")
+	log.Print("max length: ", k)
 }
 
-func LogCombinations(arraymap []Map) int {
-	var total int
+func LogCombinations(arraymap []Map, reps int) int {
+	var res int
+	arraymaps := make(map[int][]Map)
 
-	fmt.Println("Combinations:")
+	fmt.Println("\t\t\t\t\t\tCombinations for", reps, "ELEMENT REPETITIONS")
+	log.Print(reps, " element repetitions:")
+
+	//ordena els arraymaps segons el tamany del primer grup
 	for _, m := range arraymap {
-		fmt.Println()
-		for _, c := range m.Seconds {
-			fmt.Println("\t\t", m.First, "|", c)
-			total++
-		}
+		arraymaps[len(m.First)] = append(arraymaps[len(m.First)], m)
 	}
-	fmt.Println("Total cases:", total/2)
-	log.Println(total / 2)
 
-	return total
+	for k, am := range arraymaps {
+		LogTipus(k)
+		total := make(map[int]int)
+		//{1,2,3}	{4,5,6}{4,5}{4}...
+		//{1,2,4}	{4,5}{6}{3,6,7}{7}...
+		//{1,2,6}	{4}{7}{8}{4,5,7}...
+		for _, m := range am {
+			//{1,2,3}	{4,5,6}{4,5}{4}...
+			for k2 := range m.Seconds {
+				for _, s := range m.Seconds[k2] {
+					fmt.Println("\t\t", m.First, "|", s)
+					total[k2]++
+				}
+			}
+			fmt.Println()
+		}
+		var all int
+		for l, v := range total {
+			if (l == k) && (k != reps) { //si contabilitzem {1},{1} exemple
+				v = v / 2
+			}
+			all += v
+		}
+		log.Println(all)
+		res += all
+	}
+	return res
 }

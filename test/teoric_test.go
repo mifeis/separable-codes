@@ -10,6 +10,7 @@ import (
 	"gonum.org/v1/gonum/stat/combin"
 )
 
+//Valid per:
 //casos disjunts i no disjunts
 //Tipus {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
 //Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
@@ -19,8 +20,7 @@ func TestTeoric(t *testing.T) {
 	if lib.WORDS < 2*lib.GROUP {
 		log.Fatal("num of words is small")
 	}
-	total := 1
-	all := 0
+	var res int
 	n := lib.WORDS
 	k := lib.GROUP
 
@@ -31,15 +31,28 @@ func TestTeoric(t *testing.T) {
 	 * or IndexToCombination for random access.
 	 */
 	list := combin.Combinations(n, k)
-	fmt.Println("First group possible combinations:", len(list))
+	//	fmt.Println("First group possible combinations:", len(list))
 
-	for i := 0; i < lib.GROUP; i++ {
-		combinations := len(combin.Combinations(n-k, k-i)) * len(combin.Combinations(k, i))
-		fmt.Println("Type", i+1, "-> Combinations:", combinations)
-		total = len(list) * combinations / 2
-		fmt.Println("Total cases:", total)
-		all += total
+	for i := 0; i < lib.REPS; i++ {
+		var total, all int
+		fmt.Println(i, "elements repetitions:")
+		for l := 0; l < lib.GROUP; l++ {
+			if i > k-l {
+				break
+			}
+			fmt.Println("max length:", lib.GROUP-l)
+			combinations := len(combin.Combinations(n-k, (k-l)-i)) * len(combin.Combinations(k, i))
+			if k-l == lib.GROUP {
+				total = len(list) * combinations / 2
+			} else {
+				total = len(list) * combinations
+			}
+			fmt.Println(total)
+			all += total
+			res += total
+		}
+		fmt.Println("Total (", i, "elements repetitions )", all)
 	}
-	//falta sumar els incomplerts
-	fmt.Println("Total cases (", lib.REPS-1, "types ) for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", all)
+
+	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", res)
 }

@@ -19,7 +19,7 @@ func TestFavs(t *testing.T) {
 	}
 	initial := lib.Init(0, lib.WORDS)
 	for i := 1; i < lib.REPS; i++ {
-		lib.LogTipus(i, 1)
+		lib.LogTipus(i)
 		favs, nofavs := getFavs(initial, i)
 		fmt.Println("Total favorable cases:", favs)
 		fmt.Println("Total desfavorable cases:", nofavs)
@@ -33,12 +33,12 @@ func getFavs(initial []int, tipus int) (int, int) {
 	var favs, nofavs int
 	var first, second lib.Code
 
-	arraymap := combinations.List(initial, 0, tipus)
+	arraymap := combinations.List(initial, tipus)
 	fmt.Print("...Getting favorable and desfavorable cases for the type ", tipus)
 	//Set a combination
 	for _, m := range arraymap {
-		first.Row = m.First       //rows
-		second.Row = m.Seconds[0] //rows
+		first.Row = m.First //rows
+		//		second.Row = m.Seconds[0] //rows
 		break
 	}
 	fmt.Println("->", first.Row, "|", second.Row)

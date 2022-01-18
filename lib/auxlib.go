@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	REPS = 1 //nodisjuntes
+	REPS = 3 //nodisjuntes
 
 	WORDS = 8
 	GROUP = 3
@@ -16,7 +16,7 @@ const (
 //i un segon array que consta de totes les combinacions possibles per aquest primer grup
 type Map struct {
 	First   []int
-	Seconds [][]int
+	Seconds map[int][][]int
 }
 
 //funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}

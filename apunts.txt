@@ -2,22 +2,13 @@ Notes
 ------------------------------------------------------------------------------------------------
 GROUP_ELEMENTS=3
 
--o fer sewrvir num d disjunts no disjuntds
--o fer funcio q retorni index de lengths
-
-= tinc funcio q fa casos complerts disjuntsd i no disjunts. nomes necessito afegir els incomplerts (q son restant el len del 2n grup)
-Un cop tingui aixo, haure de posar al main before el bucle de reps (total d casos disj i junts) un bucle petq em doni els index primers (3,2,1)
-main:
-
-
-
-//retorna un conjunt de totes les combinacions possibles (incomplertes, complertes, disjuntes, no disjuntes) de mida igual o mes petita per a qualsevol combinacion d'array de len predefinida per argument
-list(len del primer grup):
-->getCombins
-
-//Retorna les combinacions
-getCombins():
-
+2022/01/17 22:49:24 0 element repetitions
+2022/01/17 22:49:24 max length: 3
+2022/01/17 22:49:24 1120
+2022/01/17 22:49:24 max length: 2
+2022/01/17 22:49:24 378
+2022/01/17 22:49:24 max length: 1
+2022/01/17 22:49:24 28
 
 ------------------------------------------------------------------------------------------------
 GROUP_ELEMENTS=3
@@ -25,32 +16,100 @@ GROUP_ELEMENTS=3
 	 CASOS TOTALS DISJUNTS
 	 * Complerts:
 OK		3x3 {1,2,3}|{4,5,6}, {1,2,3}|{5,6,7}, {4,7,8}|{1,2,3}, ...
+  	 k=0
+	 reps=0
 	 
 	 * Inclomplerts:
 OK		3x2 {1,2,3}|{4,5}, ...
 OK		3x1 {1,2,3}|{4}, ...
-		
+	 k=0
+	 reps=0
+
 OK		2x2 {1,2}|{4,5}, {1,3}|{5,6}, ...
 OK		2x1 {1,2}|{4}, {1,2}|{5}, ...
-		
+	 k=1
+	 reps=0
+	
 OK		1x1 {1}|{4}, {1}|{7}, ...
+	 k=2
+	 reps=0
 	 
 	 CASOS TOTALS NO DISJUNTS:
 	 * Complerts:
-		3x3 {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
-		3x3 {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
-	 
-	 * Inclomplerts:
-		3x2 {1,2,3}|{1,4}, {1,2,3}|{2,5}, ...
-		3x2 {1,2,3}|{1,2}, {1,2,3}|{1,3}, ...
+OK		3x3 {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
+	 k=0
+	 reps=1
 
-		3x1 {1,2,3}|{1}, {1,2,3}|{2}, ...
-	 
-		2x2 {1,2}|{1,4}, {1,2}|{2,5}, ...
-	 
-		2x1 {1,2}|{1}, {1,2}|{2}, ...
-	 
-    total: (3 x 2) + (3 x 2) + (2) - 1 = 13
+OK		3x3 {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
+	 k=0
+	 reps=2
+
+//		3x3 {1,2,3}|{1,2,3}, ...
+//	 k=0
+//	 reps=3
+
+	 * Inclomplerts:
+OK	  	3x2 {1,2,3}|{1,4}, {1,2,3}|{2,5}, ...
+     k=0
+ 	 reps=1
+
+OK		3x2 {1,2,3}|{1,2}, {1,2,3}|{1,3}, ...
+	 k=0
+	 reps=2
+
+//	  	3x2 (group-l < reps)
+//   k=0
+//	 reps=3
+
+OK		3x1 {1,2,3}|{1}, {1,2,3}|{2}, ...
+	 k=0
+	 reps=1
+
+//		3x1 (group-l < reps)
+//	 k=0
+//	 reps=2
+
+//		3x1 (group-l < reps)
+/	 k=0
+//	 reps=3
+
+OK		2x2 {1,2}|{1,4}, {1,2}|{2,5}, ...
+	 k=1
+	 reps=1	 
+
+OK		2x2 {1,2}|{1,2}, ...
+	 k=1
+	 reps=2	 
+
+//		2x2 (group-l < reps)
+//	 k=1
+//	 reps=3	 
+
+OK		2x1 {1,2}|{1}, {1,2}|{2}, ...
+	 k=1
+	 reps=1	  
+
+//		2x1 (group-l < reps)
+//	 k=1
+//	 reps=2	  
+
+//		2x1 (group-l < reps)
+//	 k=1
+//	 reps=3	  
+
+OK	 	1x1 {1}|{1}, ...
+	 k=2
+	 reps=1
+
+//	 	1x1 (group-l < reps)
+//	 k=2
+//	 reps=2
+
+//	 	1x1 (group-l < reps)
+//	 k=2
+//	 reps=3
+
+
 	* ¿3x3 no disjunt 3 elements repetits, 2x2 no disjunt 2 elements repetits, 1x1 no disjunt?
 
 GROUP_ELEMENTS=4

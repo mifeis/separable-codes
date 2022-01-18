@@ -1,0 +1,25 @@
+0 elements repetitions:
+max length: 3
+280
+max length: 2
+560
+max length: 1
+280
+Total ( 0 elements repetitions ) 1120
+1 elements repetitions:
+max length: 3
+840
+max length: 2
+840
+max length: 1
+168
+Total ( 1 elements repetitions ) 1848
+2 elements repetitions:
+max length: 3
+420
+max length: 2
+168
+Total ( 2 elements repetitions ) 588
+Total cases for a code of 8 words in elements of 3 : 3556
+PASS
+ok  	github.com/mifeis/Separable-Codes/test	0.223s
