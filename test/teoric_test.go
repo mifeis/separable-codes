@@ -30,28 +30,49 @@ func TestTeoric(t *testing.T) {
 	 * CombinationGenerator may alternatively be used to generate the combinations iteratively instead of collectively,
 	 * or IndexToCombination for random access.
 	 */
-	list := combin.Combinations(n, k)
 	//	fmt.Println("First group possible combinations:", len(list))
 
 	for i := 0; i < lib.REPS; i++ {
-		var total, all int
-		fmt.Println(i, "elements repetitions:")
-		for l := 0; l < lib.GROUP; l++ {
-			if i > k-l {
+		var all int
+		fmt.Println(i, "elements REPETITIONS:")
+
+		for l1 := lib.GROUP; l1 > 0; l1-- {
+			var tot int
+
+			if i > l1 {
 				break
 			}
-			fmt.Println("max length:", lib.GROUP-l)
-			combinations := len(combin.Combinations(n-k, (k-l)-i)) * len(combin.Combinations(k, i))
-			if k-l == lib.GROUP {
-				total = len(list) * combinations / 2
-			} else {
-				total = len(list) * combinations
+
+			fmt.Println("MAX length:", l1)
+
+			for l2 := l1; l2 > 0; l2-- {
+				var total int
+
+				if i > l2 && l2 < l1 {
+					break
+				}
+
+				fmt.Println("2nd:", l2)
+				//i=1
+				i1 := lib.GROUP - l1
+				i2 := lib.GROUP - l2
+				list := combin.Combinations(n, k-i1)
+				combinations := len(combin.Combinations(n-(k-i1), k-i2-i)) * len(combin.Combinations(k-i1, i))
+				if l2 == l1 && l1 != i {
+					total = len(list) * combinations / 2
+				} else {
+					total = len(list) * combinations
+				}
+
+				fmt.Println(total)
+				tot += total
 			}
-			fmt.Println(total)
-			all += total
-			res += total
+			all += tot
+			fmt.Println("Total:", tot)
 		}
 		fmt.Println("Total (", i, "elements repetitions )", all)
+		res += all
+
 	}
 
 	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", res)

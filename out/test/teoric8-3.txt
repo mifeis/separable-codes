@@ -1,25 +1,55 @@
-0 elements repetitions:
-max length: 3
+0 elements REPETITIONS:
+MAX length: 3
+2nd: 3
 280
-max length: 2
+2nd: 2
 560
-max length: 1
+2nd: 1
 280
-Total ( 0 elements repetitions ) 1120
-1 elements repetitions:
-max length: 3
-840
-max length: 2
-840
-max length: 1
+Total: 1120
+MAX length: 2
+2nd: 2
+210
+2nd: 1
 168
-Total ( 1 elements repetitions ) 1848
-2 elements repetitions:
-max length: 3
+Total: 378
+MAX length: 1
+2nd: 1
+28
+Total: 28
+Total ( 0 elements repetitions ) 1526
+1 elements REPETITIONS:
+MAX length: 3
+2nd: 3
+840
+2nd: 2
+840
+2nd: 1
+168
+Total: 1848
+MAX length: 2
+2nd: 2
+168
+2nd: 1
+56
+Total: 224
+MAX length: 1
+2nd: 1
+8
+Total: 8
+Total ( 1 elements repetitions ) 2080
+2 elements REPETITIONS:
+MAX length: 3
+2nd: 3
 420
-max length: 2
+2nd: 2
 168
-Total ( 2 elements repetitions ) 588
-Total cases for a code of 8 words in elements of 3 : 3556
+Total: 588
+MAX length: 2
+2nd: 2
+28
+Total: 28
+Total ( 2 elements repetitions ) 616
+Total cases for a code of 8 words in elements of 3 : 4222
 PASS
-ok  	github.com/mifeis/Separable-Codes/test	0.223s
+ok  	github.com/mifeis/Separable-Codes/test	0.273s

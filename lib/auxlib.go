@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	REPS = 3 //nodisjuntes
+	REPS = 1 //nodisjuntes
 
 	WORDS = 8
 	GROUP = 3
@@ -48,26 +48,36 @@ func RemoveIndex(s []int, index int) []int {
 	return append(s[:index], s[index+1:]...)
 }
 
+//ordena els arraymaps segons el tamany del primer grup
+func Sort(arraymap []Map) map[int][]Map {
+	arraymaps := make(map[int][]Map)
+
+	for _, m := range arraymap {
+		arraymaps[len(m.First)] = append(arraymaps[len(m.First)], m)
+	}
+	return arraymaps
+}
+
 //Estructura que defineix valors (0/1) per a un grup d'elements
 type Code struct {
 	Row    []int
 	Values []int
 }
 
-//Retorna totes les combinacions de valors (0/1) d'un array de GROUP elements
-func GetDefaultValues() [][]int {
+//Retorna totes les combinacions de valors (0/1) per un array de length l
+func GetDefaultValues(l int) [][]int {
 	var values [][]int
 	//s'haura de passar len per argument depenent del GROUP del moment (3,2,1...)
-	len := int(math.Exp2(GROUP))
+	len := int(math.Exp2(float64(l)))
 	for t := 0; t < len; t++ {
-		var slice [GROUP]int
-		for i := range slice {
+		var slice []int
+		for i := 0; i < l; i++ {
 			ijk := t / (len / int(math.Exp2(float64(i+1))))
-			slice[i] = ijk % 2
+			slice = append(slice, ijk%2)
 		}
 		values = append(values, slice[:])
 	}
-	fmt.Println("Possible binari values for a group of", GROUP, "elements:", values)
+	fmt.Println("Possible binari values for a group of", l, "elements:", values)
 	return values
 }
 
@@ -76,12 +86,9 @@ func GetDefaultValues() [][]int {
 func SetValues(first Code, second *Code) {
 	//comprobar
 	second.Values = []int{}
-	for i := 0; i < GROUP; i++ {
+	for i := 0; i < len(second.Row); i++ {
 		second.Values = append(second.Values, 2)
 	}
-	//	if GROUP == 4 {
-	//		second.Value[GROUP-1] = 2
-	//	}
 	for m, v1 := range first.Row {
 		for n, v2 := range second.Row {
 			if v1 == v2 {

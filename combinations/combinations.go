@@ -69,21 +69,6 @@ func getCombins(remaining []int, g []int, reps int) map[int][]int {
 				key++
 			}
 		}
-		/*		indexes := combin.Combinations(len(remaining), lib.GROUP-reps-k)
-				for _, index := range indexes {
-					var slice2 []int
-					slice2 = append(slice2, slice1...)
-					for _, v := range index {
-						slice2 = append(slice2, remaining[v])
-					}
-					combins[key] = slice2[:]
-					key++
-				}
-		*/ //Casos incomplerts:
-		//treure if i tenir en compte els casos de 2 i 3 grups p 1 i 3 (al revés)
-		//		if len(g) != 0 {
-		//		}
-
 	}
 	return combins
 }

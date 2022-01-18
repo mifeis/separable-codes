@@ -18,8 +18,8 @@ func TestFavs(t *testing.T) {
 		log.Fatal("num of words is small")
 	}
 	initial := lib.Init(0, lib.WORDS)
-	for i := 1; i < lib.REPS; i++ {
-		lib.LogTipus(i)
+	for i := 0; i < lib.REPS; i++ {
+		lib.LogTipus(lib.GROUP - i)
 		favs, nofavs := getFavs(initial, i)
 		fmt.Println("Total favorable cases:", favs)
 		fmt.Println("Total desfavorable cases:", nofavs)
@@ -34,38 +34,47 @@ func getFavs(initial []int, tipus int) (int, int) {
 	var first, second lib.Code
 
 	arraymap := combinations.List(initial, tipus)
-	fmt.Print("...Getting favorable and desfavorable cases for the type ", tipus)
-	//Set a combination
-	for _, m := range arraymap {
-		first.Row = m.First //rows
-		//		second.Row = m.Seconds[0] //rows
-		break
-	}
-	fmt.Println("->", first.Row, "|", second.Row)
+	arraymaps := lib.Sort(arraymap)
 
-	defaultvalues := lib.GetDefaultValues()
+	fmt.Println("...Getting favorable and desfavorable cases for", tipus, "element repetitions")
+	for _, am := range arraymaps {
+		//Set a combination
+		for _, m := range am {
+			first.Row = m.First //rows
+			for _, s := range m.Seconds {
+				second.Row = s[0] //rows
+				//	break
+				fmt.Println("->", first.Row, "|", second.Row)
 
-	// Tipus 1: {1,2,3}{4,5,6}
-	// Tipus 2: {1,2,3}{1,4,5}
-	// Tipus 3: {1,2,3}{1,2,4}
-	for i := 0; i < len(defaultvalues); i++ {
-		first.Values = defaultvalues[i]
-		fmt.Println()
-		//contabilitzar d'alguna manera els casos repetits-> recorre l'array fins a GROUP-elements cops?
-		for j := 0; j < len(defaultvalues)/(tipus); j++ {
-			//Set the repe elements of group
-			lib.SetValues(first, &second)
-			for l, v := range second.Values {
-				//Set the leaving values
-				if v == 2 {
-					second.Values[l] = defaultvalues[j][l]
+				defaultvalues1 := lib.GetDefaultValues(len(first.Row))
+				defaultvalues2 := lib.GetDefaultValues(len(second.Row))
+				// Tipus 1: {1,2,3}{4,5,6}
+				// Tipus 2: {1,2,3}{1,4,5}
+				// Tipus 3: {1,2,3}{1,2,4}
+				for i := 0; i < len(defaultvalues1); i++ {
+					first.Values = defaultvalues1[i]
+					fmt.Println()
+					//contabilitzar d'alguna manera els casos repetits-> recorre l'array fins a GROUP-elements cops?
+
+					for j := 0; j < (len(defaultvalues2) / (tipus + 1)); j++ {
+						//Set the repe elements of group
+						lib.SetValues(first, &second)
+						for l, v := range second.Values {
+							//Set the leaving values
+							if v == 2 {
+								second.Values[l] = defaultvalues2[j][l]
+							}
+						}
+						if lib.Separable(first.Values, second.Values) {
+							favs++
+						} else {
+							nofavs++
+						}
+					}
 				}
+				fmt.Println()
 			}
-			if lib.Separable(first.Values, second.Values) {
-				favs++
-			} else {
-				nofavs++
-			}
+			break
 		}
 	}
 

@@ -15,16 +15,16 @@ func LogTipus(k int) {
 
 func LogCombinations(arraymap []Map, reps int) int {
 	var res int
-	arraymaps := make(map[int][]Map)
+	//	arraymaps := make(map[int][]Map)
 
 	fmt.Println("\t\t\t\t\t\tCombinations for", reps, "ELEMENT REPETITIONS")
 	log.Print(reps, " element repetitions:")
 
-	//ordena els arraymaps segons el tamany del primer grup
-	for _, m := range arraymap {
-		arraymaps[len(m.First)] = append(arraymaps[len(m.First)], m)
-	}
-
+	arraymaps := Sort(arraymap)
+	/*	for _, m := range arraymap {
+			arraymaps[len(m.First)] = append(arraymaps[len(m.First)], m)
+		}
+	*/
 	for k, am := range arraymaps {
 		LogTipus(k)
 		total := make(map[int]int)
@@ -48,6 +48,7 @@ func LogCombinations(arraymap []Map, reps int) int {
 			}
 			all += v
 		}
+		fmt.Println("Total:", all)
 		log.Println(all)
 		res += all
 	}

@@ -1,0 +1,208 @@
+
+--------------------------------------------------------------------------------
+								max length: 3
+--------------------------------------------------------------------------------
+2022/01/18 19:53:42 max length: 3
+...Getting favorable and desfavorable cases for 0 element repetitions
+-> [3 4] | [6 8]
+Possible binari values for a group of 2 elements: [[0 0] [0 1] [1 0] [1 1]]
+Possible binari values for a group of 2 elements: [[0 0] [0 1] [1 0] [1 1]]
+
+Comparing [0 0] with [0 0] -> Separables: false
+Comparing [0 0] with [0 1] -> Separables: true
+Comparing [0 0] with [1 0] -> Separables: true
+Comparing [0 0] with [1 1] -> Separables: true
+
+Comparing [0 1] with [0 0] -> Separables: true
+Comparing [0 1] with [0 1] -> Separables: false
+Comparing [0 1] with [1 0] -> Separables: false
+Comparing [0 1] with [1 1] -> Separables: true
+
+Comparing [1 0] with [0 0] -> Separables: true
+Comparing [1 0] with [0 1] -> Separables: false
+Comparing [1 0] with [1 0] -> Separables: false
+Comparing [1 0] with [1 1] -> Separables: true
+
+Comparing [1 1] with [0 0] -> Separables: true
+Comparing [1 1] with [0 1] -> Separables: true
+Comparing [1 1] with [1 0] -> Separables: true
+Comparing [1 1] with [1 1] -> Separables: false
+
+-> [3 4] | [1]
+Possible binari values for a group of 2 elements: [[0 0] [0 1] [1 0] [1 1]]
+Possible binari values for a group of 1 elements: [[0] [1]]
+
+Comparing [0 0] with [0] -> Separables: false
+Comparing [0 0] with [1] -> Separables: true
+
+Comparing [0 1] with [0] -> Separables: true
+Comparing [0 1] with [1] -> Separables: true
+
+Comparing [1 0] with [0] -> Separables: true
+Comparing [1 0] with [1] -> Separables: true
+
+Comparing [1 1] with [0] -> Separables: true
+Comparing [1 1] with [1] -> Separables: false
+
+-> [1 5 6] | [4 7 8]
+Possible binari values for a group of 3 elements: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
+Possible binari values for a group of 3 elements: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
+
+Comparing [0 0 0] with [0 0 0] -> Separables: false
+Comparing [0 0 0] with [0 0 1] -> Separables: true
+Comparing [0 0 0] with [0 1 0] -> Separables: true
+Comparing [0 0 0] with [0 1 1] -> Separables: true
+Comparing [0 0 0] with [1 0 0] -> Separables: true
+Comparing [0 0 0] with [1 0 1] -> Separables: true
+Comparing [0 0 0] with [1 1 0] -> Separables: true
+Comparing [0 0 0] with [1 1 1] -> Separables: true
+
+Comparing [0 0 1] with [0 0 0] -> Separables: true
+Comparing [0 0 1] with [0 0 1] -> Separables: false
+Comparing [0 0 1] with [0 1 0] -> Separables: false
+Comparing [0 0 1] with [0 1 1] -> Separables: false
+Comparing [0 0 1] with [1 0 0] -> Separables: false
+Comparing [0 0 1] with [1 0 1] -> Separables: false
+Comparing [0 0 1] with [1 1 0] -> Separables: false
+Comparing [0 0 1] with [1 1 1] -> Separables: true
+
+Comparing [0 1 0] with [0 0 0] -> Separables: true
+Comparing [0 1 0] with [0 0 1] -> Separables: false
+Comparing [0 1 0] with [0 1 0] -> Separables: false
+Comparing [0 1 0] with [0 1 1] -> Separables: false
+Comparing [0 1 0] with [1 0 0] -> Separables: false
+Comparing [0 1 0] with [1 0 1] -> Separables: false
+Comparing [0 1 0] with [1 1 0] -> Separables: false
+Comparing [0 1 0] with [1 1 1] -> Separables: true
+
+Comparing [0 1 1] with [0 0 0] -> Separables: true
+Comparing [0 1 1] with [0 0 1] -> Separables: false
+Comparing [0 1 1] with [0 1 0] -> Separables: false
+Comparing [0 1 1] with [0 1 1] -> Separables: false
+Comparing [0 1 1] with [1 0 0] -> Separables: false
+Comparing [0 1 1] with [1 0 1] -> Separables: false
+Comparing [0 1 1] with [1 1 0] -> Separables: false
+Comparing [0 1 1] with [1 1 1] -> Separables: true
+
+Comparing [1 0 0] with [0 0 0] -> Separables: true
+Comparing [1 0 0] with [0 0 1] -> Separables: false
+Comparing [1 0 0] with [0 1 0] -> Separables: false
+Comparing [1 0 0] with [0 1 1] -> Separables: false
+Comparing [1 0 0] with [1 0 0] -> Separables: false
+Comparing [1 0 0] with [1 0 1] -> Separables: false
+Comparing [1 0 0] with [1 1 0] -> Separables: false
+Comparing [1 0 0] with [1 1 1] -> Separables: true
+
+Comparing [1 0 1] with [0 0 0] -> Separables: true
+Comparing [1 0 1] with [0 0 1] -> Separables: false
+Comparing [1 0 1] with [0 1 0] -> Separables: false
+Comparing [1 0 1] with [0 1 1] -> Separables: false
+Comparing [1 0 1] with [1 0 0] -> Separables: false
+Comparing [1 0 1] with [1 0 1] -> Separables: false
+Comparing [1 0 1] with [1 1 0] -> Separables: false
+Comparing [1 0 1] with [1 1 1] -> Separables: true
+
+Comparing [1 1 0] with [0 0 0] -> Separables: true
+Comparing [1 1 0] with [0 0 1] -> Separables: false
+Comparing [1 1 0] with [0 1 0] -> Separables: false
+Comparing [1 1 0] with [0 1 1] -> Separables: false
+Comparing [1 1 0] with [1 0 0] -> Separables: false
+Comparing [1 1 0] with [1 0 1] -> Separables: false
+Comparing [1 1 0] with [1 1 0] -> Separables: false
+Comparing [1 1 0] with [1 1 1] -> Separables: true
+
+Comparing [1 1 1] with [0 0 0] -> Separables: true
+Comparing [1 1 1] with [0 0 1] -> Separables: true
+Comparing [1 1 1] with [0 1 0] -> Separables: true
+Comparing [1 1 1] with [0 1 1] -> Separables: true
+Comparing [1 1 1] with [1 0 0] -> Separables: true
+Comparing [1 1 1] with [1 0 1] -> Separables: true
+Comparing [1 1 1] with [1 1 0] -> Separables: true
+Comparing [1 1 1] with [1 1 1] -> Separables: false
+
+-> [1 5 6] | [3]
+Possible binari values for a group of 3 elements: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
+Possible binari values for a group of 1 elements: [[0] [1]]
+
+Comparing [0 0 0] with [0] -> Separables: false
+Comparing [0 0 0] with [1] -> Separables: true
+
+Comparing [0 0 1] with [0] -> Separables: true
+Comparing [0 0 1] with [1] -> Separables: true
+
+Comparing [0 1 0] with [0] -> Separables: true
+Comparing [0 1 0] with [1] -> Separables: true
+
+Comparing [0 1 1] with [0] -> Separables: true
+Comparing [0 1 1] with [1] -> Separables: true
+
+Comparing [1 0 0] with [0] -> Separables: true
+Comparing [1 0 0] with [1] -> Separables: true
+
+Comparing [1 0 1] with [0] -> Separables: true
+Comparing [1 0 1] with [1] -> Separables: true
+
+Comparing [1 1 0] with [0] -> Separables: true
+Comparing [1 1 0] with [1] -> Separables: true
+
+Comparing [1 1 1] with [0] -> Separables: true
+Comparing [1 1 1] with [1] -> Separables: false
+
+-> [1 5 6] | [2 8]
+Possible binari values for a group of 3 elements: [[0 0 0] [0 0 1] [0 1 0] [0 1 1] [1 0 0] [1 0 1] [1 1 0] [1 1 1]]
+Possible binari values for a group of 2 elements: [[0 0] [0 1] [1 0] [1 1]]
+
+Comparing [0 0 0] with [0 0] -> Separables: false
+Comparing [0 0 0] with [0 1] -> Separables: true
+Comparing [0 0 0] with [1 0] -> Separables: true
+Comparing [0 0 0] with [1 1] -> Separables: true
+
+Comparing [0 0 1] with [0 0] -> Separables: true
+Comparing [0 0 1] with [0 1] -> Separables: false
+Comparing [0 0 1] with [1 0] -> Separables: false
+Comparing [0 0 1] with [1 1] -> Separables: true
+
+Comparing [0 1 0] with [0 0] -> Separables: true
+Comparing [0 1 0] with [0 1] -> Separables: false
+Comparing [0 1 0] with [1 0] -> Separables: false
+Comparing [0 1 0] with [1 1] -> Separables: true
+
+Comparing [0 1 1] with [0 0] -> Separables: true
+Comparing [0 1 1] with [0 1] -> Separables: false
+Comparing [0 1 1] with [1 0] -> Separables: false
+Comparing [0 1 1] with [1 1] -> Separables: true
+
+Comparing [1 0 0] with [0 0] -> Separables: true
+Comparing [1 0 0] with [0 1] -> Separables: false
+Comparing [1 0 0] with [1 0] -> Separables: false
+Comparing [1 0 0] with [1 1] -> Separables: true
+
+Comparing [1 0 1] with [0 0] -> Separables: true
+Comparing [1 0 1] with [0 1] -> Separables: false
+Comparing [1 0 1] with [1 0] -> Separables: false
+Comparing [1 0 1] with [1 1] -> Separables: true
+
+Comparing [1 1 0] with [0 0] -> Separables: true
+Comparing [1 1 0] with [0 1] -> Separables: false
+Comparing [1 1 0] with [1 0] -> Separables: false
+Comparing [1 1 0] with [1 1] -> Separables: true
+
+Comparing [1 1 1] with [0 0] -> Separables: true
+Comparing [1 1 1] with [0 1] -> Separables: true
+Comparing [1 1 1] with [1 0] -> Separables: true
+Comparing [1 1 1] with [1 1] -> Separables: false
+
+-> [7] | [5]
+Possible binari values for a group of 1 elements: [[0] [1]]
+Possible binari values for a group of 1 elements: [[0] [1]]
+
+Comparing [0] with [0] -> Separables: false
+Comparing [0] with [1] -> Separables: true
+
+Comparing [1] with [0] -> Separables: true
+Comparing [1] with [1] -> Separables: false
+
+Total favorable cases: 76
+Total desfavorable cases: 64
+PASS
+ok  	github.com/mifeis/Separable-Codes/test	0.316s
