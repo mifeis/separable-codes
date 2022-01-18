@@ -25,7 +25,7 @@ func main() {
 func getAllCombinations(c []int) int {
 	var all int
 
-	for reps := 2; reps < lib.REPS; reps++ {
+	for reps := 0; reps < lib.REPS; reps++ {
 		arraymap := combinations.List(c, reps)
 		all += lib.LogCombinations(arraymap, reps)
 	}
