@@ -18,7 +18,7 @@ func main() {
 	initial := lib.Init(0, lib.WORDS)
 	all := getAllCombinations(initial)
 
-	fmt.Println("Total combinations (til", lib.REPS-1, "elements repetitions ) for a code of "+strconv.Itoa(lib.WORDS)+" words:", all)
+	fmt.Println("Total combinations (til", lib.REPS-1, "elements repetitions) for a code of "+strconv.Itoa(lib.WORDS)+" words:", all)
 }
 
 //Canviar

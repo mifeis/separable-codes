@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	REPS = 1 //nodisjuntes
+	REPS = 3 //nodisjuntes
 
 	WORDS = 8
 	GROUP = 3

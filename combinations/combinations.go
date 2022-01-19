@@ -11,12 +11,12 @@ func List(initial []int, reps int) []lib.Map {
 	arraymap := []lib.Map{}
 
 	//First combinations of GROUP elements
-	groups := getCombins(initial, []int{}, 0)
+	groups := getCombins(initial, []int{}, reps, 0)
 	for _, g := range groups {
 		//		log.Println(reps, len(g))
 		if reps <= len(g) {
 			list := make(map[int][][]int)
-			combins = getCombins(lib.RemoveSlice(initial, g[:]), g, reps)
+			combins = getCombins(lib.RemoveSlice(initial, g[:]), g, 0, reps)
 			for _, c := range combins {
 				list[len(c)] = append(list[len(c)], c)
 				//			list = append(list, combins[i])
@@ -32,14 +32,15 @@ func List(initial []int, reps int) []lib.Map {
 }
 
 //compta els casos incomplerts i complerts
-func getCombins(remaining []int, g []int, reps int) map[int][]int {
+func getCombins(remaining []int, g []int, init int, reps int) map[int][]int {
 	var key int
+	maxLen := lib.GROUP - len(g)
 	combins := make(map[int][]int, 1000)
-	maxLen := lib.GROUP
 
 	if len(g) != 0 {
 		maxLen = len(g)
 	}
+
 	//if maxlen==reps break? casos 1 1, 34, 34 ...repetits
 	//argum GROUP en cmombinations cambiara depenent del index del primer grup (passat per argument desde main)
 	in := combin.Combinations(maxLen, reps)
@@ -47,7 +48,6 @@ func getCombins(remaining []int, g []int, reps int) map[int][]int {
 		var slice1 []int
 		//valors no disjunts
 		for r := 0; r < reps; r++ {
-			//IF REPS!=group-K?
 			slice1 = append(slice1, g[in[p][r]])
 		}
 		if len(slice1) != 0 {
@@ -56,9 +56,8 @@ func getCombins(remaining []int, g []int, reps int) map[int][]int {
 		}
 
 		//valors disjunts
-		//Casos complerts:
-		for l := 0; l < maxLen-reps; l++ {
-			indexes := combin.Combinations(len(remaining), l+1) //-k?
+		for l := maxLen - reps; l > init; l-- {
+			indexes := combin.Combinations(len(remaining), l)
 			for _, index := range indexes {
 				var slice2 []int
 				slice2 = append(slice2, slice1...)
