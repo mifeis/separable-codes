@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"testing"
 
@@ -17,10 +16,8 @@ import (
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 
 func TestTeoric(t *testing.T) {
-	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words is small")
-	}
 	var res int
+
 	n := lib.WORDS
 	k := lib.GROUP
 
@@ -30,20 +27,13 @@ func TestTeoric(t *testing.T) {
 	 * CombinationGenerator may alternatively be used to generate the combinations iteratively instead of collectively,
 	 * or IndexToCombination for random access.
 	 */
-	//	fmt.Println("First group possible combinations:", len(list))
 
 	for i := 0; i < lib.REPS; i++ {
 		var all int
 		fmt.Println(i, "elements REPETITIONS:")
 
-		for l1 := lib.GROUP; l1 > 0; l1-- {
+		for l1 := lib.GROUP; l1 > i; l1-- {
 			var tot int
-
-			if i > l1 {
-				break
-			}
-
-			fmt.Println("MAX length:", l1)
 
 			for l2 := l1; l2 > 0; l2-- {
 				var total int
@@ -51,8 +41,7 @@ func TestTeoric(t *testing.T) {
 				if i > l2 && l2 < l1 {
 					break
 				}
-
-				fmt.Println("2nd:", l2)
+				fmt.Println(l1, "x", l2, "->")
 				//i=1
 				i1 := lib.GROUP - l1
 				i2 := lib.GROUP - l2

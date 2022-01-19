@@ -13,13 +13,11 @@ func List(initial []int, reps int) []lib.Map {
 	//First combinations of GROUP elements
 	groups := getCombins(initial, []int{}, reps, 0)
 	for _, g := range groups {
-		//		log.Println(reps, len(g))
 		if reps <= len(g) {
 			list := make(map[int][][]int)
 			combins = getCombins(lib.RemoveSlice(initial, g[:]), g, 0, reps)
 			for _, c := range combins {
 				list[len(c)] = append(list[len(c)], c)
-				//			list = append(list, combins[i])
 			}
 			m := lib.Map{
 				First:   g,
@@ -41,8 +39,6 @@ func getCombins(remaining []int, g []int, init int, reps int) map[int][]int {
 		maxLen = len(g)
 	}
 
-	//if maxlen==reps break? casos 1 1, 34, 34 ...repetits
-	//argum GROUP en cmombinations cambiara depenent del index del primer grup (passat per argument desde main)
 	in := combin.Combinations(maxLen, reps)
 	for p := 0; p < len(in); p++ {
 		var slice1 []int

@@ -6,10 +6,10 @@ import (
 )
 
 const (
-	REPS = 3 //nodisjuntes
+	REPS = 4
 
-	WORDS = 8
-	GROUP = 3
+	WORDS = 16
+	GROUP = 4
 )
 
 //Estructura que conté el primer element d'un tamany desde GROUP elements fins a 1

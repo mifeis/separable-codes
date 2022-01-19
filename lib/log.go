@@ -2,15 +2,14 @@ package lib
 
 import (
 	"fmt"
-	"log"
 )
 
-func LogTipus(k int) {
-	fmt.Println("\n--------------------------------------------------------------------------------")
-	fmt.Println("\t\t\t\t\t\t\t\tmax length:", k)
-	fmt.Println("--------------------------------------------------------------------------------")
-
-	log.Print("max length: ", k)
+func LogTipus(k1 int, k2 int) {
+	/*	fmt.Println("\n--------------------------------------------------------------------------------")
+		fmt.Println("\t\t\t\t\t\t\t\tmax length:", k)
+		fmt.Println("--------------------------------------------------------------------------------")
+	*/
+	fmt.Println(k1, "x", k2, "->")
 }
 
 func LogFavs(favs int, nofavs int) {
@@ -28,41 +27,34 @@ func LogDeps(total int) {
 
 func LogCombinations(arraymap []Map, reps int) int {
 	var res int
-	//	arraymaps := make(map[int][]Map)
 
-	fmt.Println("\t\t\t\t\t\tCombinations for", reps, "ELEMENT REPETITIONS")
-	log.Print(reps, " element repetitions:")
+	//	fmt.Println("\t\t\t\t\t\tCombinations for", reps, "ELEMENT REPETITIONS")
+	fmt.Println(reps, "element repetitions:")
 
 	arraymaps := Sort(arraymap)
-	/*	for _, m := range arraymap {
-			arraymaps[len(m.First)] = append(arraymaps[len(m.First)], m)
-		}
-	*/
 	for k, am := range arraymaps {
-		LogTipus(k)
 		total := make(map[int]int)
-		//{1,2,3}	{4,5,6}{4,5}{4}...
-		//{1,2,4}	{4,5}{6}{3,6,7}{7}...
-		//{1,2,6}	{4}{7}{8}{4,5,7}...
 		for _, m := range am {
-			//{1,2,3}	{4,5,6}{4,5}{4}...
 			for k2 := range m.Seconds {
-				for _, s := range m.Seconds[k2] {
-					fmt.Println("\t\t", m.First, "|", s)
+				for _, _ = range m.Seconds[k2] {
+					//					fmt.Println("\t\t", m.First, "|", s)
 					total[k2]++
 				}
 			}
-			fmt.Println()
+			//			fmt.Println()
 		}
 		var all int
 		for l, v := range total {
-			if (l == k) && (k != reps) { //si contabilitzem {1},{1} exemple
+			if l == k {
 				v = v / 2
 			}
 			all += v
+			LogTipus(k, l)
+			fmt.Println(v)
 		}
-		fmt.Println("Total:", all)
-		log.Println(all)
+
+		//		fmt.Println("Total:", all)
+		fmt.Println("Total", all)
 		res += all
 	}
 	return res
