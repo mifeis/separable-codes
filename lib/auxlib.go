@@ -89,10 +89,12 @@ func SetValues(first Code, second *Code) {
 	for i := 0; i < len(second.Row); i++ {
 		second.Values = append(second.Values, 2)
 	}
+	//	log.Println(first, second)
+
 	for m, v1 := range first.Row {
 		for n, v2 := range second.Row {
 			if v1 == v2 {
-				second.Values[m] = first.Values[n]
+				second.Values[n] = first.Values[m]
 			}
 		}
 	}
@@ -133,4 +135,18 @@ func Separable(group1 []int, group2 []int) bool {
 	}
 	fmt.Println(" -> Separables:", isSep)
 	return isSep
+}
+
+//Says if the two arrays are dependent or not
+func Dependent(array1 []int, array2 []int) bool {
+	for _, v1 := range array1 {
+		for _, v2 := range array2 {
+			if v1 == v2 {
+				//				fmt.Println(" -> Dependents")
+				return true
+			}
+		}
+	}
+	//	fmt.Println(" -> NO Dependents")
+	return false
 }

@@ -13,6 +13,19 @@ func LogTipus(k int) {
 	log.Print("max length: ", k)
 }
 
+func LogFavs(favs int, nofavs int) {
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println("Total favorable cases:", favs)
+	fmt.Println("Total desfavorable cases:", nofavs)
+	fmt.Println("--------------------------------------------------------------------------------")
+}
+
+func LogDeps(total int) {
+	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println("Total dependent pairs:", total)
+	fmt.Println("--------------------------------------------------------------------------------")
+}
+
 func LogCombinations(arraymap []Map, reps int) int {
 	var res int
 	//	arraymaps := make(map[int][]Map)

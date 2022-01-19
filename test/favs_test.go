@@ -19,33 +19,32 @@ func TestFavs(t *testing.T) {
 	}
 	initial := lib.Init(0, lib.WORDS)
 	for i := 0; i < lib.REPS; i++ {
-		lib.LogTipus(lib.GROUP - i)
+		fmt.Println("\n...Getting favorable and desfavorable cases for", i, "element repetitions")
 		favs, nofavs := getFavs(initial, i)
-		fmt.Println("Total favorable cases:", favs)
-		fmt.Println("Total desfavorable cases:", nofavs)
+		lib.LogFavs(favs, nofavs)
 	}
-
 }
 
 //Funció que retorna els casos favorables i no favorables tenint en compte totes les possibles combinacions
 //de grups disjunts (List0) i no disjunts (List1, List2) per a un array inicial de WORDS paraules i grups de GROUP elements
-func getFavs(initial []int, tipus int) (int, int) {
+func getFavs(initial []int, reps int) (int, int) {
 	var favs, nofavs int
 	var first, second lib.Code
 
-	arraymap := combinations.List(initial, tipus)
+	arraymap := combinations.List(initial, reps)
 	arraymaps := lib.Sort(arraymap)
 
-	fmt.Println("...Getting favorable and desfavorable cases for", tipus, "element repetitions")
 	for _, am := range arraymaps {
 		//Set a combination
 		for _, m := range am {
 			first.Row = m.First //rows
 			for _, s := range m.Seconds {
+				fmt.Println()
 				second.Row = s[0] //rows
 				//	break
 				fmt.Println("->", first.Row, "|", second.Row)
 
+				//retornar a la mateixa funcio
 				defaultvalues1 := lib.GetDefaultValues(len(first.Row))
 				defaultvalues2 := lib.GetDefaultValues(len(second.Row))
 				// Tipus 1: {1,2,3}{4,5,6}
@@ -56,7 +55,7 @@ func getFavs(initial []int, tipus int) (int, int) {
 					fmt.Println()
 					//contabilitzar d'alguna manera els casos repetits-> recorre l'array fins a GROUP-elements cops?
 
-					for j := 0; j < (len(defaultvalues2) / (tipus + 1)); j++ {
+					for j := 0; j < (len(defaultvalues2) / (reps + 1)); j++ {
 						//Set the repe elements of group
 						lib.SetValues(first, &second)
 						for l, v := range second.Values {
@@ -72,7 +71,6 @@ func getFavs(initial []int, tipus int) (int, int) {
 						}
 					}
 				}
-				fmt.Println()
 			}
 			break
 		}
