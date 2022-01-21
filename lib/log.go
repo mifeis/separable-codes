@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"strings"
 )
 
 func LogTipus(k1 int, k2 int) {
@@ -19,8 +20,13 @@ func LogFavs(favs int, nofavs int) {
 	fmt.Println("--------------------------------------------------------------------------------")
 }
 
-func LogDeps(total int) {
+func LogDeps(key string, v []int, total int) {
+	strings.SplitAfter(key, "")
+	k1 := string(key[0])
+	k2 := string(key[1])
+
 	fmt.Println("--------------------------------------------------------------------------------")
+	fmt.Println(k1, "x", k2, v)
 	fmt.Println("Total dependent pairs:", total)
 	fmt.Println("--------------------------------------------------------------------------------")
 }
@@ -36,12 +42,12 @@ func LogCombinations(arraymap []Map, reps int) int {
 		total := make(map[int]int)
 		for _, m := range am {
 			for k2 := range m.Seconds {
-				for _, _ = range m.Seconds[k2] {
-					//					fmt.Println("\t\t", m.First, "|", s)
+				for _, s := range m.Seconds[k2] {
+					fmt.Println("\t\t", m.First, "|", s)
 					total[k2]++
 				}
 			}
-			//			fmt.Println()
+			fmt.Println()
 		}
 		var all int
 		for l, v := range total {
@@ -53,7 +59,6 @@ func LogCombinations(arraymap []Map, reps int) int {
 			fmt.Println(v)
 		}
 
-		//		fmt.Println("Total:", all)
 		fmt.Println("Total", all)
 		res += all
 	}

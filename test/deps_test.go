@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"testing"
 
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -11,61 +12,125 @@ import (
 
 //Test que retorna el numero de combinacions dependents
 
-func TestDep(t *testing.T) {
+func TestDeps(t *testing.T) {
 	if lib.WORDS < 2*lib.GROUP {
 		log.Fatal("num of words must be smaller than 2 * group elements")
 	}
 	initial := lib.Init(0, lib.WORDS)
 	fmt.Println("\n...Getting dependence")
-	deps := getDeps(initial)
-	lib.LogDeps(deps)
+	getDeps(initial)
 }
 
-func getDeps(initial []int) int {
-	var depsdiv, deps int
+func getDeps(initial []int) {
 	var array []map[int][]lib.Map
-	var arraypairs [][]int
-
-	//arraymaps[0]: 0 repetitions
-	//arraymaps[1]: 1 repetitions
-	//arraymaps[2]: 2 repetitions
+	arraypairs := make(map[string][][]int)
+	var key string
 
 	for i := 0; i < lib.REPS; i++ {
 		arraymap := combinations.List(initial, i)
 		array = append(array, lib.Sort(arraymap))
 	}
 
-	for _, arraymaps := range array {
+	for reps, arraymaps := range array {
 		//Set a combination
-		for _, am := range arraymaps {
+		for k1, am := range arraymaps {
 			for _, m := range am {
-				for _, ss := range m.Seconds {
-					//					fmt.Println("first group key:", k1)
-					//					fmt.Println("second group key:", k2)
+				for k2, ss := range m.Seconds {
 					for _, s := range ss {
-						pair := append(m.First, s...)
-						//						fmt.Println(pair)
-						arraypairs = append(arraypairs, pair)
+						var first, second, group []int
+						key = strconv.Itoa(k1) + strconv.Itoa(k2)
+						first = append(first, m.First...)
+						second = append(second, s...)
+						group = append(first, second...)
+						if k1 == k2 {
+							if !inversAlreadyInArray(arraypairs[key], group, reps) {
+								//la key pot ser array de reps + group1xgroup2
+								arraypairs[key] = append(arraypairs[key], group)
+							}
+						} else {
+							arraypairs[key] = append(arraypairs[key], group)
+						}
 					}
 				}
 			}
 		}
 	}
-	//Falta comprobar
-	for o, v := range arraypairs {
-		for i := 0; i < len(arraypairs); i++ {
-			if lib.Dependent(v, arraypairs[(o+i)%len(arraypairs)]) {
-				//for l:=0;l<lib.GROUP;l++ en canvi de if if if
-				// +o fer arraypairs com a map amb clau de num de reps
-				if len(v) == 2*lib.GROUP {
-					depsdiv++
+	//	fmt.Println(arraypairs)
+	for k, arraypair := range arraypairs {
+		for o, v := range arraypair {
+			var deps int
+
+			for key, arrayToCompare := range arraypairs {
+				var init, fin int
+				//				fmt.Println(arrayToCompare)
+				if k == key {
+					init = o + 1
+					fin = 1
 				} else {
-					//calcular mides i possibles dobles countings
-					deps++
+					init, fin = 0, 0
+				}
+				for i := 0; i < len(arrayToCompare)-fin; i++ {
+					index := (init + i) % (len(arrayToCompare))
+					if lib.Dependent(v, arrayToCompare[index]) {
+						deps++
+					}
 				}
 			}
+			lib.LogDeps(k, v, deps)
 		}
 	}
 
-	return deps + (depsdiv / 2)
 }
+
+func inversAlreadyInArray(arraypairs [][]int, pair []int, reps int) bool {
+	var length int
+	//	fmt.Print(pair)
+
+	for _, p := range arraypairs {
+		length = compareArrays(p, pair)
+		//		fmt.Print(" len:", length)
+		if (len(pair) + reps*2) == length {
+			//			fmt.Println(" repe")
+			return true
+		}
+	}
+	//	fmt.Println()
+
+	return false
+}
+
+/*
+[3 5 7 3 5 2]
+repe [3 5 7 3 7 4]
+
+repe [3 5 7 5 7 4]
+repe [3 5 7 5 7 6]
+[3 5 7 3 7 2]
+repe [3 5 7 3 5 8]
+repe [3 5 7 5 7 8]
+repe [3 5 7 3 7 1]
+repe [3 5 7 3 5 1]
+repe [3 5 7 3 7 6]
+repe [3 5 7 3 5 6]
+[3 5 7 5 7 2]
+repe [3 5 7 3 5 4]
+repe [3 5 7 3 7 8]
+repe [3 5 7 5 7 1]
+
+map[33:[[3 5 7 3 5 2] [3 5 7 3 7 2] [3 5 7 5 7 2]]]
+*/
+func compareArrays(array1 []int, array2 []int) int {
+	var l int
+	//	fmt.Println("comparing len:", array1, array1)
+	for _, v1 := range array1 {
+		for _, v2 := range array2 {
+			if v1 == v2 {
+				l++
+			}
+		}
+	}
+	return l
+}
+
+//		[3 5 7 3 5 2]
+//repe 	[3 5 7 3 7 4]

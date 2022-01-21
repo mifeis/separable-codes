@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	REPS = 4
+	REPS = 3
 
-	WORDS = 16
+	WORDS = 8
 	GROUP = 4
 )
 
@@ -142,6 +142,7 @@ func Dependent(array1 []int, array2 []int) bool {
 	for _, v1 := range array1 {
 		for _, v2 := range array2 {
 			if v1 == v2 {
+				//			fmt.Println(array1, " dependent with ", array2)
 				//				fmt.Println(" -> Dependents")
 				return true
 			}
