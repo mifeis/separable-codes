@@ -6,7 +6,7 @@ Es tracta d'uns algoritmes que calculen l'existencia de codis separables a parti
 
 El codi proveeix totes les combinacions possibles d'un codi de WORDS paraules per GROUP elements (WORDS sobre GROUP en combinatoria), retorna els casos favorables i desfavorables i, la dependencia entre events.
 
-Els resultats dels tests s'exporten a un fitxer excel dins la carpeta /out.
+Els resultats dels tests s'exporten a diferents fitxers excel dins la carpeta /out.
 
 **Install**
 
