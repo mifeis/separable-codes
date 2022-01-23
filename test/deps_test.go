@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strconv"
+	"strings"
 	"testing"
 
+	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/mifeis/Separable-Codes/combinations"
 	"github.com/mifeis/Separable-Codes/lib"
 )
@@ -38,13 +41,12 @@ func getDeps(initial []int) {
 				for k2, ss := range m.Seconds {
 					for _, s := range ss {
 						var first, second, group []int
-						key = strconv.Itoa(k1) + strconv.Itoa(k2)
+						key = strconv.Itoa(reps) + strconv.Itoa(k1) + strconv.Itoa(k2)
 						first = append(first, m.First...)
 						second = append(second, s...)
 						group = append(first, second...)
 						if k1 == k2 {
 							if !inversAlreadyInArray(arraypairs[key], group, reps) {
-								//la key pot ser array de reps + group1xgroup2
 								arraypairs[key] = append(arraypairs[key], group)
 							}
 						} else {
@@ -55,14 +57,43 @@ func getDeps(initial []int) {
 			}
 		}
 	}
-	//	fmt.Println(arraypairs)
+
+	xlsx := excelize.NewFile()
+	title, _ := xlsx.NewStyle(lib.TITLE)
+	subtitle, _ := xlsx.NewStyle(lib.SUBTITLE)
+	text, _ := xlsx.NewStyle(lib.TEXT)
+	bold, _ := xlsx.NewStyle(lib.BOLD)
+	fill, _ := xlsx.NewStyle(lib.FILL)
+
+	xlsx.SetSheetName("Sheet1", "Summary")
+	intro := "DEPENDENCE BETWEEN EVENTS"
+
+	xlsx.SetCellValue("Summary", "A1", intro)
+	colf := excelize.ToAlphaString(12 - 1)
+	xlsx.MergeCell("Summary", "A1", colf+"1")
+	xlsx.SetCellStyle("Summary", "A1", colf+"1", title)
+
+	xlsx.SetCellValue("Summary", "A2", "Array")
+	xlsx.SetCellValue("Summary", "D2", "Type")
+	xlsx.SetCellValue("Summary", "G2", "Element repetitions")
+	xlsx.SetCellValue("Summary", "J2", "Total")
+
+	xlsx.SetCellStyle("Summary", "J2", "L2", subtitle)
+	xlsx.SetCellStyle("Summary", "A2", "G2", bold)
+
+	xlsx.MergeCell("Summary", "A2", "C2")
+	xlsx.MergeCell("Summary", "D2", "F2")
+	xlsx.MergeCell("Summary", "G2", "I2")
+	xlsx.MergeCell("Summary", "J2", "L2")
+
+	var results []int
+	var counted bool
 	for k, arraypair := range arraypairs {
 		for o, v := range arraypair {
 			var deps int
 
 			for key, arrayToCompare := range arraypairs {
 				var init, fin int
-				//				fmt.Println(arrayToCompare)
 				if k == key {
 					init = o + 1
 					fin = 1
@@ -76,49 +107,67 @@ func getDeps(initial []int) {
 					}
 				}
 			}
-			lib.LogDeps(k, v, deps)
+
+			for _, v := range results {
+				if v == deps {
+					counted = true
+				} else {
+					counted = false
+				}
+			}
+
+			if !counted {
+				results = append(results, deps)
+				strings.SplitAfter(k, "")
+
+				reps, _ := strconv.Atoi(string(k[0]))
+				k1 := string(k[1])
+				k2 := string(k[2])
+				log.Println(k)
+
+				lib.LogDeps(k1, k2, reps, v, deps)
+				filf := strconv.Itoa(len(results) + 2)
+				xlsx.SetCellValue("Summary", "A"+filf, v)
+				xlsx.SetCellValue("Summary", "D"+filf, k1+"x"+k2)
+				xlsx.SetCellValue("Summary", "G"+filf, reps)
+				xlsx.SetCellValue("Summary", "J"+filf, deps)
+				xlsx.SetCellStyle("Summary", "A3", "I"+filf, text)
+				xlsx.SetCellStyle("Summary", "J3", "J"+filf, fill)
+				xlsx.MergeCell("Summary", "A"+filf, "C"+filf)
+				xlsx.MergeCell("Summary", "D"+filf, "F"+filf)
+				xlsx.MergeCell("Summary", "G"+filf, "I"+filf)
+				xlsx.MergeCell("Summary", "J"+filf, "L"+filf)
+
+			}
 		}
 	}
+	index := xlsx.GetSheetIndex("Summary")
+	xlsx.SetActiveSheet(index)
+
+	path, _ := os.Getwd()
+	split := strings.Split(path, "\\")
+	var n string
+	for i := 0; i < len(split)-1; i++ {
+		n += split[i] + "\\"
+	}
+	filename := "dependence" + strconv.Itoa(lib.WORDS) + "x" + strconv.Itoa(lib.GROUP) + ".xlsx"
+	xlsx.SaveAs(n + "out/test/deps/" + filename)
 
 }
 
 func inversAlreadyInArray(arraypairs [][]int, pair []int, reps int) bool {
 	var length int
-	//	fmt.Print(pair)
 
 	for _, p := range arraypairs {
 		length = compareArrays(p, pair)
-		//		fmt.Print(" len:", length)
 		if (len(pair) + reps*2) == length {
-			//			fmt.Println(" repe")
 			return true
 		}
 	}
-	//	fmt.Println()
 
 	return false
 }
 
-/*
-[3 5 7 3 5 2]
-repe [3 5 7 3 7 4]
-
-repe [3 5 7 5 7 4]
-repe [3 5 7 5 7 6]
-[3 5 7 3 7 2]
-repe [3 5 7 3 5 8]
-repe [3 5 7 5 7 8]
-repe [3 5 7 3 7 1]
-repe [3 5 7 3 5 1]
-repe [3 5 7 3 7 6]
-repe [3 5 7 3 5 6]
-[3 5 7 5 7 2]
-repe [3 5 7 3 5 4]
-repe [3 5 7 3 7 8]
-repe [3 5 7 5 7 1]
-
-map[33:[[3 5 7 3 5 2] [3 5 7 3 7 2] [3 5 7 5 7 2]]]
-*/
 func compareArrays(array1 []int, array2 []int) int {
 	var l int
 	//	fmt.Println("comparing len:", array1, array1)
@@ -131,6 +180,3 @@ func compareArrays(array1 []int, array2 []int) int {
 	}
 	return l
 }
-
-//		[3 5 7 3 5 2]
-//repe 	[3 5 7 3 7 4]
