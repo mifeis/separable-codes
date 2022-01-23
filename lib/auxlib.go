@@ -6,10 +6,9 @@ import (
 )
 
 const (
-	REPS = 4
-
 	WORDS = 8
 	GROUP = 4
+	REPS  = GROUP
 )
 
 //Estructura que conté el primer element d'un tamany desde GROUP elements fins a 1

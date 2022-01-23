@@ -14,7 +14,6 @@ import (
 )
 
 //Test que retorna el numero de combinacions dependents
-
 func TestDeps(t *testing.T) {
 	if lib.WORDS < 2*lib.GROUP {
 		log.Fatal("num of words must be smaller than 2 * group elements")
@@ -86,8 +85,10 @@ func getDeps(initial []int) {
 	xlsx.MergeCell("Summary", "G2", "I2")
 	xlsx.MergeCell("Summary", "J2", "L2")
 
-	var results []int
+	var results []string
 	var counted bool
+	chartdata := make(map[string][][]int)
+
 	for k, arraypair := range arraypairs {
 		for o, v := range arraypair {
 			var deps int
@@ -109,7 +110,7 @@ func getDeps(initial []int) {
 			}
 
 			for _, v := range results {
-				if v == deps {
+				if v == k {
 					counted = true
 				} else {
 					counted = false
@@ -117,13 +118,12 @@ func getDeps(initial []int) {
 			}
 
 			if !counted {
-				results = append(results, deps)
+				results = append(results, k)
 				strings.SplitAfter(k, "")
 
 				reps, _ := strconv.Atoi(string(k[0]))
 				k1 := string(k[1])
 				k2 := string(k[2])
-				log.Println(k)
 
 				lib.LogDeps(k1, k2, reps, v, deps)
 				filf := strconv.Itoa(len(results) + 2)
@@ -137,11 +137,54 @@ func getDeps(initial []int) {
 				xlsx.MergeCell("Summary", "D"+filf, "F"+filf)
 				xlsx.MergeCell("Summary", "G"+filf, "I"+filf)
 				xlsx.MergeCell("Summary", "J"+filf, "L"+filf)
-
+				data := []int{reps, deps}
+				chartdata[k1+"x"+k2] = append(chartdata[k1+"x"+k2], data)
 			}
 		}
 	}
-	index := xlsx.GetSheetIndex("Summary")
+
+	xlsx.NewSheet("Graph")
+	var serie []string
+
+	f := 2
+	xlsx.SetColVisible("Graph", "A", false)
+	for c := 0; c < lib.GROUP; c++ {
+		col := excelize.ToAlphaString(c + 1)
+		xlsx.SetCellValue("Graph", col+"1", c)
+		xlsx.SetColVisible("Graph", col, false)
+	}
+	coli := excelize.ToAlphaString(1)
+	colf = excelize.ToAlphaString(lib.GROUP)
+	for dimension, d := range chartdata {
+		fil := strconv.Itoa(f)
+		xlsx.SetCellValue("Graph", "A"+fil, dimension)
+		f++
+		var col string
+		for _, data := range d {
+			col = excelize.ToAlphaString(data[0] + 1)
+			xlsx.SetCellValue("Graph", col+fil, data[1])
+		}
+		serie = append(serie, `{"name":"Graph!$A$`+fil+`","categories":"Graph!$B$1:$`+colf+`$1","values":"Graph!$`+coli+`$`+fil+`:$`+colf+`$`+fil+`"}`)
+	}
+	var series string
+	for i, s := range serie {
+		if i != len(serie)-1 {
+			series = series + s + `,`
+		} else {
+			series = series + s
+		}
+	}
+
+	colf = excelize.ToAlphaString(lib.GROUP + 2)
+	xlsx.AddChart("Graph", colf+"2",
+		`{
+	"type":"col",
+	"series":`+`[`+series+`]`+`,
+	"title":
+		{"name":"Dependence between events"}
+	}`)
+
+	index := xlsx.GetSheetIndex("Graph")
 	xlsx.SetActiveSheet(index)
 
 	path, _ := os.Getwd()
