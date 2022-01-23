@@ -1,12 +1,8 @@
-package main
+package test
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"strconv"
-	"strings"
-	"testing"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -17,40 +13,24 @@ import (
 //Fav: {0,0,0}|{0,0,1}, {0,0,1}|{1,1,1}, {1,1,1}|{0,0,0}, ...
 //desFav: {0,0,0}|{0,0,0}, {0,0,1}|{1,0,1}, ...
 
-func TestFavs(t *testing.T) {
-	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words is small")
-	}
-	initial := lib.Init(0, lib.WORDS)
+func GetFavourables(initial []int) {
+	fmt.Println("\n...Getting favorable and desfavorable cases")
 	for i := 0; i < lib.REPS; i++ {
-		fmt.Println("\n...Getting favorable and desfavorable cases for", i, "element repetitions")
-		/*favs, nofavs := */ getFavs(initial, i)
-		//lib.LogFavs(favs, nofavs)
+		arraymap := combinations.List(initial, i)
+		arraymaps := lib.Sort(arraymap)
+		GetFavs(arraymaps, i)
 	}
+	fmt.Println("Done! Check /out/test/favs folder")
 }
 
 //Funció que retorna els casos favorables i no favorables tenint en compte totes les possibles combinacions
 //de grups disjunts (List0) i no disjunts (List1, List2) per a un array inicial de WORDS paraules i grups de GROUP elements
-func getFavs(initial []int, reps int) /*(int, int)*/ {
+func GetFavs(arraymaps map[int][]lib.Map, reps int) {
 	var first, second lib.Code
 	var c int
-
-	arraymap := combinations.List(initial, reps)
-	arraymaps := lib.Sort(arraymap)
-
 	xlsx := excelize.NewFile()
-	title, _ := xlsx.NewStyle(lib.TITLE)
-	subtitle, _ := xlsx.NewStyle(lib.SUBTITLE)
-	text, _ := xlsx.NewStyle(lib.TEXT)
-	bold, _ := xlsx.NewStyle(lib.BOLD)
-
-	xlsx.SetSheetName("Sheet1", "Summary")
-	intro := "FAVORABLE AND DESFAVORABLE COMBINATIONS FOR " + strconv.Itoa(reps) + " ELEMENT REPETITIONS"
-
-	xlsx.SetCellValue("Summary", "A1", intro)
-	colf := excelize.ToAlphaString(lib.GROUP*2 + 2)
-	xlsx.MergeCell("Summary", "A1", colf+"1")
-	xlsx.SetCellStyle("Summary", "A1", colf+"1", title)
+	title, subtitle, text, bold, _ := lib.GetExcelStyles(xlsx)
+	lib.SetExcelIntro(xlsx, "FAVORABLE AND DESFAVORABLE COMBINATIONS FOR "+strconv.Itoa(reps)+" ELEMENT REPETITIONS", lib.GROUP*2+3, title)
 
 	xlsx.SetCellValue("Summary", "A3", "Favourable")
 	xlsx.SetCellValue("Summary", "A4", "Unfavourable")
@@ -73,15 +53,16 @@ func getFavs(initial []int, reps int) /*(int, int)*/ {
 				length := strconv.Itoa(k) + "x" + strconv.Itoa(k2)
 				xlsx.NewSheet(length)
 
-				fmt.Println()
-				fmt.Println("->", first.Row, "|", second.Row)
+				//				fmt.Println()
+				//				fmt.Println("->", first.Row, "|", second.Row)
 
 				//retornar a la mateixa funcio
 				defaultvalues1 := lib.GetDefaultValues(len(first.Row))
 				defaultvalues2 := lib.GetDefaultValues(len(second.Row))
+				f := 1
 				for i := 0; i < len(defaultvalues1); i++ {
 					first.Values = defaultvalues1[i]
-					fmt.Println()
+					//					fmt.Println()
 
 					for j := 0; j < (len(defaultvalues2) / (reps + 1)); j++ {
 						//Set the repe elements of group
@@ -92,11 +73,12 @@ func getFavs(initial []int, reps int) /*(int, int)*/ {
 								second.Values[l] = defaultvalues2[j][l]
 							}
 						}
-						fil := strconv.Itoa(j + 1)
+						fil := strconv.Itoa(f)
 						xlsx.SetCellValue(length, "A"+fil, first.Values)
 						xlsx.SetCellValue(length, "B"+fil, "<->")
 						xlsx.SetCellValue(length, "C"+fil, second.Values)
 						xlsx.SetCellStyle(length, "A"+fil, "C"+fil, text)
+						f++
 
 						if lib.Separable(first.Values, second.Values) {
 							xlsx.SetCellValue(length, "D"+fil, "Separable")
@@ -109,31 +91,20 @@ func getFavs(initial []int, reps int) /*(int, int)*/ {
 						xlsx.SetCellStyle(length, "D"+fil, "E"+fil, bold)
 					}
 				}
-				col := excelize.ToAlphaString(2 + c)
+				col := excelize.ToAlphaString(c + 2)
+
 				xlsx.SetCellValue("Summary", col+"2", strconv.Itoa(k)+"x"+strconv.Itoa(k2))
 				xlsx.SetCellStyle("Summary", col+"2", col+"2", subtitle)
 				xlsx.SetCellValue("Summary", col+"3", favs)
 				xlsx.SetCellValue("Summary", col+"4", nofavs)
 				xlsx.SetCellValue("Summary", col+"5", favs+nofavs)
 				xlsx.SetCellStyle("Summary", col+"3", col+"4", text)
-				xlsx.SetCellStyle("Summary", col+"5", colf+"5", bold)
+				xlsx.SetCellStyle("Summary", col+"5", col+"5", bold)
 				c++
-				lib.LogFavs(favs, nofavs)
+				//				lib.LogFavs(favs, nofavs)
 			}
 			break
 		}
+		lib.SaveExcel(xlsx, 2, reps)
 	}
-	index := xlsx.GetSheetIndex("Summary")
-	xlsx.SetActiveSheet(index)
-
-	path, _ := os.Getwd()
-	split := strings.Split(path, "\\")
-	var n string
-	for i := 0; i < len(split)-1; i++ {
-		n += split[i] + "\\"
-	}
-	filename := "favorables" + strconv.Itoa(lib.WORDS) + "x" + strconv.Itoa(lib.GROUP) + "_" + strconv.Itoa(reps) + "_" + "element_repetitions.xlsx"
-	xlsx.SaveAs(n + "out/test/favs/" + filename)
-
-	//	return favs, nofavs
 }

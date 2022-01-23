@@ -1,12 +1,9 @@
-package main
+package test
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
-	"testing"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/mifeis/Separable-Codes/combinations"
@@ -14,13 +11,10 @@ import (
 )
 
 //Test que retorna el numero de combinacions dependents
-func TestDeps(t *testing.T) {
-	if lib.WORDS < 2*lib.GROUP {
-		log.Fatal("num of words must be smaller than 2 * group elements")
-	}
-	initial := lib.Init(0, lib.WORDS)
+func GetDependences(initial []int) {
 	fmt.Println("\n...Getting dependence")
 	getDeps(initial)
+	fmt.Println("Done! Check /out/test/deps folder")
 }
 
 func getDeps(initial []int) {
@@ -45,7 +39,7 @@ func getDeps(initial []int) {
 						second = append(second, s...)
 						group = append(first, second...)
 						if k1 == k2 {
-							if !inversAlreadyInArray(arraypairs[key], group, reps) {
+							if !lib.InversAlreadyInArray(arraypairs[key], group, reps) {
 								arraypairs[key] = append(arraypairs[key], group)
 							}
 						} else {
@@ -56,21 +50,9 @@ func getDeps(initial []int) {
 			}
 		}
 	}
-
 	xlsx := excelize.NewFile()
-	title, _ := xlsx.NewStyle(lib.TITLE)
-	subtitle, _ := xlsx.NewStyle(lib.SUBTITLE)
-	text, _ := xlsx.NewStyle(lib.TEXT)
-	bold, _ := xlsx.NewStyle(lib.BOLD)
-	fill, _ := xlsx.NewStyle(lib.FILL)
-
-	xlsx.SetSheetName("Sheet1", "Summary")
-	intro := "DEPENDENCE BETWEEN EVENTS"
-
-	xlsx.SetCellValue("Summary", "A1", intro)
-	colf := excelize.ToAlphaString(12 - 1)
-	xlsx.MergeCell("Summary", "A1", colf+"1")
-	xlsx.SetCellStyle("Summary", "A1", colf+"1", title)
+	title, subtitle, text, bold, fill := lib.GetExcelStyles(xlsx)
+	lib.SetExcelIntro(xlsx, "DEPENDENCE BETWEEN EVENTS", 12-1, title)
 
 	xlsx.SetCellValue("Summary", "A2", "Array")
 	xlsx.SetCellValue("Summary", "D2", "Type")
@@ -86,7 +68,6 @@ func getDeps(initial []int) {
 	xlsx.MergeCell("Summary", "J2", "L2")
 
 	var results []string
-	var counted bool
 	chartdata := make(map[string][][]int)
 
 	for k, arraypair := range arraypairs {
@@ -96,8 +77,7 @@ func getDeps(initial []int) {
 			for key, arrayToCompare := range arraypairs {
 				var init, fin int
 				if k == key {
-					init = o + 1
-					fin = 1
+					init, fin = o+1, 1
 				} else {
 					init, fin = 0, 0
 				}
@@ -109,11 +89,10 @@ func getDeps(initial []int) {
 				}
 			}
 
+			var counted bool
 			for _, v := range results {
 				if v == k {
 					counted = true
-				} else {
-					counted = false
 				}
 			}
 
@@ -125,7 +104,7 @@ func getDeps(initial []int) {
 				k1 := string(k[1])
 				k2 := string(k[2])
 
-				lib.LogDeps(k1, k2, reps, v, deps)
+				//				lib.LogDeps(k1, k2, reps, v, deps)
 				filf := strconv.Itoa(len(results) + 2)
 				xlsx.SetCellValue("Summary", "A"+filf, v)
 				xlsx.SetCellValue("Summary", "D"+filf, k1+"x"+k2)
@@ -145,8 +124,8 @@ func getDeps(initial []int) {
 
 	xlsx.NewSheet("Graph")
 	var serie []string
-
 	f := 2
+
 	xlsx.SetColVisible("Graph", "A", false)
 	for c := 0; c < lib.GROUP; c++ {
 		col := excelize.ToAlphaString(c + 1)
@@ -154,7 +133,7 @@ func getDeps(initial []int) {
 		xlsx.SetColVisible("Graph", col, false)
 	}
 	coli := excelize.ToAlphaString(1)
-	colf = excelize.ToAlphaString(lib.GROUP)
+	colf := excelize.ToAlphaString(lib.GROUP)
 	for dimension, d := range chartdata {
 		fil := strconv.Itoa(f)
 		xlsx.SetCellValue("Graph", "A"+fil, dimension)
@@ -184,42 +163,5 @@ func getDeps(initial []int) {
 		{"name":"Dependence between events"}
 	}`)
 
-	index := xlsx.GetSheetIndex("Graph")
-	xlsx.SetActiveSheet(index)
-
-	path, _ := os.Getwd()
-	split := strings.Split(path, "\\")
-	var n string
-	for i := 0; i < len(split)-1; i++ {
-		n += split[i] + "\\"
-	}
-	filename := "dependence" + strconv.Itoa(lib.WORDS) + "x" + strconv.Itoa(lib.GROUP) + ".xlsx"
-	xlsx.SaveAs(n + "out/test/deps/" + filename)
-
-}
-
-func inversAlreadyInArray(arraypairs [][]int, pair []int, reps int) bool {
-	var length int
-
-	for _, p := range arraypairs {
-		length = compareArrays(p, pair)
-		if (len(pair) + reps*2) == length {
-			return true
-		}
-	}
-
-	return false
-}
-
-func compareArrays(array1 []int, array2 []int) int {
-	var l int
-	//	fmt.Println("comparing len:", array1, array1)
-	for _, v1 := range array1 {
-		for _, v2 := range array2 {
-			if v1 == v2 {
-				l++
-			}
-		}
-	}
-	return l
+	lib.SaveExcel(xlsx, 3, 0)
 }

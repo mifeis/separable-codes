@@ -1,9 +1,22 @@
 package combinations
 
 import (
+	"fmt"
+
 	"github.com/mifeis/Separable-Codes/lib"
 	"gonum.org/v1/gonum/stat/combin"
 )
+
+//Canviar
+func GetCombinations(c []int) {
+	fmt.Println("\n...Getting combinations ")
+	for reps := 0; reps < lib.REPS; reps++ {
+		arraymap := List(c, reps)
+		arraymaps := lib.Sort(arraymap)
+		lib.WriteCombinations(arraymaps, reps)
+	}
+	fmt.Println("Done! Check /out/combinations folder")
+}
 
 //Funció que retorna els elements disjunts en grups de GROUP elements de l'array inicial
 func List(initial []int, reps int) []lib.Map {

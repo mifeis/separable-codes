@@ -1,13 +1,12 @@
 package lib
 
 import (
-	"fmt"
 	"math"
 )
 
 const (
 	WORDS = 8
-	GROUP = 4
+	GROUP = 3
 	REPS  = GROUP
 )
 
@@ -76,7 +75,7 @@ func GetDefaultValues(l int) [][]int {
 		}
 		values = append(values, slice[:])
 	}
-	fmt.Println("Possible binari values for a group of", l, "elements:", values)
+	//	fmt.Println("Possible binari values for a group of", l, "elements:", values)
 	return values
 }
 
@@ -104,7 +103,7 @@ func Separable(group1 []int, group2 []int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 
-	fmt.Print("Comparing ", group1, " with ", group2)
+	//	fmt.Print("Comparing ", group1, " with ", group2)
 	for _, v := range group1 {
 		first[v] = v
 	}
@@ -115,7 +114,7 @@ func Separable(group1 []int, group2 []int) bool {
 
 	var isSep bool
 	if len(first) == len(second) {
-		//Comprobar casos especials en que lengths iguals:
+		//Comproba casos especials en que lengths iguals:
 		//No separables-> (0,0,0) i (0,0,0), (1,1,1) i (1,1,1)
 		//Separables-> (0,0,0) i (1,1,1), (1,1,1) i (0,0,0)
 
@@ -132,7 +131,7 @@ func Separable(group1 []int, group2 []int) bool {
 
 		isSep = len(first) != len(second)
 	}
-	fmt.Println(" -> Separables:", isSep)
+	//	fmt.Println(" -> Separables:", isSep)
 	return isSep
 }
 
@@ -149,4 +148,30 @@ func Dependent(array1 []int, array2 []int) bool {
 	}
 	//	fmt.Println(" -> NO Dependents")
 	return false
+}
+
+func InversAlreadyInArray(arraypairs [][]int, pair []int, reps int) bool {
+	var length int
+
+	for _, p := range arraypairs {
+		length = CompareArrays(p, pair)
+		if (len(pair) + reps*2) == length {
+			return true
+		}
+	}
+
+	return false
+}
+
+func CompareArrays(array1 []int, array2 []int) int {
+	var l int
+	//	fmt.Println("comparing len:", array1, array1)
+	for _, v1 := range array1 {
+		for _, v2 := range array2 {
+			if v1 == v2 {
+				l++
+			}
+		}
+	}
+	return l
 }

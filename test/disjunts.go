@@ -1,14 +1,13 @@
-package main
+package test
 
 import (
 	"fmt"
 	"log"
-	"testing"
 
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-func TestTipus(t *testing.T) {
+func Disjunts() {
 	if lib.WORDS < 2*lib.GROUP {
 		log.Fatal("num of words is small")
 	}

@@ -1,9 +1,7 @@
-package main
+package test
 
 import (
 	"fmt"
-	"strconv"
-	"testing"
 
 	"github.com/mifeis/Separable-Codes/lib"
 	"gonum.org/v1/gonum/stat/combin"
@@ -15,11 +13,8 @@ import (
 //Tipus {1,2,3}|{1,4,5}, {1,2,3}|{4,2,5}, {1,2,3}|{4,5,3}, ...
 //Tipus {1,2,3}|{1,2,5}, {1,2,3}|{1,4,3}, {1,2,3}|{4,2,3}, ...
 
-func TestTeoric(t *testing.T) {
+func Theoretical(n int, k int) {
 	var res int
-
-	n := lib.WORDS
-	k := lib.GROUP
 
 	/* Combinations generates all of the combinations of k elements from a set of size n.
 	 * The returned slice has length Binomial(n,k) and each inner slice has length k.
@@ -41,7 +36,7 @@ func TestTeoric(t *testing.T) {
 				if i > l2 && l2 < l1 {
 					break
 				}
-				fmt.Println(l1, "x", l2, "->")
+				fmt.Print(l1, " x ", l2, " -> ")
 				//i=1
 				i1 := lib.GROUP - l1
 				i2 := lib.GROUP - l2
@@ -57,12 +52,11 @@ func TestTeoric(t *testing.T) {
 				tot += total
 			}
 			all += tot
-			fmt.Println("Total:", tot)
+			fmt.Println("Total:\t", tot)
 		}
-		fmt.Println("Total (", i, "elements repetitions )", all)
+		//		fmt.Println("Total (", i, "elements repetitions )", all)
 		res += all
-
 	}
 
-	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", res)
+	//	fmt.Println("Total cases for a code of "+strconv.Itoa(n)+" words in elements of", lib.GROUP, ":", res)
 }

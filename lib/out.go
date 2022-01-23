@@ -8,12 +8,24 @@ import (
 	"github.com/360EntSecGroup-Skylar/excelize"
 )
 
-func LogTipus(k1 int, k2 int) string {
-	tipus := strconv.Itoa(k1) + "x" + strconv.Itoa(k2) + "-> "
-	fmt.Print(tipus)
+const (
+	BOLD  = `{"alignment":{"horizontal":"center","vertical":"center"},"font":{"bold":true}}`
+	TITLE = `{"alignment":{"horizontal":"center","vertical":"center"},
+	"font":{"bold":true},"fill":{"type":"pattern","color":["#BDD7EE"],"pattern":1}}`
+	SUBTITLE = `{"alignment":{"horizontal":"center","vertical":"center"},
+	"font":{"bold":true},"fill":{"type":"pattern","color":["#F2F2F2"],"pattern":1}}`
+	TEXT = `{"alignment":{"horizontal":"center","vertical":"center"}}`
+	FILL = `{"alignment":{"horizontal":"center","vertical":"center"},
+	"fill":{"type":"pattern","color":["#F2F2F2"],"pattern":1}}`
+)
+
+func LogTipus(k1 int, k2 int, v int) string {
+	tipus := strconv.Itoa(k1) + " x " + strconv.Itoa(k2) + "-> "
+	fmt.Println(tipus, v)
 	return tipus
 }
 
+/*
 func LogFavs(favs int, nofavs int) {
 	fmt.Println("--------------------------------------------------------------------------------")
 	fmt.Println("Total favorable cases:", favs)
@@ -27,42 +39,19 @@ func LogDeps(k1 string, k2 string, reps int, v []int, total int) {
 	fmt.Println("Total dependent pairs:", total)
 	fmt.Println("--------------------------------------------------------------------------------")
 }
-
-const (
-	BOLD  = `{"alignment":{"horizontal":"center","vertical":"center"},"font":{"bold":true}}`
-	TITLE = `{"alignment":{"horizontal":"center","vertical":"center"},
-	"font":{"bold":true},"fill":{"type":"pattern","color":["#BDD7EE"],"pattern":1}}`
-	SUBTITLE = `{"alignment":{"horizontal":"center","vertical":"center"},
-	"font":{"bold":true},"fill":{"type":"pattern","color":["#F2F2F2"],"pattern":1}}`
-	TEXT = `{"alignment":{"horizontal":"center","vertical":"center"}}`
-	FILL = `{"alignment":{"horizontal":"center","vertical":"center"},
-	"fill":{"type":"pattern","color":["#F2F2F2"],"pattern":1}}`
-)
+*/
 
 //Returns the total number of combinations and creates an excel with the data
-func LogCombinations(arraymap []Map, reps int) int {
-	var res int
-
+func WriteCombinations(arraymaps map[int][]Map, reps int) {
 	xlsx := excelize.NewFile()
-	title, _ := xlsx.NewStyle(TITLE)
-	subtitle, _ := xlsx.NewStyle(SUBTITLE)
-	text, _ := xlsx.NewStyle(TEXT)
-	bold, _ := xlsx.NewStyle(BOLD)
+	title, subtitle, text, bold, _ := GetExcelStyles(xlsx)
+	fmt.Println(strconv.Itoa(reps) + " elemens repetitions:")
+	SetExcelIntro(xlsx, "COMBINATIONS FOR "+strconv.Itoa(reps)+" ELEMENT REPETITIONS", GROUP*2+2, title)
 
-	xlsx.SetSheetName("Sheet1", "Summary")
-	intro := "COMBINATIONS FOR " + strconv.Itoa(reps) + " ELEMENT REPETITIONS"
-	fmt.Println(intro)
-
-	xlsx.SetCellValue("Summary", "A1", intro)
-	col := excelize.ToAlphaString(GROUP*2 + 2)
-	xlsx.MergeCell("Summary", "A1", col+"1")
-	xlsx.SetCellStyle("Summary", "A1", col+"1", title)
-
-	arraymaps := Sort(arraymap)
 	for k, am := range arraymaps {
+		total := make(map[int]int)
 		length := strconv.Itoa(k) + " group elements"
 		xlsx.NewSheet(length)
-		total := make(map[int]int)
 		for c, m := range am {
 			coli := excelize.ToAlphaString(c*len(m.First) + c)
 			colf := excelize.ToAlphaString((c*len(m.First) + len(m.First) - 1 + c))
@@ -103,8 +92,7 @@ func LogCombinations(arraymap []Map, reps int) int {
 			xlsx.SetCellStyle("Summary", coli+fil, coli+fil, bold)
 			xlsx.SetCellValue("Summary", colf+fil, v)
 			xlsx.SetCellStyle("Summary", colf+fil, colf+fil, text)
-			LogTipus(k, l)
-			fmt.Println(v)
+			LogTipus(k, l, v)
 		}
 		coli = excelize.ToAlphaString((2 * GROUP))
 		colf = excelize.ToAlphaString((2 * GROUP) + 1)
@@ -114,14 +102,44 @@ func LogCombinations(arraymap []Map, reps int) int {
 		xlsx.SetCellValue("Summary", colf+fil, all)
 		xlsx.SetCellStyle("Summary", coli+fil, colf+fil, subtitle)
 
-		fmt.Println("Total", all)
-		res += all
+		fmt.Println("Total:\t", all)
 	}
-	index := xlsx.GetSheetIndex("Summary")
-	xlsx.SetActiveSheet(index)
+	SaveExcel(xlsx, 1, reps)
+}
 
+func GetExcelStyles(xlsx *excelize.File) (int, int, int, int, int) {
+	title, _ := xlsx.NewStyle(TITLE)
+	subtitle, _ := xlsx.NewStyle(SUBTITLE)
+	text, _ := xlsx.NewStyle(TEXT)
+	bold, _ := xlsx.NewStyle(BOLD)
+	fill, _ := xlsx.NewStyle(FILL)
+
+	return title, subtitle, text, bold, fill
+}
+func SetExcelIntro(xlsx *excelize.File, intro string, c int, style int) {
+	xlsx.SetSheetName("Sheet1", "Summary")
+	xlsx.SetCellValue("Summary", "A1", intro)
+	col := excelize.ToAlphaString(c)
+	xlsx.MergeCell("Summary", "A1", col+"1")
+	xlsx.SetCellStyle("Summary", "A1", col+"1", style)
+}
+
+func SaveExcel(xlsx *excelize.File, t int, reps int) {
+	var sheet, filename string
+	switch t {
+	case 1:
+		sheet = "Summary"
+		filename = "/out/combinations/" + "combinations" + strconv.Itoa(WORDS) + "x" + strconv.Itoa(GROUP) + "_" + strconv.Itoa(reps) + "_" + "element_repetitions.xlsx"
+	case 2:
+		sheet = "Summary"
+		filename = "/out/test/favs/" + "favorables" + strconv.Itoa(WORDS) + "x" + strconv.Itoa(GROUP) + "_" + strconv.Itoa(reps) + "_" + "element_repetitions.xlsx"
+	case 3:
+		sheet = "Graph"
+		filename = "/out/test/deps/" + "dependence" + strconv.Itoa(WORDS) + "x" + strconv.Itoa(GROUP) + ".xlsx"
+	case 4:
+	}
+	index := xlsx.GetSheetIndex(sheet)
+	xlsx.SetActiveSheet(index)
 	path, _ := os.Getwd()
-	filename := "combinations" + strconv.Itoa(WORDS) + "x" + strconv.Itoa(GROUP) + "_" + strconv.Itoa(reps) + "_" + "element_repetitions.xlsx"
-	xlsx.SaveAs(path + "/out/combinations/" + filename)
-	return res
+	xlsx.SaveAs(path + filename)
 }
