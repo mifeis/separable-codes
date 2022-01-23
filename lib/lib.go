@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	WORDS = 8
-	GROUP = 3
+	WORDS = 16
+	GROUP = 4
 	REPS  = GROUP
 )
 

@@ -2,6 +2,7 @@ package test
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 
@@ -50,6 +51,7 @@ func getDeps(initial []int) {
 			}
 		}
 	}
+	log.Println("done array")
 	xlsx := excelize.NewFile()
 	title, subtitle, text, bold, fill := lib.GetExcelStyles(xlsx)
 	lib.SetExcelIntro(xlsx, "DEPENDENCE BETWEEN EVENTS", 12-1, title)
@@ -120,6 +122,7 @@ func getDeps(initial []int) {
 				chartdata[k1+"x"+k2] = append(chartdata[k1+"x"+k2], data)
 			}
 		}
+		log.Println("done value")
 	}
 
 	xlsx.NewSheet("Graph")
