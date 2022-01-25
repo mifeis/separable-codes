@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	WORDS = 16
-	GROUP = 4
+	WORDS = 8
+	GROUP = 3
 	REPS  = GROUP
 )
 
@@ -140,13 +140,10 @@ func Dependent(array1 []int, array2 []int) bool {
 	for _, v1 := range array1 {
 		for _, v2 := range array2 {
 			if v1 == v2 {
-				//			fmt.Println(array1, " dependent with ", array2)
-				//				fmt.Println(" -> Dependents")
 				return true
 			}
 		}
 	}
-	//	fmt.Println(" -> NO Dependents")
 	return false
 }
 

@@ -26,26 +26,23 @@ func List(initial []int, reps int) []lib.Map {
 	//First combinations of GROUP elements
 	groups := getCombins(initial, []int{}, reps, 0)
 	for _, g := range groups {
-		if reps <= len(g) {
-			list := make(map[int][][]int)
-			combins = getCombins(lib.RemoveSlice(initial, g[:]), g, 0, reps)
-			for _, c := range combins {
-				list[len(c)] = append(list[len(c)], c)
-			}
-			m := lib.Map{
-				First:   g,
-				Seconds: list,
-			}
-			arraymap = append(arraymap, m)
+		list := make(map[int][][]int)
+		combins = getCombins(lib.RemoveSlice(initial, g[:]), g, 0, reps)
+		for _, c := range combins {
+			list[len(c)] = append(list[len(c)], c)
 		}
+		m := lib.Map{
+			First:   g,
+			Seconds: list,
+		}
+		arraymap = append(arraymap, m)
 	}
 	return arraymap
 }
 
-//compta els casos incomplerts i complerts
 func getCombins(remaining []int, g []int, init int, reps int) map[int][]int {
 	var key int
-	maxLen := lib.GROUP - len(g)
+	maxLen := lib.GROUP
 	combins := make(map[int][]int, 1000)
 
 	if len(g) != 0 {
