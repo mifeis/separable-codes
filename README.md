@@ -1,5 +1,5 @@
 # Separable-Codes
-Repositori for the final grade thesis in partial fulfilment of the requirements for the degree in Telecomunnications Services and Technology Engineering.
+Repository for the final grade thesis in partial fulfilment of the requirements for the degree in Telecomunnications Services and Technology Engineering.
 Here you can find the coded algorithms to obtain such data as the number of combinations, dependence and unfavourable cases to apply in the Lovász Local Lemma, which proves the existence in a space of probability where the dependent events can be avoided.
 
 Constants:
