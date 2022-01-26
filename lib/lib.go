@@ -5,19 +5,27 @@ import (
 )
 
 const (
-	WORDS = 8
-	GROUP = 3
+	WORDS = 16
+	GROUP = 4
 	REPS  = GROUP
 )
 
-//Estructura que conté el primer element d'un tamany desde GROUP elements fins a 1
-//i un segon array que consta de totes les combinacions possibles per aquest primer grup
+// Map struct has two attributes. The first one is an array
+// containing elements from 1 to WORDS, which would be the rows of the
+// code picked in a group of size from 1 to GROUP.
+// The second object is a map that has as value an array with all the
+// other possible groups of combinations given the first element of
+// the pair and filtered by a key which is the size of the second
+// group.
+
 type Map struct {
 	First   []int
-	Seconds map[int][][]int
+	Seconds map[int][][]int // For example: [1 2 3]->[3:[[1 5 6][4 7 8]...]2:[[3 5],[4 6]...]1:[[1][2][6][7][8]...]]
+
 }
 
-//funció que inicialitza i retorna l'array a combinar: {1,2,3,4,5,6,7,8,...}
+// Init returns an array initialised with the values from one to
+// WORDS
 func Init(init int, len int) []int {
 	var initial []int
 
@@ -46,7 +54,11 @@ func RemoveIndex(s []int, index int) []int {
 	return append(s[:index], s[index+1:]...)
 }
 
-//ordena els arraymaps segons el tamany del primer grup
+// Classifies the arraymaps append by the combinations method by
+// the length of the first group. No matter how many repetitions in
+// the pairs are. Returns a map with the length as a key and an
+// array of the distinct objects with a first group and all its
+// combinations.
 func Sort(arraymap []Map) map[int][]Map {
 	arraymaps := make(map[int][]Map)
 
@@ -56,16 +68,17 @@ func Sort(arraymap []Map) map[int][]Map {
 	return arraymaps
 }
 
-//Estructura que defineix valors (0/1) per a un grup d'elements
+// Struct that defines binary values to a set of rows
 type Code struct {
 	Row    []int
 	Values []int
 }
 
-//Retorna totes les combinacions de valors (0/1) per un array de length l
+// GetDefaultValues returns all binary possible combinations for a
+// depending on the length l passed by argument
 func GetDefaultValues(l int) [][]int {
 	var values [][]int
-	//s'haura de passar len per argument depenent del GROUP del moment (3,2,1...)
+
 	len := int(math.Exp2(float64(l)))
 	for t := 0; t < len; t++ {
 		var slice []int
@@ -79,10 +92,10 @@ func GetDefaultValues(l int) [][]int {
 	return values
 }
 
-//Function assign values from first to second if the columns are the same
-//If not assignes the number 2 to the leaving columnes
+// Function that assignes values from first to second if the rows
+// are the same. If not it assignes the default number 2 to the
+// leaving ones to distinguish them.
 func SetValues(first Code, second *Code) {
-	//comprobar
 	second.Values = []int{}
 	for i := 0; i < len(second.Row); i++ {
 		second.Values = append(second.Values, 2)
@@ -98,12 +111,16 @@ func SetValues(first Code, second *Code) {
 	}
 }
 
-//Says if the two arrays are separable or not
+//Separable says if the two arrays are separable or not
 func Separable(group1 []int, group2 []int) bool {
 	first := make(map[int]int)
 	second := make(map[int]int)
 
 	//	fmt.Print("Comparing ", group1, " with ", group2)
+
+	// Bool that assign the key 0 the zero value if is on group1
+	// and the 1 if applies the same way. The map’s length will be
+	// 2 or 1 then.
 	for _, v := range group1 {
 		first[v] = v
 	}
@@ -112,22 +129,23 @@ func Separable(group1 []int, group2 []int) bool {
 		second[v] = v
 	}
 
-	var isSep bool
+	var isSep bool // Separable bool variable
 	if len(first) == len(second) {
-		//Comproba casos especials en que lengths iguals:
-		//No separables-> (0,0,0) i (0,0,0), (1,1,1) i (1,1,1)
-		//Separables-> (0,0,0) i (1,1,1), (1,1,1) i (0,0,0)
+		// Find out about special cases like:
+		// Non separables-> (0,0,0)|(0,0,0) and (1,1,1)|(1,1,1)
+		// Separables-> (0,0,0)|(1,1,1) and (1,1,1)|(0,0,0)
 
-		_, z1 := first[0]
-		_, z2 := second[0]
+		_, z1 := first[0]  // Pretended zero in group 1
+		_, z2 := second[0] // Pretended zero in group 2
 		if (z1 && z2) || (!z1 && !z2) {
 		} else {
 			isSep = true
 		}
 	} else {
-		//Altres casos
-		//No separables-> (0,0,1) i (1,0,0), (0,0,0) i (0,0,0)
-		//Separables-> (0,0,0) i (1,0,0), (1,1,1) i (0,1,0)
+		// Compare cases where the length is clearly distinct
+		// or equal
+		// Non separables-> (0,0,1)|(1,0,0), (0,0,0)|(0,0,0)...
+		// Separables-> (0,0,0)|(1,0,0), (1,1,1)|(0,1,0)...
 
 		isSep = len(first) != len(second)
 	}
@@ -135,7 +153,7 @@ func Separable(group1 []int, group2 []int) bool {
 	return isSep
 }
 
-//Says if the two arrays are dependent or not
+// Says if the two arrays passed by argument are dependent or not
 func Dependent(array1 []int, array2 []int) bool {
 	for _, v1 := range array1 {
 		for _, v2 := range array2 {
@@ -146,6 +164,9 @@ func Dependent(array1 []int, array2 []int) bool {
 	}
 	return false
 }
+
+// Returns a bool that is true if an array passed by argument is
+// already located in another array of pairs also passed.
 
 func InversAlreadyInArray(arraypairs [][]int, pair []int, reps int) bool {
 	var length int
@@ -160,6 +181,7 @@ func InversAlreadyInArray(arraypairs [][]int, pair []int, reps int) bool {
 	return false
 }
 
+// Compare two arrays
 func CompareArrays(array1 []int, array2 []int) int {
 	var l int
 	//	fmt.Println("comparing len:", array1, array1)

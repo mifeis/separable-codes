@@ -18,26 +18,50 @@ func GetDependences(initial []int) {
 	fmt.Println("Done! Check /out/test/deps folder")
 }
 
+// The local function getArraypairs returns a map with an array filled
+// by pairs of groups where the key is a string composed by the number
+// of repetitions in the pair and its dimensions. One example would be
+// the key = 233 for a pair like [1 2 3],[1 2 5]. In resume, all the
+// pairs in the array would be the same type.
+
 func getArrayPairs(initial []int) map[string][][]int {
+	// Local variables initialization
 	var array []map[int][]lib.Map
 	arraypairs := make(map[string][][]int)
 
+	// Use of the combinations.List function to get the differents
+	// arraymaps with the combinations depending on the repetitions.
+	// Sort() categorises the arraymap by the length of the top group.
 	for i := 0; i < lib.REPS; i++ {
 		arraymap := combinations.List(initial, i)
 		array = append(array, lib.Sort(arraymap))
 	}
 
+	// The variable array is an array of maps. The position 0
+	// belongs to the map with elements of zero repetitions in the
+	// pairs, the position 1 to the groups that have one repetition
+	// between them, etc...
+
 	for reps, arraymaps := range array {
-		//Set a combination
+		// arraymaps is a map whose key is the first group length. It
+		// is the object returned previously by the function Sort().
+		// The loop goes through all the combinations for a fixed first
+		// group length
 		for k1, am := range arraymaps {
+			// Set a Map with an initial group and its combinations
+			// sort also by length
 			for _, m := range am {
+				// Set an array from the m.Seconds map
 				for k2, ss := range m.Seconds {
+					// Go through the array of the seconds groups for
+					// a fixed initial group and length
 					for _, s := range ss {
 						var first, second, group []int
 						key := strconv.Itoa(reps) + strconv.Itoa(k1) + strconv.Itoa(k2)
 						first = append(first, m.First...)
 						second = append(second, s...)
 						group = append(first, second...)
+						// Add the pair if it is not in the array
 						if k1 == k2 {
 							if !lib.InversAlreadyInArray(arraypairs[key], group, reps) {
 								arraypairs[key] = append(arraypairs[key], group)
@@ -54,6 +78,7 @@ func getArrayPairs(initial []int) map[string][][]int {
 }
 
 func getDependences(arraypairs map[string][][]int) {
+	// Excel initialization
 	xlsx := excelize.NewFile()
 	title, subtitle, text, bold, fill := lib.GetExcelStyles(xlsx)
 	lib.SetExcelIntro(xlsx, "DEPENDENCE BETWEEN EVENTS", 18, title)
@@ -75,32 +100,41 @@ func getDependences(arraypairs map[string][][]int) {
 	xlsx.MergeCell("Summary", "M2", "O2")
 	xlsx.MergeCell("Summary", "P2", "S2")
 
+	// Local variables initialization
 	var results []string
 	chartdata := make(map[string][][]int)
 
 	for k, arraypair := range arraypairs {
+		// Pick one array from the arraypair each key type
 		array := arraypair[0]
 		var deps, nodeps, total int
-
+		// Compare the pair chosen with al the other pairs
 		for keyToCompare, arrayToCompare := range arraypairs {
 			var init, fin int
+			// If the pair is from the same array (same type key),
+			// the length should be len(arrayToCompare)-1
 			if k == keyToCompare {
 				init, fin = 1, 1
 			} else {
 				init, fin = 0, 0
 			}
+			// Loop to compare each pack of groups with the main pair.
+			// It is applied to the suitable length.
 			for i := 0; i < len(arrayToCompare)-fin; i++ {
 				index := (init + i) % (len(arrayToCompare))
+				// The function Dependent returns a bool that is true
+				// if the two arrays passed by argument are related.
 				if lib.Dependent(array, arrayToCompare[index]) {
 					deps++
 				} else {
 					nodeps++
 				}
 			}
-			//Events (combinacions d'arrays) totals
+			// Total sums all pairs (events)
 			total += len(arrayToCompare)
 		}
 
+		// The data is printed here for each type of pairs
 		results = append(results, k)
 		strings.SplitAfter(k, "")
 
@@ -131,6 +165,9 @@ func getDependences(arraypairs map[string][][]int) {
 		data := []int{reps, deps}
 		chartdata[k1+"x"+k2] = append(chartdata[k1+"x"+k2], data)
 	}
+
+	// Add chart
 	lib.AddDependenceChart(xlsx, chartdata)
+	// Save excel
 	lib.SaveExcel(xlsx, 3, 0)
 }
