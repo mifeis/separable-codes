@@ -4,7 +4,7 @@ Repositori pel treball de fi de grau d'Enginyeria de Telecomunicacions.
 
 Es tracta d'uns algoritmes que calculen l'existencia de codis separables a partir del Lovász Local Lemma.
 
-El codi proveeix totes les combinacions possibles d'un codi de WORDS paraules per GROUP elements (WORDS sobre GROUP en combinatoria), retorna els casos favorables i desfavorables i, la dependencia entre events.
+El codi proveeix totes les combinacions possibles d'un codi de WORDS paraules per GROUP elements (WORDS sobre GROUP en combinatoria), retorna els casos favorables i desfavorables, la probabilitat d'aquests i, la dependencia entre events.
 
 Els resultats dels tests s'exporten a diferents fitxers excel dins la carpeta /out.
 
@@ -27,3 +27,9 @@ o
 go build
 
 ./separable-codes.exe
+
+**Other libraries needed**
+
+- github.com/gonum/gonum/blob/master/stat/combin
+
+- github.com/qax-os/excelizegithub.com/360EntSecGroup-Skylar/excelizev1.4

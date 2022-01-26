@@ -9,7 +9,6 @@ import (
 	"github.com/mifeis/Separable-Codes/lib"
 )
 
-//casos totals (favorables i no favorables)
 //Fav: {0,0,0}|{0,0,1}, {0,0,1}|{1,1,1}, {1,1,1}|{0,0,0}, ...
 //desFav: {0,0,0}|{0,0,0}, {0,0,1}|{1,0,1}, ...
 
@@ -23,11 +22,12 @@ func GetFavourables(initial []int) {
 	fmt.Println("Done! Check /out/test/favs folder")
 }
 
-//Funció que retorna els casos favorables i no favorables tenint en compte totes les possibles combinacions
-//de grups disjunts (List0) i no disjunts (List1, List2) per a un array inicial de WORDS paraules i grups de GROUP elements
+//GetFavs gets the favourable and unfavourable cases of each type
 func GetFavs(arraymaps map[int][]lib.Map, reps int) {
+	// Local variables initialization
 	var first, second lib.Code
 	var c int
+	// Excel initialization
 	xlsx := excelize.NewFile()
 	title, subtitle, text, bold, _ := lib.GetExcelStyles(xlsx)
 	lib.SetExcelIntro(xlsx, "FAVORABLE AND DESFAVORABLE COMBINATIONS FOR "+strconv.Itoa(reps)+" ELEMENT REPETITIONS", lib.GROUP*2+3, title)
@@ -41,56 +41,65 @@ func GetFavs(arraymaps map[int][]lib.Map, reps int) {
 	xlsx.SetCellStyle("Summary", "A3", "A4", text)
 	xlsx.SetCellStyle("Summary", "A5", "A5", subtitle)
 
+	// Start loop going through all type of combinations
 	for k, am := range arraymaps {
 		//Set a combination
-
 		for _, m := range am {
-			first.Row = m.First //rows
+			first.Row = m.First // Assign the rows numbers
 			for k2, s := range m.Seconds {
 				var favs, nofavs int
-				second.Row = s[0] //rows
+				second.Row = s[0] // Assign the second group rows
 
 				length := strconv.Itoa(k) + "x" + strconv.Itoa(k2)
 				xlsx.NewSheet(length)
 
-				//				fmt.Println()
-				//				fmt.Println("->", first.Row, "|", second.Row)
+				//	fmt.Println()
+				//	fmt.Println("->", first.Row, "|", second.Row)
 
-				//retornar a la mateixa funcio
+				// defaultvalues contains an array with the binary
+				// combos returned by the auxiliary function
 				defaultvalues1 := lib.GetDefaultValues(len(first.Row))
 				defaultvalues2 := lib.GetDefaultValues(len(second.Row))
-				f := 1
+				f := 1 // Excel variable
+				// The loop gives assign each possible value in the
+				// array returned before
 				for i := 0; i < len(defaultvalues1); i++ {
 					first.Values = defaultvalues1[i]
-					//					fmt.Println()
+					//	fmt.Println()
 
 					for j := 0; j < (len(defaultvalues2) / (reps + 1)); j++ {
-						//Set the repe elements of group
+						// Set the repeated elements of group from the
+						// first to the second pack
 						lib.SetValues(first, &second)
 						for l, v := range second.Values {
-							//Set the leaving values
+							// Set the values not assigned to the
+							// second group. If they are placed in 2,
+							// then they need to be setted.
 							if v == 2 {
 								second.Values[l] = defaultvalues2[j][l]
 							}
 						}
+						// Excel printing
 						fil := strconv.Itoa(f)
 						xlsx.SetCellValue(length, "A"+fil, first.Values)
 						xlsx.SetCellValue(length, "B"+fil, "<->")
 						xlsx.SetCellValue(length, "C"+fil, second.Values)
 						xlsx.SetCellStyle(length, "A"+fil, "C"+fil, text)
 						f++
-
+						// Separable auxiliary function returns a bool
 						if lib.Separable(first.Values, second.Values) {
-							xlsx.SetCellValue(length, "D"+fil, "Separable")
+							xlsx.SetCellValue(length, "D"+fil, "Separable") // Excel printing
 							favs++
 						} else {
-							xlsx.SetCellValue(length, "D"+fil, "NO Separable")
+							xlsx.SetCellValue(length, "D"+fil, "NO Separable") // Excel printing
 							nofavs++
 						}
+						// Excel printing
 						xlsx.MergeCell(length, "D"+fil, "E"+fil)
 						xlsx.SetCellStyle(length, "D"+fil, "E"+fil, bold)
 					}
 				}
+				// Excel printing
 				col := excelize.ToAlphaString(c + 2)
 
 				xlsx.SetCellValue("Summary", col+"2", strconv.Itoa(k)+"x"+strconv.Itoa(k2))
@@ -101,10 +110,13 @@ func GetFavs(arraymaps map[int][]lib.Map, reps int) {
 				xlsx.SetCellStyle("Summary", col+"3", col+"4", text)
 				xlsx.SetCellStyle("Summary", col+"5", col+"5", bold)
 				c++
-				//				lib.LogFavs(favs, nofavs)
+				//	lib.LogFavs(favs, nofavs)
 			}
+			// Break because only needs one pair of each type to know
+			// its favourable and unfavourable cases.
 			break
 		}
+		// Excel saving
 		lib.SaveExcel(xlsx, 2, reps)
 	}
 }

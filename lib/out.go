@@ -143,3 +143,47 @@ func SaveExcel(xlsx *excelize.File, t int, reps int) {
 	path, _ := os.Getwd()
 	xlsx.SaveAs(path + filename)
 }
+
+func AddDependenceChart(xlsx *excelize.File, chartdata map[string][][]int) {
+	xlsx.NewSheet("Graph")
+	var serie []string
+	f := 2
+
+	xlsx.SetColVisible("Graph", "A", false)
+	for c := 0; c < GROUP; c++ {
+		col := excelize.ToAlphaString(c + 1)
+		xlsx.SetCellValue("Graph", col+"1", c)
+		xlsx.SetColVisible("Graph", col, false)
+	}
+	coli := excelize.ToAlphaString(1)
+	colf := excelize.ToAlphaString(GROUP)
+
+	for dimension, d := range chartdata {
+		fil := strconv.Itoa(f)
+		xlsx.SetCellValue("Graph", "A"+fil, dimension)
+		f++
+		var col string
+		for _, data := range d {
+			col = excelize.ToAlphaString(data[0] + 1)
+			xlsx.SetCellValue("Graph", col+fil, data[1])
+		}
+		serie = append(serie, `{"name":"Graph!$A$`+fil+`","categories":"Graph!$B$1:$`+colf+`$1","values":"Graph!$`+coli+`$`+fil+`:$`+colf+`$`+fil+`"}`)
+	}
+	var series string
+	for i, s := range serie {
+		if i != len(serie)-1 {
+			series = series + s + `,`
+		} else {
+			series = series + s
+		}
+	}
+
+	colf = excelize.ToAlphaString(GROUP + 2)
+	xlsx.AddChart("Graph", colf+"2",
+		`{
+	"type":"col",
+	"series":`+`[`+series+`]`+`,
+	"title":
+		{"name":"Dependence between events"}
+	}`)
+}
