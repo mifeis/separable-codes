@@ -1,0 +1,45 @@
+Intro test for 8x4:
+1.	Combinations
+2.	Favourable and unfavourable cases
+3.	Dependence
+4.	Theoretical
+0 elements REPETITIONS:
+4 x 4 -> 35
+4 x 3 -> 280
+4 x 2 -> 420
+4 x 1 -> 280
+Total:	 1015
+3 x 3 -> 280
+3 x 2 -> 560
+3 x 1 -> 280
+Total:	 1120
+2 x 2 -> 210
+2 x 1 -> 168
+Total:	 378
+1 x 1 -> 28
+Total:	 28
+1 elements REPETITIONS:
+4 x 4 -> 560
+4 x 3 -> 1680
+4 x 2 -> 1120
+4 x 1 -> 280
+Total:	 3640
+3 x 3 -> 840
+3 x 2 -> 840
+3 x 1 -> 168
+Total:	 1848
+2 x 2 -> 168
+2 x 1 -> 56
+Total:	 224
+2 elements REPETITIONS:
+4 x 4 -> 1260
+4 x 3 -> 1680
+4 x 2 -> 420
+Total:	 3360
+3 x 3 -> 420
+3 x 2 -> 168
+Total:	 588
+3 elements REPETITIONS:
+4 x 4 -> 560
+4 x 3 -> 280
+Total:	 840

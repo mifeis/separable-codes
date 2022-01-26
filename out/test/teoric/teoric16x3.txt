@@ -1,0 +1,27 @@
+Intro test for 16x3:
+1.	Combinations
+2.	Favourable and unfavourable cases
+3.	Dependence
+4.	Theoretical
+0 elements REPETITIONS:
+3 x 3 -> 80080
+3 x 2 -> 43680
+3 x 1 -> 7280
+Total:	 131040
+2 x 2 -> 5460
+2 x 1 -> 1680
+Total:	 7140
+1 x 1 -> 120
+Total:	 120
+1 elements REPETITIONS:
+3 x 3 -> 65520
+3 x 2 -> 21840
+3 x 1 -> 1680
+Total:	 89040
+2 x 2 -> 1680
+2 x 1 -> 240
+Total:	 1920
+2 elements REPETITIONS:
+3 x 3 -> 10920
+3 x 2 -> 1680
+Total:	 12600
