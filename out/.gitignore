@@ -2,3 +2,4 @@ combinations/*.zip
 test/deps/*.zip
 test/favs/*.zip
 test/teoric/*.zip
+*.zip
